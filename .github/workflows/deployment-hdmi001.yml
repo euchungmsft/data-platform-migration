@@ -18,7 +18,7 @@ env:
   AZURE_RESOURCE_GROUP_NAME: 'TEST1'                            # Update to '{dataLandingZoneName}-rg'
   AZURE_LOCATION: 'koreacentral'                                # Update to '{regionName}'
   AZURE_CREDENTIALS: 'v01hGSBUH-~ScYqtBzl7O2YS~SWxxUDKu.'
-  ACTIONS_RUNNER_DEBUG: true
+#  ACTIONS_RUNNER_DEBUG: true
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -27,12 +27,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - name: Check out from repo
-        uses: actions/checkout@v2 
+#      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+#      - name: Check out from repo
+#        uses: actions/checkout@v2 
 
-      - name: Debug stream
-        uses: mxschmitt/action-tmate@v3
+      # Runs a single command using the runners shell
+      - name: Run a one-line script
+        run: echo Hello, world!
+
+#      - name: Debug stream
+#        uses: mxschmitt/action-tmate@v3
 
 #     # CLI Setup
 #     - name: Setup AZ CLI
