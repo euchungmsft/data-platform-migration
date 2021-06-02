@@ -48,16 +48,16 @@ jobs:
  #   - name: Setup Bicep
  #     uses: anthony-c-martin/setup-bicep@v0.1
 
-#    # Login to Azure
-#    - name: Azure Login
-#      id: azure_login
-#      uses: azure/login@v1.1
+    # Login to Azure
+    - name: Azure Login
+      id: azure_login
+      uses: azure/login@v1.1
 #      env:
 #        CREDENTIALS: ${{ env.AZURE_CREDENTIALS }}
-#      with:
+      with:
 #        creds: ${{ secrets.AZCRE4 }}
 #        creds: ${{ env.AZURE_CREDENTIALS }}
-#        creds: ${{ secrets.AZURE_CREDENTIALS }}
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
 #        creds: ${{ env.CREDENTIALS }}
 #        allow-no-subscriptions: true
 #        enable-AzPSSession: true
