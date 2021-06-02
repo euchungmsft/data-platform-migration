@@ -67,7 +67,7 @@ jobs:
       id: checkout_repository
       uses: actions/checkout@v2
 
-    # Login to Azure
+    # Login to Azure 
     - name: Azure Login
       id: azure_login
       uses: azure/login@v1

@@ -1,5 +1,6 @@
 
 git add . ; git commit -m "..." ; git push
+git add . .github ; git commit -m "..." ; git push  
 
 act -s GITHUB_TOKEN="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"
 
