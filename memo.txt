@@ -5,7 +5,6 @@ git add . .github ; git commit -m "..." ; git push
 latest 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
 
 act -s GITHUB_TOKEN="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"
-act -s GITHUB_TOKEN="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"
 act -s GITHUB_TOKEN="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"
 act -s GITHUB_TOKEN="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"
 act -s GITHUB_TOKEN="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" 
@@ -36,3 +35,7 @@ az ad sp create-for-rbac -n "arm-tool2"
   "password": "fyfG_wwcVthBmKAavHZKp6U~CT9g-p8bU-",
   "tenant": "72f988bf-86f1-41af-91ab-2d7cd011db47"
 }
+
+az ad sp create-for-rbac --name "arm-tool3" --role contributor \
+ --scopes /subscriptions/b6d4cd53-eeab-41d1-93a8-665daf75fce1/resourceGroups/TEST1 \
+ --sdk-auth

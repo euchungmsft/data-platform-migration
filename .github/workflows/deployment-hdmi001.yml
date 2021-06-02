@@ -41,7 +41,7 @@ jobs:
       id: azure_login
       uses: azure/login@v1
       with:
-        creds: ${{ secrets.AZCRE3 }}
+        creds: ${{ secrets.AZCRE4 }}
 
     # Validate existence of resource group
     - name: Validating existence of resource group
@@ -78,7 +78,7 @@ jobs:
       id: azure_login
       uses: azure/login@v1
       with:
-        creds: ${{ secrets.AZCRE3 }}      
+        creds: ${{ secrets.AZCRE4 }}      
 
     # Bicep Build Infra
     - name: Build Bicep
