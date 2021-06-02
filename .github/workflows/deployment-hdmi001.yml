@@ -26,16 +26,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+#    # CLI Setup
+#    - name: Setup AZ CLI
+#      # install
+#      #run: curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+#      uses: azure/cli@v1
+
+    # Setting up Bicep
+    - name: Setup Bicep
+      uses: anthony-c-martin/setup-bicep@v0.1
+
     # Login to Azure
     - name: Azure Login
       id: azure_login
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS1 }}
-
-    # Setting up Bicep
-    - name: Setup Bicep
-      uses: anthony-c-martin/setup-bicep@v0.1
 
     # Validate existence of resource group
     - name: Validating existence of resource group
