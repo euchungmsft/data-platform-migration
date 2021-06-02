@@ -28,7 +28,7 @@ param saType string = 'Standard_LRS'
   false
 ])
 @description('Prompt to ask if VM creation needed')
-param optVMCreation bool = true
+param optVMCreation bool = false
 
 @description('VM SKU of Mgmt for test')
 param vmMgmtSize string = 'Standard_B2s'
@@ -40,7 +40,7 @@ param vmBlueSize string = 'Standard_B2s'
 param vmUserName string = 'azureuser'
 
 @description('Public Key for all VM access')
-param publicKey string = 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCn6QHjt9axKetzxnjDkf65GxdbcZoTMCse66uQL1y0ZYSjY0OkR79AIUCUS3+YcAqMJa4tuI9A8RRH8hNqpy0U/AJlkd0w2rr+G7HoROi+GCC3MzUTNR3/k48CTc2099JxSuSoH8syjfdcNBfqVLxob2f97gtVHcyAQ7U2Uz09rr/EBe9UwXtGPEP1K3jWY0HpEXgOAgnM8bkmvGuVv/pqZXQLeUgvadYxNadsRtD9w7uCb6DxPgxNFTtaXbQHK5pbjAL6VKX7CrVWVZ3LWo98i1S07W5qdv/Emaxy0tqDXMHkM/lF9T/CcbJuhHAUuTGNP7wqemHFXBr45orwCP9d'
+param publicKey string = '....'
 
 //// Variables
 
