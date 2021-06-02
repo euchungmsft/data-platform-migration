@@ -53,7 +53,7 @@ portal doesn't support .bicep links in resource creation
 
 ## 4. Deploying using CLI
 
-Doublecheck if you've lgged in
+1. Doublecheck if you've logged in
 
 ```command
 az login
@@ -78,29 +78,37 @@ You'll get prompts at your web brower, if authentication's successfully done, it
   },
 ```
 
-get the `id` from login result 
+Get the `id` from login result.
 
-From command line, clone this repo to your environment
+2. Clone this repo to your environment
 
+```command
 git clone https://github.com/nudbeach/data-platform-migration.git
+```
 
+3. Create a resource group with location using your subscription id from login result (Step 1)
 
-Get your subscription id
+```command
+az group create -l koreacentral -n <Your Resource Group Name> --subscription xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+```
 
-az group create -l koreacentral -n TEST1 --subscription b6d4cd53-eeab-41d1-93a8-665daf75fce1
+4. Deploy infrastructure
 
+```command
+az deployment group create -g <Your Resource Group Name> -f main-infra.bicep
+```
 
-Deploy infrastructure
+5. Deploy key vault
 
+```command
+az deployment group create -g <Your Resource Group Name> -f main-keyvault.bicep
+```
 
+6. Deploy all service components
 
-Deploy key vault
-
-Deploy all service components
-
-
-
-
+```command
+az deployment group create -g <Your Resource Group Name> -f main-service-all-at-once.bicep
+```
 
 ## Known issues
 
