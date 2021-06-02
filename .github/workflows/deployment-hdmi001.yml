@@ -34,19 +34,19 @@ jobs:
 
       - uses: mxschmitt/action-tmate@v3
 
- #   # CLI Setup
- #   - name: Setup AZ CLI
- #     # install
- #     #run: curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
- #     uses: Azure/cli@v1
- #     with:
- #       azcliversion: latest
- #       inlineScript: 
- #         echo "************* Setting Up AZ CLI"
-
- #   # Setting up Bicep
- #   - name: Setup Bicep
- #     uses: anthony-c-martin/setup-bicep@v0.1
+#    # CLI Setup
+#    - name: Setup AZ CLI
+#      # install
+#      #run: curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+#      uses: Azure/cli@v1
+#      with:
+#        azcliversion: latest
+#        inlineScript: 
+#          echo "************* Setting Up AZ CLI"
+#
+#    # Setting up Bicep
+#    - name: Setup Bicep
+#      uses: anthony-c-martin/setup-bicep@v0.1
 
     # Login to Azure
     - name: Azure Login
