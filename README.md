@@ -1,4 +1,4 @@
-# data-platform-migration
+# Hadoop Migration - Data Platform Migration
 This is for Hadoop-Migrations, https://github.com/Azure/Hadoop-Migrations
 
 What to install
