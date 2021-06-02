@@ -17,7 +17,7 @@ env:
   AZURE_SUBSCRIPTION_ID: 'b6d4cd53-eeab-41d1-93a8-665daf75fce1' # Update to '{dataLandingZoneSubscriptionId}'
   AZURE_RESOURCE_GROUP_NAME: 'TEST1'                            # Update to '{dataLandingZoneName}-rg'
   AZURE_LOCATION: 'koreacentral'                                # Update to '{regionName}'
-  AZURE_CREDENTIALS: '8lZ1aIDup.~-edIsXxlE6sy2f4eP~C7zm~'
+  AZURE_CREDENTIALS: 'v01hGSBUH-~ScYqtBzl7O2YS~SWxxUDKu.'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
