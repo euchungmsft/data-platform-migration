@@ -17,6 +17,7 @@ env:
   AZURE_SUBSCRIPTION_ID: 'b6d4cd53-eeab-41d1-93a8-665daf75fce1' # Update to '{dataLandingZoneSubscriptionId}'
   AZURE_RESOURCE_GROUP_NAME: 'TEST1'                            # Update to '{dataLandingZoneName}-rg'
   AZURE_LOCATION: 'koreacentral'                                # Update to '{regionName}'
+  AZURE_CREDENTIALS: '8lZ1aIDup.~-edIsXxlE6sy2f4eP~C7zm~'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -41,7 +42,8 @@ jobs:
       id: azure_login
       uses: azure/login@v1
       with:
-        creds: ${{ secrets.AZCRE4 }}
+#        creds: ${{ secrets.AZCRE4 }}
+        creds: ${{ env.AZURE_CREDENTIALS }}
 
     # Validate existence of resource group
     - name: Validating existence of resource group
@@ -52,7 +54,7 @@ jobs:
         inlineScript: |
           echo "Validating existence of resource group ${{ env.AZURE_RESOURCE_GROUP_NAME }}"
           az group exists --name ${{ env.AZURE_RESOURCE_GROUP_NAME }}
-    
+
     # Log out from Azure
     - name: Log out from Azure
       id: azure_logout
@@ -78,7 +80,8 @@ jobs:
       id: azure_login
       uses: azure/login@v1
       with:
-        creds: ${{ secrets.AZCRE4 }}      
+#        creds: ${{ secrets.AZCRE4 }}
+        creds: ${{ env.AZURE_CREDENTIALS }}
 
     # Bicep Build Infra
     - name: Build Bicep
