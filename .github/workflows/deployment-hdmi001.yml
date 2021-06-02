@@ -59,7 +59,7 @@ jobs:
     # Validate existence of resource group
     - name: Validating existence of resource group
       id: resource_group_storage
-      uses: Azure/cli@v1
+      uses: azure/cli@v1
       with:
         azcliversion: latest
         inlineScript: |
