@@ -2,11 +2,10 @@
 git add . ; git commit -m "..." ; git push
 git add . .github ; git commit -m "..." ; git push  
 
+latest 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
 
-latest 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
+act -s GITHUB_TOKEN="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"
 act -s GITHUB_TOKEN="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"
-
-
 act -s GITHUB_TOKEN="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"
 act -s GITHUB_TOKEN="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" 
 
