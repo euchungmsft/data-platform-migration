@@ -17,7 +17,7 @@ env:
   AZURE_SUBSCRIPTION_ID: 'b6d4cd53-eeab-41d1-93a8-665daf75fce1' # Update to '{dataLandingZoneSubscriptionId}'
   AZURE_RESOURCE_GROUP_NAME: 'TEST1'                            # Update to '{dataLandingZoneName}-rg'
   AZURE_LOCATION: 'koreacentral'                                # Update to '{regionName}'
-  AZURE_CREDENTIALS: 'v01hGSBUH-~ScYqtBzl7O2YS~SWxxUDKu.'
+#  AZURE_CREDENTIALS: 'v01hGSBUH-~ScYqtBzl7O2YS~SWxxUDKu.'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -43,7 +43,8 @@ jobs:
       uses: azure/login@v1
       with:
 #        creds: ${{ secrets.AZCRE4 }}
-        creds: ${{ env.AZURE_CREDENTIALS }}
+#        creds: ${{ env.AZURE_CREDENTIALS }}
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     # Validate existence of resource group
     - name: Validating existence of resource group
@@ -81,7 +82,11 @@ jobs:
       uses: azure/login@v1
       with:
 #        creds: ${{ secrets.AZCRE4 }}
-        creds: ${{ env.AZURE_CREDENTIALS }}
+#        creds: ${{ env.AZURE_CREDENTIALS }}
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+        allow-no-subscriptions: true
+        enable-AzPSSession: true
+        environment: 'azurecloud'
 
     # Bicep Build Infra
     - name: Build Bicep

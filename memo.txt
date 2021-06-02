@@ -39,3 +39,31 @@ az ad sp create-for-rbac -n "arm-tool2"
 az ad sp create-for-rbac --name "arm-tool3" --role contributor \
  --scopes /subscriptions/b6d4cd53-eeab-41d1-93a8-665daf75fce1/resourceGroups/TEST1 \
  --sdk-auth
+{
+  "clientId": "6b5c620c-1e7c-42b2-90c8-e27f59b00157",
+  "clientSecret": "8lZ1aIDup.~-edIsXxlE6sy2f4eP~C7zm~",
+  "subscriptionId": "b6d4cd53-eeab-41d1-93a8-665daf75fce1",
+  "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+  "activeDirectoryEndpointUrl": "https://login.microsoftonline.com",
+  "resourceManagerEndpointUrl": "https://management.azure.com/",
+  "activeDirectoryGraphResourceId": "https://graph.windows.net/",
+  "sqlManagementEndpointUrl": "https://management.core.windows.net:8443/",
+  "galleryEndpointUrl": "https://gallery.azure.com/",
+  "managementEndpointUrl": "https://management.core.windows.net/"
+} 
+
+az ad sp create-for-rbac --name "arm-tool4" --role contributor \
+ --scopes /subscriptions/b6d4cd53-eeab-41d1-93a8-665daf75fce1/resourceGroups/TEST1 \
+ --role contributor --sdk-auth
+{
+  "clientId": "b344a205-131f-4a7f-a625-dd9b22b7cb81",
+  "clientSecret": "v01hGSBUH-~ScYqtBzl7O2YS~SWxxUDKu.",
+  "subscriptionId": "b6d4cd53-eeab-41d1-93a8-665daf75fce1",
+  "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+  "activeDirectoryEndpointUrl": "https://login.microsoftonline.com",
+  "resourceManagerEndpointUrl": "https://management.azure.com/",
+  "activeDirectoryGraphResourceId": "https://graph.windows.net/",
+  "sqlManagementEndpointUrl": "https://management.core.windows.net:8443/",
+  "galleryEndpointUrl": "https://gallery.azure.com/",
+  "managementEndpointUrl": "https://management.core.windows.net/"
+}
