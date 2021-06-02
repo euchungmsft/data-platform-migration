@@ -44,7 +44,7 @@ jobs:
     # Login to Azure
     - name: Azure Login
       id: azure_login
-      uses: azure/login@v1
+      uses: azure/login@v1.1
 #      env:
 #        CREDENTIALS: ${{ env.AZURE_CREDENTIALS }}
       with:
@@ -56,22 +56,22 @@ jobs:
 #        enable-AzPSSession: true
 #        environment: 'azurecloud'
 
-    # Validate existence of resource group
-    - name: Validating existence of resource group
-      id: resource_group_storage
-      uses: azure/cli@v1
-      with:
-        azcliversion: latest
-        inlineScript: |
-          echo "Validating existence of resource group ${{ env.AZURE_RESOURCE_GROUP_NAME }}"
-          az group exists --name ${{ env.AZURE_RESOURCE_GROUP_NAME }}
+#    # Validate existence of resource group
+#    - name: Validating existence of resource group
+#      id: resource_group_storage
+#      uses: azure/cli@v1.0.4
+#      with:
+#        azcliversion: latest
+#        inlineScript: |
+#          echo "Validating existence of resource group ${{ env.AZURE_RESOURCE_GROUP_NAME }}"
+#          az group exists --name ${{ env.AZURE_RESOURCE_GROUP_NAME }}
 
-    # Log out from Azure
-    - name: Log out from Azure
-      id: azure_logout
-      uses: azure/cli@v1
-      with:
-        azcliversion: latest
-        inlineScript: |
-          az logout
+#    # Log out from Azure
+#    - name: Log out from Azure
+#      id: azure_logout
+#      uses: azure/cli@v1.0.4
+#      with:
+#        azcliversion: latest
+#        inlineScript: |
+#          az logout
 
