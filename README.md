@@ -23,18 +23,39 @@ This is for Hadoop-Migrations
 ## Before you start 
 
 ## Options to run
-- CLI
-- Quickstart
-- Github Action
-- Azure DevOps Action
+1. CLI
+2. Quickstart
+3. Github Action
+4. Azure DevOps Action
 
-## Deploying using CLI
+## 1. Deploying using CLI
 
-## Quickstart Button
+## 2. Quickstart Button
 
-## Github Action
+## 3. Github Action
 
-## Azure DevOps Action
+## 4. Azure DevOps Action
+
+## Known issues
+
+###Error: MissingSubscriptionRegistration
+
+**Error Message:**
+```text
+ERROR: Deployment failed. Correlation ID: ***
+  "error": ***
+    "code": "MissingSubscriptionRegistration",
+    "message": "The subscription is not registered to use namespace 'Microsoft.DocumentDB'. See https://aka.ms/rps-not-found for how to register subscriptions.",
+    "details": [
+      ***
+        "code": "MissingSubscriptionRegistration",
+        "target": "Microsoft.DocumentDB",
+        "message": "The subscription is not registered to use namespace 'Microsoft.DocumentDB'. See https://aka.ms/rps-not-found for how to register subscriptions."
+
+```
+
+**Solution:**
+This error message appears, in case during the deployment it tries to create a type of resource which has never been deployed before inside the subscription. We recommend to check prior the deployment whether the required resource providers are registered for your subscription and if needed, register them through the Azure Portal, Azure Powershell or Azure CLI as mentioned here.
 
 
 ## Contributing
