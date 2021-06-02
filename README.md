@@ -15,10 +15,10 @@ This is for Hadoop-Migrations
 - Azure Data Factory
 - CosmosDB
 - Infrastructure
- - KeyVault
- - VNet
- - VM
- - Private DNS Zone
+  * KeyVault
+  * VNet
+  * VM
+  * Private DNS Zone
 
 ## Before you start 
 
