@@ -74,6 +74,11 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}      
 
+    # Bicep Build Infra
+    - name: Build Bicep
+      # path to your checked-in .bicep file to deploy
+      run: bicep build ${{ github.workspace }}/main-infra.bicep
+
     # Deploy Infra
     - name: Deploy Infrastructure for Data Platform
       id: deploy_infra
@@ -83,10 +88,15 @@ jobs:
         subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
         resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
         region: ${{ env.AZURE_LOCATION }}
-        template: ${{ github.workspace }}/main-infra.bicep
+        template: ${{ github.workspace }}/main-infra.json
         parameters: ${{ github.workspace }}/main-infra.parameters.json
         deploymentMode: Incremental        
 
+#    # Bicep Key Vault
+#    - name: Build Bicep
+#      # path to your checked-in .bicep file to deploy
+#      run: bicep build ${{ github.workspace }}/main-keyvault.bicep
+#
 #    # Deploy Key Vault
 #    - name: Deploy Key Vault for Data Platform
 #      id: deploy_key_vault
@@ -96,10 +106,15 @@ jobs:
 #        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
 #        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
 #        region: ${{ env.AZURE_LOCATION }}
-#        template: ${{ github.workspace }}/main-keyvault.bicep
+#        template: ${{ github.workspace }}/main-keyvault.json
 #        parameters: ${{ github.workspace }}/main-keyvault.parameters.json
 #        deploymentMode: Incremental                
 
+#    # Bicep Key Vault
+#    - name: Build Bicep
+#      # path to your checked-in .bicep file to deploy
+#      run: bicep build ${{ github.workspace }}/main-service-all-at-once.bicep
+#
 #    # Deploy Services All-at-once
 #    - name: Deploy Services All-at-once for Data Platform
 #      id: deploy_services
@@ -109,7 +124,7 @@ jobs:
 #        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
 #        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
 #        region: ${{ env.AZURE_LOCATION }}
-#        template: ${{ github.workspace }}/main-service-all-at-once.bicep
+#        template: ${{ github.workspace }}/main-service-all-at-once.json
 #        parameters: ${{ github.workspace }}/main-service-all-at-once.parameters.json
 #        deploymentMode: Incremental                        
 
