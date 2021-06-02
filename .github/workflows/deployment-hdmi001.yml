@@ -44,7 +44,7 @@ jobs:
     # Login to Azure
     - name: Azure Login
       id: azure_login
-      uses: azure/login@v1.1
+      uses: azure/login@v1
 #      env:
 #        CREDENTIALS: ${{ env.AZURE_CREDENTIALS }}
       with:
@@ -53,8 +53,11 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 #        creds: ${{ env.CREDENTIALS }}
 #        allow-no-subscriptions: true
-#        enable-AzPSSession: true
+        enable-AzPSSession: true
 #        environment: 'azurecloud'
+
+    - run: |
+      Get-AzVM -ResourceGroupName "TEST1"
 
 #    # Validate existence of resource group
 #    - name: Validating existence of resource group
