@@ -31,7 +31,7 @@ You have following options for deploying this reference architecture:
 4. CLI
 
 ## 1. Quickstart Button
-
+portal doesn't support .bicep links in resource creation
 - Infrastructure
 
 [![Deploy To Azure](images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fnudbeach%2Fdata-platform-migration%2Fmain%2Fmain-infra.bicep) 
