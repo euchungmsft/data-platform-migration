@@ -11,12 +11,12 @@ This is for Hadoop-Migrations
 
 ## What will be deployed?
 - HDInsight 4.0 
-- Synapse
+- [Synapse Workspace](https://docs.microsoft.com/azure/synapse-analytics/)
 - Azure Databrick
-- Azure Data Factory
-- CosmosDB
+- [Data Factory](https://docs.microsoft.com/azure/data-factory/)
+- [Cosmos DB](https://docs.microsoft.com/azure/cosmos-db/introduction)
 - Infrastructure
-  * KeyVault
+  * [Key Vault](https://docs.microsoft.com/azure/key-vault/general)
   * VNet
   * VM
   * Private DNS Zone
@@ -24,18 +24,21 @@ This is for Hadoop-Migrations
 ## Before you start 
 
 ## Options to run
-1. CLI
-2. Quickstart
-3. Github Action
-4. Azure DevOps Action
+You have following options for deploying this reference architecture:
+1. Quickstart
+2. Github Action
+3. Azure DevOps Action
+4. CLI
 
-## 1. Deploying using CLI
+## 1. Quickstart Button
 
-## 2. Quickstart Button
+[![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fazure-quickstart-templates%2Fmaster%2F101-DDoS-Attack-Prevention%2Fazuredeploy.json)  [![Visualize](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/visualizebutton.svg?sanitize=true)](http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fazure-quickstart-templates%2Fmaster%2F101-DDoS-Attack-Prevention%2Fazuredeploy.json)
 
-## 3. Github Action
+## 2. Github Action
 
-## 4. Azure DevOps Action
+## 3. Azure DevOps Action
+
+## 4. Deploying using CLI
 
 ## Known issues
 
