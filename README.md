@@ -53,6 +53,55 @@ portal doesn't support .bicep links in resource creation
 
 ## 4. Deploying using CLI
 
+Doublecheck if you've lgged in
+
+```command
+az login
+```
+
+You'll get prompts at your web brower, if authentication's successfully done, it will look like this 
+
+```javascript
+  {
+    "cloudName": "AzureCloud",
+    "homeTenantId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+    "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+    "isDefault": true,
+    "managedByTenants": [],
+    "name": "xxxxxxxxxxxx",
+    "state": "Enabled",
+    "tenantId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+    "user": {
+      "name": "xxxxxxx@xxxxxxxxx.com",
+      "type": "user"
+    }
+  },
+```
+
+get the `id` from login result 
+
+From command line, clone this repo to your environment
+
+git clone https://github.com/nudbeach/data-platform-migration.git
+
+
+Get your subscription id
+
+az group create -l koreacentral -n TEST1 --subscription b6d4cd53-eeab-41d1-93a8-665daf75fce1
+
+
+Deploy infrastructure
+
+
+
+Deploy key vault
+
+Deploy all service components
+
+
+
+
+
 ## Known issues
 
 ###Error: MissingSubscriptionRegistration
