@@ -22,46 +22,40 @@ env:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
 
   prerequisite:
     runs-on: ubuntu-latest
 
     steps:
-
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2 
+      - name: Check out from repo
+        uses: actions/checkout@v2 
 
-      - uses: mxschmitt/action-tmate@v3
+      - name: Debug stream
+        uses: mxschmitt/action-tmate@v3
 
-#    # CLI Setup
-#    - name: Setup AZ CLI
-#      # install
-#      #run: curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-#      uses: Azure/cli@v1
-#      with:
-#        azcliversion: latest
-#        inlineScript: 
-#          echo "************* Setting Up AZ CLI"
+#     # CLI Setup
+#     - name: Setup AZ CLI
+#       # install
+#       #run: curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+#       uses: Azure/cli@v1
+#       with:
+#         azcliversion: latest
+#         inlineScript: 
+#           echo "************* Setting Up AZ CLI"
 #
-#    # Setting up Bicep
-#    - name: Setup Bicep
-#      uses: anthony-c-martin/setup-bicep@v0.1
+#      # Setting up Bicep
+#      - name: Setup Bicep
+#        uses: anthony-c-martin/setup-bicep@v0.1
 
-    # Login to Azure
-    - name: Azure Login
-      id: azure_login
-      uses: azure/login@v1.1
-#      env:
-#        CREDENTIALS: ${{ env.AZURE_CREDENTIALS }}
-      with:
-#        creds: ${{ secrets.AZCRE4 }}
-#        creds: ${{ env.AZURE_CREDENTIALS }}
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
-#        creds: ${{ env.CREDENTIALS }}
-#        allow-no-subscriptions: true
-#        enable-AzPSSession: true
-#        environment: 'azurecloud'
+      # Login to Azure
+      - name: Azure Login
+        id: azure_login
+        uses: azure/login@v1.1
+        env:
+          CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+        with:
+          creds: ${{ env.CREDENTIALS }}
 
 #    # Validate existence of resource group
 #    - name: Validating existence of resource group
