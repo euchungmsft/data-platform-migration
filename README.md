@@ -213,11 +213,11 @@ az deployment group create -g <Your Resource Group Name> \
  --parameter build/main-service-infra.json
 
 az deployment group create -g <Your Resource Group Name> \
- -f main/main-service-keyvault.json \
+ -f build/main-service-keyvault.json \
  --parameter build/main-service-keyvault.json
 
 az deployment group create -g <Your Resource Group Name> \
- -f main/main-service-all-at-once.json \
+ -f build/main-service-all-at-once.json \
  --parameter build/main-service-all-at-once.parameters.json
 ```
 
