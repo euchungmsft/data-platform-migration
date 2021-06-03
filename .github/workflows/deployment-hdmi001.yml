@@ -32,31 +32,22 @@ jobs:
 #      - name: Check out from repo
 #        uses: actions/checkout@v2 
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script 1
-        #run: echo Hello, world!
-        run: echo "CREDENTIAL 1 is ${{ secrets.AZURE_CREDENTIALS1 }}"
-
-      - name: Run a one-line script 2
-        #run: echo Hello, world!
-        run: echo "CREDENTIAL 2 is ${{ env.CREDENTIALS2 }}"
-
 #      - name: Debug stream
 #        uses: mxschmitt/action-tmate@v3
 
-#     # CLI Setup
-#     - name: Setup AZ CLI
-#       # install
-#       #run: curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-#       uses: Azure/cli@v1
-#       with:
-#         azcliversion: latest
-#         inlineScript: 
-#           echo "************* Setting Up AZ CLI"
-#
-#      # Setting up Bicep
-#      - name: Setup Bicep
-#        uses: anthony-c-martin/setup-bicep@v0.1
+#      # CLI Setup
+#      - name: Setup AZ CLI
+#        # install
+#        #run: curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+#        uses: Azure/cli@v1
+#        with:
+#          azcliversion: latest
+#          inlineScript: 
+#            echo "************* Setting Up AZ CLI"
+
+      # Setting up Bicep
+      - name: Setup Bicep
+        uses: anthony-c-martin/setup-bicep@v0.1
 
       # Login to Azure
       - name: Azure Login
@@ -64,25 +55,98 @@ jobs:
         uses: azure/login@v1.1
         env:
           CREDENTIALS3: ${{ secrets.AZURE_CREDENTIALS1 }} # finally works at GitHub Action
-          CREDENTIALS4: ${{ env.CREDENTIALS1 }} 
+          CREDENTIALS4: ${{ env.CREDENTIALS2 }} 
         with:
           creds: ${{ env.CREDENTIALS3 }}
 
-#    # Validate existence of resource group
-#    - name: Validating existence of resource group
-#      id: resource_group_storage
-#      uses: azure/cli@v1.0.4
-#      with:
-#        azcliversion: latest
-#        inlineScript: |
-#          echo "Validating existence of resource group ${{ env.AZURE_RESOURCE_GROUP_NAME }}"
-#          az group exists --name ${{ env.AZURE_RESOURCE_GROUP_NAME }}
+      # Validate existence of resource group
+      - name: Validating existence of resource group
+        id: resource_group_storage
+        uses: azure/cli@v1.0.4
+        with:
+          azcliversion: latest
+          inlineScript: |
+            echo "Validating existence of resource group ${{ env.AZURE_RESOURCE_GROUP_NAME }}"
+            az group exists --name ${{ env.AZURE_RESOURCE_GROUP_NAME }}
 
-#      # Log out from Azure
-#      - name: Log out from Azure
-#        id: azure_logout
-#        uses: azure/cli@v1.0.4
-#        with:
-#          azcliversion: latest
-#          inlineScript: |
-#            az logout
+      # Log out from Azure
+      - name: Log out from Azure
+        id: azure_logout
+        uses: azure/cli@v1.0.4
+        with:
+          azcliversion: latest
+          inlineScript: |
+            az logout
+
+  deployment:
+    needs: [ prerequisite ]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - name: Check Out Repository
+      id: checkout_repository
+      uses: actions/checkout@v2
+
+    # Login to Azure 
+    - name: Azure Login
+      id: azure_login
+      uses: azure/login@v1.1
+      env:
+        CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS1 }}
+      with:
+        creds: ${{ env.CREDENTIALS }}
+
+    # Bicep All
+    - name: Build All
+      # path to your checked-in .bicep file to deploy
+      #run: bicep build ${{ github.workspace }}/main-infra.bicep              
+      run: ./build.sh
+
+    # Deploy Infra
+    - name: Deploy Infrastructure for Data Platform
+      id: deploy_infra
+      uses: azure/arm-deploy@v1
+      with:
+        scope: resourcegroup
+        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
+        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
+        region: ${{ env.AZURE_LOCATION }}
+        template: ${{ github.workspace }}/build/main-infra.json
+        parameters: ${{ github.workspace }}/build/main-infra.parameters.json
+        deploymentMode: Incremental        
+
+#    # Deploy Key Vault
+#    - name: Deploy Key Vault for Data Platform
+#      id: deploy_key_vault
+#      uses: azure/arm-deploy@v1
+#      with:
+#        scope: resourcegroup
+#        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
+#        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
+#        region: ${{ env.AZURE_LOCATION }}
+#        template: ${{ github.workspace }}/build/main-keyvault.json
+#        parameters: ${{ github.workspace }}/build/main-keyvault.parameters.json
+#        deploymentMode: Incremental                
+
+#    # Deploy Services All-at-once
+#    - name: Deploy Services All-at-once for Data Platform
+#      id: deploy_services
+#      uses: azure/arm-deploy@v1
+#      with:
+#        scope: resourcegroup
+#        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
+#        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
+#        region: ${{ env.AZURE_LOCATION }}
+#        template: ${{ github.workspace }}/build/main-service-all-at-once.json
+#        parameters: ${{ github.workspace }}/build/main-service-all-at-once.parameters.json
+#        deploymentMode: Incremental                        
+
+    # Log out from Azure
+    - name: Log out from Azure
+      id: azure_logout
+      uses: azure/cli@v1
+      with:
+        azcliversion: latest
+        inlineScript: |
+          az logout      
