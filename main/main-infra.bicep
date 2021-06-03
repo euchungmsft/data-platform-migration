@@ -180,3 +180,5 @@ module stgDNS '../modules/create-private-dns-zone/azuredeploy.bicep' = {
     stgVNET
   ]
 }
+
+output deployInfra string = " ${optVMCreation} ${vmMgmtSize} ${vmBlueSize} ${vmUserName} ${publicKey}"

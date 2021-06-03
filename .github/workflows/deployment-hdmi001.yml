@@ -129,8 +129,8 @@ jobs:
 #        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
 #        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
 #        region: ${{ env.AZURE_LOCATION }}
-#        template: ${{ github.workspace }}/build/main-keyvault.json
-#        parameters: ${{ github.workspace }}/build/main-keyvault.parameters.json
+#        template: ${{ github.workspace }}/main/main-keyvault.json
+#        parameters: ${{ github.workspace }}/main/main-keyvault.parameters.json
 #        deploymentMode: Incremental                
 
 #    # Deploy Services All-at-once
