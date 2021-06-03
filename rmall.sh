@@ -7,7 +7,7 @@ if [ $# -lt 1 ]
     exit
 fi
 
-RGNAME="TEST1"
+RGNAME=$1
 
 JST1=`az resource list --resource-group $RGNAME`
 echo "$JST1" | python3 -c "
