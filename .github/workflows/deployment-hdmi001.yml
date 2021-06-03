@@ -102,20 +102,23 @@ jobs:
       - name: Build All
         # path to your checked-in .bicep file to deploy
         #run: bicep build ${{ github.workspace }}/main-infra.bicep              
+        # /opt/hostedtoolcache/bicep/x64/bicep
+        env:
+          PATH: /opt/hostedtoolcache/bicep/x64:${{ env.PATH }} 
         run: "${GITHUB_WORKSPACE}/build.sh"
 
-      # Deploy Infra
-      - name: Deploy Infrastructure for Data Platform
-        id: deploy_infra
-        uses: azure/arm-deploy@v1
-        with:
-          scope: resourcegroup
-          subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
-          resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
-          region: ${{ env.AZURE_LOCATION }}
-          template: ${{ github.workspace }}/build/main-infra.json
-          parameters: ${{ github.workspace }}/build/main-infra.parameters.json
-          deploymentMode: Incremental        
+#      # Deploy Infra
+#      - name: Deploy Infrastructure for Data Platform
+#        id: deploy_infra
+#        uses: azure/arm-deploy@v1
+#        with:
+#          scope: resourcegroup
+#          subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
+#          resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
+#          region: ${{ env.AZURE_LOCATION }}
+#          template: ${{ github.workspace }}/build/main-infra.json
+#          parameters: ${{ github.workspace }}/build/main-infra.parameters.json
+#          deploymentMode: Incremental        
 
 #    # Deploy Key Vault
 #    - name: Deploy Key Vault for Data Platform

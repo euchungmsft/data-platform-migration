@@ -25,7 +25,7 @@
       "value": "Standard_LRS"
     },
     "optVMCreation": {
-      "value": "true"
+      "value": false
     },
     "vmMgmtSize": {
       "value": "Standard_B2s"
