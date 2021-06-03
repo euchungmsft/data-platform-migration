@@ -2,7 +2,7 @@
 
 if [ $# -lt 1 ]
   then
-    echo "Removes all resources of given resource group. It actually doesn't remove"
+    echo "Removes all resources of given resource group. It actually doesn't remove anything"
     echo "rmall.sh {Resource Group Name}"
     exit
 fi

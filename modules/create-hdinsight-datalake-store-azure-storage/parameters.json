@@ -1,0 +1,90 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": {
+                "type": "String",
+                "value": "koreacentral"
+            }
+        },
+        "clusterType": {
+            "value": {
+                "type": "String",
+                "value": "hadoop"
+            }
+        },
+        "clusterName": {
+            "value": {
+                "type": "String",
+                "value": "hdmp001hdi001"
+            }
+        },
+        "clusterLoginUserName": {
+            "value": {
+                "type": "String",
+                "value": "hdmpuser"
+            }
+        },
+        "clusterLoginPassword": {
+            "value": null
+        },
+        "sshUserName": {
+            "value": {
+                "type": "String",
+                "value": "azureuser"
+            }
+        },
+        "sshPassword": {
+            "value": null
+        },
+        "clusterStorageAccountName": {
+            "value": {
+                "type": "String",
+                "value": "hdmp001sa001"
+            }
+        },
+        "clusterWorkerNodeCount": {
+            "value": {
+                "type": "Int",
+                "value": 4
+            }
+        },
+        "clusterHeadNodeCount": {
+            "value": {
+                "type": "Int",
+                "value": 2
+            }
+        },
+        "clusterZookeeperNodeCount": {
+            "value": {
+                "type": "Int",
+                "value": 3
+            }
+        },
+        "userAssignedIdentityName": {
+            "value": {
+                "type": "String",
+                "value": "hdmp001uain001"
+            }
+        },
+        "vmSizeHeadNode": {
+            "value": {
+                "type": "String",
+                "value": "Standard_E8_v3"
+            }
+        },
+        "vmSizeWorkerNode": {
+            "value": {
+                "type": "String",
+                "value": "Standard_A5"
+            }
+        },
+        "vmSizeZookeeperNode": {
+            "value": {
+                "type": "String",
+                "value": "Standard_A5"
+            }
+        }
+    }
+}

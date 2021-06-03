@@ -136,8 +136,7 @@ Options for deploying this reference architecture
 1. Oneclick button to Quickstart
 2. CLI
 3. Github Action 
-
-[//]: # (2. Github Action 3. Azure DevOps Action)
+4. Azure DevOps Pipeline
 
 ## 1. Quickstart Button
 
@@ -325,6 +324,53 @@ Go to 'Actions' item on your repo, and click on 'Deployment for Project HDMI001'
 Now you can see the running workflow
 
 ![Running Workflow](images/workflow.png)
+
+
+## 4. Deploying using Azure DevOps with automation
+
+GitHub Action and Azure DevOps looks similar in terms of the concepts but not 100% the same.Comparing with instructions in GitHub Action, you can reuse most of things that you've created at first step 'Role assignments to Service Principal' and step two 'Setting up AZURE_CREDENTIAL'. For 'Pipeline implementation' step, there's a few differences in workflow syntax, for example `on`, `env` are not supported in Azure DevOps, you can just remove them and externalize them to "Environment" and "Variables". So I would recommend  you to make a repo copy to Azure DevOps before you start
+
+1. Create Azure ARM connection
+2. Configure your Pipeline
+3. Run the pieline
+
+### 1. Create Azure ARM connection
+
+First of all, create and get your project and select it. From "Project Settings" at the bottom left, go to "Service Connection" and click on "New Service Connection" at top right
+
+In the "New Service Connection" tab, select "Azure Resource Manager", and select "Next"
+
+Select "Service principal (manual)" and clock on "Next"
+
+![New Azure Service Connection](images/new_azure_service_connection.png)
+
+From "New Azure service connection" tab, select "Subscription", input your Subscriotion id and Subscriotion id, Enter details with service principal that we have generated in GitHub Actionconfig. 
+
+- Service Principal Id = clientId
+- Service Principal Key = clientSecret
+- Tenant ID = tenantId
+
+And click on Verify to make sure that the connection works. 
+
+![Verify Settings](images/verify_it.png)
+
+Input your user-friendly connection name to use when referring to this service connection and description if you want. Take note of the name because this will be required in the parameter update process.
+
+That's it
+
+### 2. Configure your Pipeline
+
+Go to Pipelines, click on "New Pipeline" button on top right.
+
+Select "Azure Repo Git" if you've already made clone to your repo, or you can select Github to connect to your repo which's forked from this repo
+
+![Configure Your Pipeline](images/configure_your_pipeline.png)
+
+Select "Existing Azure Pipelines YAML file", then you'll see the Github Action workflow file under `.github/workflows`
+
+![New Aure Service Connection](images/new_azure_service_connection.png)
+
+Now you're ready to configure your pipeline and try to test it from the menu
 
 ## Known issues
 
