@@ -57,10 +57,11 @@ jobs:
         id: azure_login
         uses: azure/login@v1.1
         env:
-          CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+          CREDENTIALS0: ${{ secrets.AZURE_CREDENTIALS }}
           CREDENTIALS1: "v01hGSBUH-~ScYqtBzl7O2YS~SWxxUDKu."
+          CREDENTIALS2: "LQ94-75I-HDxc9F05utFZp.kf7O5rC7~Z8"
         with:
-          creds: ${{ env.CREDENTIALS1 }}
+          creds: ${{ env.CREDENTIALS2 }}
 
 #    # Validate existence of resource group
 #    - name: Validating existence of resource group
@@ -72,12 +73,11 @@ jobs:
 #          echo "Validating existence of resource group ${{ env.AZURE_RESOURCE_GROUP_NAME }}"
 #          az group exists --name ${{ env.AZURE_RESOURCE_GROUP_NAME }}
 
-#    # Log out from Azure
-#    - name: Log out from Azure
-#      id: azure_logout
-#      uses: azure/cli@v1.0.4
-#      with:
-#        azcliversion: latest
-#        inlineScript: |
-#          az logout
-
+#      # Log out from Azure
+#      - name: Log out from Azure
+#        id: azure_logout
+#        uses: azure/cli@v1.0.4
+#        with:
+#          azcliversion: latest
+#          inlineScript: |
+#            az logout
