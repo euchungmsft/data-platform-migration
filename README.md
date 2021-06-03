@@ -170,6 +170,7 @@ Clone this repo to your environment
 git clone https://github.com/nudbeach/data-platform-migration.git
 ```
 
+You can run all following commands at home directory of `data-platform-migration`
 Create a resource group with location using your subscription id from previous step
 
 ```command
