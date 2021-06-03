@@ -93,9 +93,6 @@ Keep your public key string for the following steps
 
 Most of regions where data & analytic components are available, please choose one of regions before you start
 
-## 1. Quickstart Button
-
-
 ## Options to run
 
 Options for deploying this reference architecture
