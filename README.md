@@ -44,8 +44,46 @@ Components to install
 
 Things you need to prepare 
 
-1. Service Principal of Managed App
+1. Service Principal and access
 2. Public Key for SSH (Optional)
+
+### 1. Service Principal and access
+
+A service principal needs to be generated for authentication and authorization by Key Vault. Just go to the Azure Portal to find the ID of your subscription. Then start the Cloud Shell or Azure CLI, login to Azure, set the Azure context and execute the following commands to generate the required credentials:
+
+> Note: The purpose of this new Service Principal is to assign least-privilege rights. Therefore, it requires the Contributor role at a resource group scope in order to deploy the resources inside the resource group dedicated to a specific data domain. The Network Contributor role assignment is required as well in this repository in order to assign the resources to the dedicated subnet.
+
+**** to-be-updated ****
+
+```commands
+az ad sp create-for-rbac -n "<Your App Name>"
+```
+
+Then you'll get something like this
+
+```javascript
+{
+  "appId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "displayName": "<Your App Name>",
+  "name": "http://<Your App Name>",
+  "password": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+  "tenant": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+}
+```
+
+Keep your `appId` and `password` for the following steps
+
+### 2. Public Key for SSH
+
+It's optional only when you want to deploy VMs at VNets for test
+
+[To create and use an SSH public-private key pair for Linux VMs in Azure](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/mac-create-ssh-keys)
+
+```commands
+cat ~/.ssh/id_rsa.pub
+```
+
+Keep your public key string for the following steps
 
 ### Supported Regions
 

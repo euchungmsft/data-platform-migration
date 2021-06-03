@@ -1068,40 +1068,142 @@ body .markdown-body
 <blockquote>
 <p><strong>General disclaimer</strong> Please be aware that this template is in private preview. Therefore, expect smaller bugs and issues when working with the solution. Please submit an Issue in GitHub if you come across any issues that you would like us to fix.</p>
 </blockquote>
-<p><strong>DO NOT COPY - UNDER DEVELOPMENT - MS INTERNAL ONLY - Please be aware that this template is in private preview without any SLA.</strong></p>
+<p><strong>DO NOT COPY - UNDER DEVELOPMENT - Please be aware that this template is in private preview without any SLA.</strong></p>
 <h2 id="description">Description<a class="headerlink" href="#description" title="Permanent link"></a></h2>
 <p>This is for Hadoop-Migrations</p>
 <h2 id="what-will-be-deployed">What will be deployed?<a class="headerlink" href="#what-will-be-deployed" title="Permanent link"></a></h2>
+<p>By default, all the services which come under the reference architecture are enabled, and you must explicitly disable services that you don&rsquo;t want to be deployed from parameters which prompts in the ARM screen at portal or in the template files  <code>*.parameters.json</code> or directly in <code>*.bicep</code> </p>
+<blockquote>
+<p>Note: Before deploying the resources, we recommend to check registration status of the required resource providers in your subscription. For more information, see <a href="https://docs.microsoft.com/azure/azure-resource-manager/management/resource-providers-and-types">Resource providers for Azure services.</a></p>
+</blockquote>
+<p><img alt="Reference Architecture : Modernization" src="/C:/Workspace/Lombard/data-platform-migration/images/end_State_architecture_Modernize.png" /></p>
+<p>For the reference architecture, the following services are created</p>
 <ul>
 <li>HDInsight 4.0 </li>
-<li>Synapse</li>
+<li><a href="https://docs.microsoft.com/azure/synapse-analytics/">Synapse Workspace</a></li>
 <li>Azure Databrick</li>
-<li>Azure Data Factory</li>
-<li>CosmosDB</li>
+<li><a href="https://docs.microsoft.com/azure/data-factory/">Data Factory</a></li>
+<li><a href="https://docs.microsoft.com/azure/cosmos-db/introduction">Cosmos DB</a></li>
 <li>Infrastructure</li>
-<li>KeyVault</li>
+<li><a href="https://docs.microsoft.com/azure/key-vault/general">Key Vault</a></li>
 <li>VNet</li>
 <li>VM</li>
 <li>Private DNS Zone</li>
 </ul>
+<p>For more details regarding the services that will be deployed, please read the Domains guide in the Hardoop Migration documentation.</p>
 <h2 id="before-you-start">Before you start<a class="headerlink" href="#before-you-start" title="Permanent link"></a></h2>
+<p>If you don&rsquo;t have an Azure subscription, <a href="https://azure.microsoft.com/free/">create your Azure free account today.</a></p>
+<p>Components to install</p>
+<ol>
+<li>Azure CLI</li>
+<li>Bicep</li>
+</ol>
+<p>Things you need to prepare </p>
+<ol>
+<li>Service Principal and access</li>
+<li>Public Key for SSH (Optional)</li>
+</ol>
+<h3 id="1-service-principal-and-access">1. Service Principal and access<a class="headerlink" href="#1-service-principal-and-access" title="Permanent link"></a></h3>
+<p>A service principal with Contributor role needs to be generated for authentication and authorization from GitHub or Azure DevOps to your Azure Data Landing Zone subscription, where the data-domain-batch services will be deployed. Just go to the Azure Portal to find the ID of your subscription. Then start the Cloud Shell or Azure CLI, login to Azure, set the Azure context and execute the following commands to generate the required credentials:</p>
+<blockquote>
+<p>Note: The purpose of this new Service Principal is to assign least-privilege rights. Therefore, it requires the Contributor role at a resource group scope in order to deploy the resources inside the resource group dedicated to a specific data domain. The Network Contributor role assignment is required as well in this repository in order to assign the resources to the dedicated subnet.</p>
+</blockquote>
+<h3 id="2-public-key-for-ssh">2. Public Key for SSH<a class="headerlink" href="#2-public-key-for-ssh" title="Permanent link"></a></h3>
+<p>It&rsquo;s optional only when you want to deploy VMs at VNets for test</p>
+<h3 id="supported-regions">Supported Regions<a class="headerlink" href="#supported-regions" title="Permanent link"></a></h3>
+<p>Most of regions where data &amp; analytic components are available, please choose one of regions before you start</p>
+<h2 id="1-quickstart-button">1. Quickstart Button<a class="headerlink" href="#1-quickstart-button" title="Permanent link"></a></h2>
 <h2 id="options-to-run">Options to run<a class="headerlink" href="#options-to-run" title="Permanent link"></a></h2>
-<ul>
+<p>Options for deploying this reference architecture</p>
+<ol>
+<li>Oneclick button to Quickstart</li>
 <li>CLI</li>
-<li>Quickstart</li>
-<li>Github Action</li>
-<li>Azure DevOps Action</li>
+</ol>
+<h2 id="1-quickstart-button_1">1. Quickstart Button<a class="headerlink" href="#1-quickstart-button_1" title="Permanent link"></a></h2>
+<ul>
+<li>Infrastructure</li>
 </ul>
-<h2 id="deploying-using-cli">Deploying using CLI<a class="headerlink" href="#deploying-using-cli" title="Permanent link"></a></h2>
-<h2 id="quickstart-button">Quickstart Button<a class="headerlink" href="#quickstart-button" title="Permanent link"></a></h2>
-<h2 id="github-action">Github Action<a class="headerlink" href="#github-action" title="Permanent link"></a></h2>
-<h2 id="azure-devops-action">Azure DevOps Action<a class="headerlink" href="#azure-devops-action" title="Permanent link"></a></h2>
+<p><a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fnudbeach%2Fdata-platform-migration%2Fmain%2Fbuild%2Fmain-infra.json"><img alt="Deploy To Azure" src="/C:/Workspace/Lombard/data-platform-migration/images/deploytoazure.svg?sanitize=true" /></a> 
+<a href="http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Fnudbeach%2Fdata-platform-migration%2Fmain%2Fbuild%2Fmain-infra.json"><img alt="Visualize" src="/C:/Workspace/Lombard/data-platform-migration/images/visualizebutton.svg?sanitize=true" /></a></p>
+<ul>
+<li>Key Vault</li>
+</ul>
+<p><a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fnudbeach%2Fdata-platform-migration%2Fmain%2Fbuild%2Fmain-keyvault.json"><img alt="Deploy To Azure" src="/C:/Workspace/Lombard/data-platform-migration/images/deploytoazure.svg?sanitize=true" /></a> 
+<a href="http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Fnudbeach%2Fdata-platform-migration%2Fmain%2Fbuild%2Fmain-keyvault.json"><img alt="Visualize" src="/C:/Workspace/Lombard/data-platform-migration/images/visualizebutton.svg?sanitize=true" /></a></p>
+<ul>
+<li>Services all-at-once</li>
+</ul>
+<p><a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fnudbeach%2Fdata-platform-migration%2Fmain%2Fbuild%2Fmain-service-all-at-once.json"><img alt="Deploy To Azure" src="/C:/Workspace/Lombard/data-platform-migration/images/deploytoazure.svg?sanitize=true" /></a> 
+<a href="http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Fnudbeach%2Fdata-platform-migration%2Fmain%2Fbuild%2Fmain-service-all-at-once.json"><img alt="Visualize" src="/C:/Workspace/Lombard/data-platform-migration/images/visualizebutton.svg?sanitize=true" /></a></p>
+<h2 id="2-deploying-using-cli">2. Deploying using CLI<a class="headerlink" href="#2-deploying-using-cli" title="Permanent link"></a></h2>
+<p>Doublecheck if you&rsquo;ve logged in. </p>
+<div class="highlight"><pre>az login
+</pre></div>
+
+<p>You&rsquo;ll get prompts at your web brower, if authentication&rsquo;s done successfully, you&rsquo;ll get something like this</p>
+<div class="highlight"><pre>  <span class="p">{</span>
+    <span class="s2">&quot;cloudName&quot;</span><span class="o">:</span> <span class="s2">&quot;AzureCloud&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;homeTenantId&quot;</span><span class="o">:</span> <span class="s2">&quot;xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="s2">&quot;xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;isDefault&quot;</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="s2">&quot;managedByTenants&quot;</span><span class="o">:</span> <span class="p">[],</span>
+    <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;xxxxxxxxxxxx&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;state&quot;</span><span class="o">:</span> <span class="s2">&quot;Enabled&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;tenantId&quot;</span><span class="o">:</span> <span class="s2">&quot;xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;user&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;xxxxxxx@xxxxxxxxx.com&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;user&quot;</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+</pre></div>
+
+<p>Get the subscription <code>id</code> from login result</p>
+<p>Clone this repo to your environment</p>
+<div class="highlight"><pre>git clone https://github.com/nudbeach/data-platform-migration.git
+</pre></div>
+
+<p>Create a resource group with location using your subscription id from previous step</p>
+<p><div class="highlight"><pre>az group create -l koreacentral -n &lt;Your Resource Group Name&gt; \
+ --subscription xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+</pre></div>
+Deploy components by running these commands sequentially</p>
+<div class="highlight"><pre>az deployment group create -g &lt;Your Resource Group Name&gt; -f main-infra.bicep
+
+az deployment group create -g &lt;Your Resource Group Name&gt; -f main-keyvault.bicep
+
+az deployment group create -g &lt;Your Resource Group Name&gt; -f main-service-all-at-once.bicep
+</pre></div>
+
+<p>or </p>
+<div class="highlight"><pre>az deployment group create -g &lt;Your Resource Group Name&gt; \
+ -f main-infra.bicep \
+ --parameter main-service-infra.json
+
+az deployment group create -g &lt;Your Resource Group Name&gt; \
+ -f main-service-keyvault.bicep \
+ --parameter main-service-keyvault.json
+
+az deployment group create -g &lt;Your Resource Group Name&gt; \
+ -f main-service-all-at-once.bicep \
+ --parameter main-service-all-at-once.parameters.json
+</pre></div>
+
+<p><code>--parameter &lt;parameter filename&gt;</code> is optional</p>
 <h2 id="known-issues">Known issues<a class="headerlink" href="#known-issues" title="Permanent link"></a></h2>
 <h3 id="error-missingsubscriptionregistration">Error: MissingSubscriptionRegistration<a class="headerlink" href="#error-missingsubscriptionregistration" title="Permanent link"></a></h3>
-<p><strong>Error Message:</strong></p>
+<p><strong>Error Message:</strong>
+<div class="highlight"><pre>ERROR: Deployment failed. Correlation ID: ***
+  &quot;error&quot;: ***
+    &quot;code&quot;: &quot;MissingSubscriptionRegistration&quot;,
+    &quot;message&quot;: &quot;The subscription is not registered to use namespace &#39;Microsoft.DocumentDB&#39;. See https://aka.ms/rps-not-found for how to register subscriptions.&quot;,
+    &quot;details&quot;: [
+      ***
+        &quot;code&quot;: &quot;MissingSubscriptionRegistration&quot;,
+        &quot;target&quot;: &quot;Microsoft.DocumentDB&quot;,
+        &quot;message&quot;: &quot;The subscription is not registered to use namespace &#39;Microsoft.DocumentDB&#39;. See https://aka.ms/rps-not-found for how to register subscriptions.&quot;
+</pre></div></p>
 <p><strong>Solution:</strong>
 This error message appears, in case during the deployment it tries to create a type of resource which has never been deployed before inside the subscription. We recommend to check prior the deployment whether the required resource providers are registered for your subscription and if needed, register them through the Azure Portal, Azure Powershell or Azure CLI as mentioned here.</p>
 <h2 id="contributing">Contributing<a class="headerlink" href="#contributing" title="Permanent link"></a></h2>
 <p>This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit <a href="https://cla.opensource.microsoft.com">https://cla.opensource.microsoft.com</a>.</p>
-<p>When you submit a pull request, a CLA bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., status check, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repositories using our CLA.</p>
-<p>This project has adopted the <a href="https://opensource.microsoft.com/codeofconduct/">Microsoft Open Source Code of Conduct</a>. For more information see the <a href="https://opensource.microsoft.com/codeofconduct/faq/">Code of Conduct FAQ</a> or contact <a href="mailto:opencode@microsoft.com">opencode@microsoft.com</a> with any additional questions or comments.</p></article></body></html>
+<p>When you submit a pull request, a CLA bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., status check, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repositories using our CLA.</p></article></body></html>
