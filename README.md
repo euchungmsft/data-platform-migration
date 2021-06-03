@@ -204,6 +204,23 @@ az deployment group create -g <Your Resource Group Name> \
 
 `--parameter <parameter filename>` is optional
 
+
+or after you run `./build.sh` from command line,
+
+```command
+az deployment group create -g <Your Resource Group Name> \
+ -f build/main-infra.json \
+ --parameter build/main-service-infra.json
+
+az deployment group create -g <Your Resource Group Name> \
+ -f main/main-service-keyvault.json \
+ --parameter build/main-service-keyvault.json
+
+az deployment group create -g <Your Resource Group Name> \
+ -f main/main-service-all-at-once.json \
+ --parameter build/main-service-all-at-once.parameters.json
+```
+
 ## Known issues
 
 ###Warning: no-unused-params
