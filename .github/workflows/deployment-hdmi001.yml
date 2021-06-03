@@ -5,10 +5,10 @@ name: Deployment for Project HDMI001
 # Controls when the action will run. 
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+#  push:
+#    branches: [ main ]
+#  pull_request:
+#    branches: [ main ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -78,25 +78,16 @@ jobs:
           inlineScript: |
             az logout
 
-  deployment-all-at-once:
+  build-all:
     needs: [ prerequisite ]
     runs-on: ubuntu-latest
-    if: github.event_name == 'push'
+    #if: github.event_name == 'push'
 
     steps:    
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Check Out Repository
         id: checkout_repository
         uses: actions/checkout@v2
-
-      # Login to Azure 
-      - name: Azure Login
-        id: azure_login
-        uses: azure/login@v1.1
-        env:
-          CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS1 }}
-        with:
-          creds: ${{ env.CREDENTIALS }}
 
       # Bicep All
       - name: Build All
@@ -106,6 +97,21 @@ jobs:
         run: |
           export PATH=/opt/hostedtoolcache/bicep/x64:$PATH
           "${GITHUB_WORKSPACE}/build.sh"
+
+  deployment-all-at-once:
+    needs: [ build-all ]
+    runs-on: ubuntu-latest
+    #if: github.event_name == 'push'
+
+    steps:    
+      # Login to Azure 
+      - name: Azure Login
+        id: azure_login
+        uses: azure/login@v1.1
+        env:
+          CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS1 }}
+        with:
+          creds: ${{ env.CREDENTIALS }}
 
       # Deploy Infra
       - name: Deploy Infrastructure for Data Platform
