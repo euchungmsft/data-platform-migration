@@ -206,25 +206,19 @@ az deployment group create -g <Your Resource Group Name> \
 
 ## Known issues
 
-###Error: MissingSubscriptionRegistration
+###Warning: no-unused-params
 
-**Error Message:**
+**Warning Message:**
 ```text
-ERROR: Deployment failed. Correlation ID: ***
-  "error": ***
-    "code": "MissingSubscriptionRegistration",
-    "message": "The subscription is not registered to use namespace 'Microsoft.DocumentDB'. See https://aka.ms/rps-not-found for how to register subscriptions.",
-    "details": [
-      ***
-        "code": "MissingSubscriptionRegistration",
-        "target": "Microsoft.DocumentDB",
-        "message": "The subscription is not registered to use namespace 'Microsoft.DocumentDB'. See https://aka.ms/rps-not-found for how to register subscriptions."
-
+data-platform-migration/modules/create-vnets-with-peering/azuredeploy.bicep(25,7) : Warning no-unused-params: Parameter is declared but never used. [https://aka.ms/bicep/linter/no-unused-params]
+data-platform-migration/modules/create-vnets-with-peering/azuredeploy.bicep(28,7) : Warning no-unused-params: Parameter is declared but never used. [https://aka.ms/bicep/linter/no-unused-params]
+data-platform-migration/modules/create-private-dns-zone/azuredeploy.bicep(11,7) : Warning no-unused-params: Parameter is declared but never used. [https://aka.ms/bicep/linter/no-unused-params]
+data-platform-migration/modules/create-private-dns-zone/azuredeploy.bicep(14,7) : Warning no-unused-params: Parameter is declared but never used. [https://aka.ms/bicep/linter/no-unused-params]
+data-platform-migration/modules/create-vm-simple-linux/azuredeploy.bicep(19,7) : Warning no-unused-params: Parameter is declared but never used. [https://aka.ms/bicep/linter/no-unused-params]
 ```
 
 **Solution:**
-This error message appears, in case during the deployment it tries to create a type of resource which has never been deployed before inside the subscription. We recommend to check prior the deployment whether the required resource providers are registered for your subscription and if needed, register them through the Azure Portal, Azure Powershell or Azure CLI as mentioned here.
-
+Simply ignore these warnings. All those parameters are actually used. I guess this problem is temporary to be fixed soon, Bicep has been updating daily. It's `Bicep CLI version 0.3.255 (589f0375df)` for now. 
 
 ## Contributing
 
