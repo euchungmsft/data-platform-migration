@@ -48,10 +48,46 @@ Components to install
 
 Things you need to prepare 
 
-1. Service Principal and access
-2. Public Key for SSH (Optional)
+1. Resource Group
+2. Service Principal and access
+3. Public Key for SSH (Optional)
 
-### 1. Service Principal and access
+### 1. Resource Group
+
+You need to login first from CLI
+
+```command
+az login
+```
+
+You'll get prompts at your web brower, if authentication's done successfully, you'll get something like this
+
+```javascript
+  {
+    "cloudName": "AzureCloud",
+    "homeTenantId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+    "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+    "isDefault": true,
+    "managedByTenants": [],
+    "name": "xxxxxxxxxxxx",
+    "state": "Enabled",
+    "tenantId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+    "user": {
+      "name": "xxxxxxx@xxxxxxxxx.com",
+      "type": "user"
+    }
+  },
+```
+
+Get the subscription `id` from login result
+
+Create a resource group by running this
+
+```commands
+az group create -l <Your Region> -n <Resource Group Name> --subscription <Your Subscription Id>
+```
+
+### 2. Service Principal and access
 
 A service principal needs to be generated for authentication and authorization by Key Vault. Just go to the Azure Portal to find the ID of your subscription. Then start the Cloud Shell or Azure CLI, login to Azure, set the Azure context and execute the following commands to generate the required credentials:
 
@@ -60,7 +96,7 @@ A service principal needs to be generated for authentication and authorization b
 **** to-be-updated ****
 
 ```commands
-az ad sp create-for-rbac -n "<Your App Name>"
+az ad sp create-for-rbac -n <Your App Name>
 ```
 
 Then you'll get something like this
@@ -77,7 +113,7 @@ Then you'll get something like this
 
 Keep your `appId` and `password` for the following steps
 
-### 2. Public Key for SSH
+### 3. Public Key for SSH
 
 It's optional only when you want to deploy VMs at VNets for test
 
@@ -128,28 +164,6 @@ Doublecheck if you've logged in.
 ```command
 az login
 ```
-
-You'll get prompts at your web brower, if authentication's done successfully, you'll get something like this
-
-```javascript
-  {
-    "cloudName": "AzureCloud",
-    "homeTenantId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-    "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-    "isDefault": true,
-    "managedByTenants": [],
-    "name": "xxxxxxxxxxxx",
-    "state": "Enabled",
-    "tenantId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-    "user": {
-      "name": "xxxxxxx@xxxxxxxxx.com",
-      "type": "user"
-    }
-  },
-```
-
-Get the subscription `id` from login result
-
 Clone this repo to your environment
 
 ```command
