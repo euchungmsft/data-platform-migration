@@ -20,7 +20,7 @@ By default, all the services which come under the reference architecture are ena
 
 For the reference architecture, the following services are created
 
-- HDInsight 4.0 
+- HDInsight
 - [Synapse Workspace](https://docs.microsoft.com/azure/synapse-analytics/)
 - Azure Databrick
 - [Data Factory](https://docs.microsoft.com/azure/data-factory/)
