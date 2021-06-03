@@ -1,5 +1,3 @@
-# This is a basic workflow to help you get started with Actions
-
 name: Deployment for Project HDMI001
 
 # Controls when the action will run. 
@@ -35,16 +33,6 @@ jobs:
 #      - name: Debug stream
 #        uses: mxschmitt/action-tmate@v3
 
-#      # CLI Setup
-#      - name: Setup AZ CLI
-#        # install
-#        #run: curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-#        uses: Azure/cli@v1
-#        with:
-#          azcliversion: latest
-#          inlineScript: 
-#            echo "************* Setting Up AZ CLI"
-
       # Setting up Bicep
       - name: Setup Bicep
         uses: anthony-c-martin/setup-bicep@v0.1
@@ -78,7 +66,7 @@ jobs:
           inlineScript: |
             az logout
 
-  deployment-all-at-once:
+  deployment-infra:
     needs: [ prerequisite ]
     runs-on: ubuntu-latest
     #if: github.event_name == 'push'
@@ -121,31 +109,18 @@ jobs:
           parameters: ${{ github.workspace }}/main/main-infra.parameters.json
           deploymentMode: Incremental       
 
-#    # Deploy Key Vault
-#    - name: Deploy Key Vault for Data Platform
-#      id: deploy_key_vault
-#      uses: azure/arm-deploy@v1
-#      with:
-#        scope: resourcegroup
-#        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
-#        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
-#        region: ${{ env.AZURE_LOCATION }}
-#        template: ${{ github.workspace }}/main/main-keyvault.json
-#        parameters: ${{ github.workspace }}/main/main-keyvault.parameters.json
-#        deploymentMode: Incremental                
-
-#    # Deploy Services All-at-once
-#    - name: Deploy Services All-at-once for Data Platform
-#      id: deploy_services
-#      uses: azure/arm-deploy@v1
-#      with:
-#        scope: resourcegroup
-#        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
-#        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
-#        region: ${{ env.AZURE_LOCATION }}
-#        template: ${{ github.workspace }}/build/main-service-all-at-once.json
-#        parameters: ${{ github.workspace }}/build/main-service-all-at-once.parameters.json
-#        deploymentMode: Incremental                        
+      # Deploy Key Vault
+      - name: Deploy Key Vault for Data Platform
+        id: deploy_key_vault
+        uses: azure/arm-deploy@v1
+        with:
+          scope: resourcegroup
+          subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
+          resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
+          region: ${{ env.AZURE_LOCATION }}
+          template: ${{ github.workspace }}/main/main-keyvault.bicep
+          parameters: ${{ github.workspace }}/main/main-keyvault.parameters.json
+          deploymentMode: Incremental                
 
       # Log out from Azure
       - name: Log out from Azure
@@ -155,3 +130,55 @@ jobs:
           azcliversion: latest
           inlineScript: |
             az logout      
+
+deployment-data-platform:
+    needs: [ prerequisite ]
+    runs-on: ubuntu-latest
+    #if: github.event_name == 'push'
+
+    steps:    
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Check Out Repository
+        id: checkout_repository
+        uses: actions/checkout@v2
+
+      # Bicep All
+      - name: Build All
+        # path to your checked-in .bicep file to deploy
+        #run: bicep build ${{ github.workspace }}/main-infra.bicep              
+        # /opt/hostedtoolcache/bicep/x64/bicep
+        run: |
+          export PATH=/opt/hostedtoolcache/bicep/x64:$PATH
+          "${GITHUB_WORKSPACE}/build.sh"
+
+      # Login to Azure 
+      - name: Azure Login
+        id: azure_login
+        uses: azure/login@v1.1
+        env:
+          CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS1 }}
+        with:
+          creds: ${{ env.CREDENTIALS }}
+
+      # Deploy Services All-at-once
+      - name: Deploy Services All-at-once for Data Platform
+        id: deploy_services
+        uses: azure/arm-deploy@v1
+        with:
+          scope: resourcegroup
+          subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
+          resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
+          region: ${{ env.AZURE_LOCATION }}
+          template: ${{ github.workspace }}/main/main-service-all-at-once.bicep
+          parameters: ${{ github.workspace }}/main/main-service-all-at-once.parameters.json
+          deploymentMode: Incremental                        
+
+      # Log out from Azure
+      - name: Log out from Azure
+        id: azure_logout
+        uses: azure/cli@v1
+        with:
+          azcliversion: latest
+          inlineScript: |
+            az logout      
+
