@@ -296,7 +296,9 @@ Checkout your repo which forked from [data-platform-migration](https://github.co
 - AZURE_RESOURCE_GROUP_NAME
 - AZURE_LOCATION
 
-Run this from your command line to update to your repo
+You can externalize these environment variables to env file. See [this](https://docs.github.com/en/actions/reference/workflow-commands-for-github-actions#setting-an-environment-variable) for further details
+
+Run this command from your command line to update to your repo
 
 ```commands
 git add . ; git commit -m "my first commit" ; git push
