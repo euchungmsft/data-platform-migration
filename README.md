@@ -230,6 +230,7 @@ This option consists of 3 steps
 1. Role assignments to Service Principal
 2. Setting up AZURE_CREDENTIAL
 3. Pipeline implementation
+4. Running Workflow
 
 ### 1. Role assignments to Service Principal
 
@@ -300,6 +301,20 @@ Run this from your command line to update to your repo
 ```commands
 git add . ; git commit -m "my first commit" ; git push
 ```
+
+In this example, it only manually works by `workflow_dispatch` event, it never automatically runs by pull and push events. You can do this by un-remarking initial parts like this
+
+```javascript
+# Controls when the action will run. 
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+```
+
+### 4. Running Workflow
 
 Go to 'Actions' item on your repo, and click on 'Deployment for Project HDMI001'. And click on 'Run Workflow' on the right
 
