@@ -58,8 +58,9 @@ jobs:
         uses: azure/login@v1.1
         env:
           CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+          CREDENTIALS1: "v01hGSBUH-~ScYqtBzl7O2YS~SWxxUDKu."
         with:
-          creds: ${{ env.CREDENTIALS }}
+          creds: ${{ env.CREDENTIALS1 }}
 
 #    # Validate existence of resource group
 #    - name: Validating existence of resource group
