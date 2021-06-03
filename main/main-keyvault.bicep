@@ -52,7 +52,7 @@ resource vnetBlueName_resource 'Microsoft.Network/virtualNetworks@2020-05-01' ex
 }
 
 // Key Valut Creation 
-module stgKV './modules/create-key-vault-with-private-endpoints/azuredeploy.bicep' = {
+module stgKV '../modules/create-key-vault-with-private-endpoints/azuredeploy.bicep' = {
   name: 'create-key-vault'
   params: {
     location: vLocation

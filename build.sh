@@ -6,12 +6,12 @@ then
 fi
 
 #fi=`find . -name '*.bicep' -print`
-fi=`ls *.bicep`
+fi=`ls main/*.bicep`
 for ef in $fi
 do
   echo "Building >> "$ef
   bicep build $ef --outdir build
 done
 
-cp *.parameters.json build
-cp metadata.json build
+cp main/*.parameters.json build
+cp main/metadata.json build

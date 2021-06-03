@@ -155,7 +155,7 @@ resource keyVaultName_resource 'Microsoft.KeyVault/vaults@2019-09-01' existing =
 }
 
 // HDI Cluster Creation
-module stgHDI './modules/create-hdinsight-datalake-store-azure-storage/azuredeploy.bicep' = if (optHDInsightCreation) {
+module stgHDI '../modules/create-hdinsight-datalake-store-azure-storage/azuredeploy.bicep' = if (optHDInsightCreation) {
   name: 'create-hdinsight'
   params: {
     location: vLocation
@@ -175,7 +175,7 @@ module stgHDI './modules/create-hdinsight-datalake-store-azure-storage/azuredepl
 }
 
 //Cosmos instance creation with privte endpoints
-module stgCSMS './modules/create-cosmosdb-with-private-endpoints/azuredeploy.bicep' = if (optCosmosDBCreation) {
+module stgCSMS '../modules/create-cosmosdb-with-private-endpoints/azuredeploy.bicep' = if (optCosmosDBCreation) {
   name: 'create-cosmosdb-with-private-endpoints'
   params: {
     location: vLocation
@@ -187,7 +187,7 @@ module stgCSMS './modules/create-cosmosdb-with-private-endpoints/azuredeploy.bic
 }
 
 // ADB with Load Balancer
-module stgADB './modules/create-databricks/azuredeploy.bicep' = if (optDataBrickCreation) {
+module stgADB '../modules/create-databricks/azuredeploy.bicep' = if (optDataBrickCreation) {
   name: 'create-databricks-with-loadbalancer'
   params: {
     location: vLocation
@@ -209,7 +209,7 @@ module stgADB './modules/create-databricks/azuredeploy.bicep' = if (optDataBrick
 }
 
 // Synapse with Spark pool
-module stgSNPS './modules/create-synapse-workspace-with-private-endpoints/azuredeploy.bicep' = if (optSynapseCreation) {
+module stgSNPS '../modules/create-synapse-workspace-with-private-endpoints/azuredeploy.bicep' = if (optSynapseCreation) {
   name: 'create-synapse-with-private-endpoints'
   params: {
     location: vLocation
@@ -228,7 +228,7 @@ module stgSNPS './modules/create-synapse-workspace-with-private-endpoints/azured
 }
 
 // Data Factory instance creation
-module stgADF './modules/create-datafactory-with-private-endpoints/azuredeploy.bicep' = if (optDataFactoryCreation) {
+module stgADF '../modules/create-datafactory-with-private-endpoints/azuredeploy.bicep' = if (optDataFactoryCreation) {
   name: 'create-datafactory'
   params: {
     location: vLocation

@@ -179,27 +179,27 @@ az group create -l koreacentral -n <Your Resource Group Name> \
 Deploy components by running these commands sequentially
 
 ```command
-az deployment group create -g <Your Resource Group Name> -f main-infra.bicep
+az deployment group create -g <Your Resource Group Name> -f main/main-infra.bicep
 
-az deployment group create -g <Your Resource Group Name> -f main-keyvault.bicep
+az deployment group create -g <Your Resource Group Name> -f main/main-keyvault.bicep
 
-az deployment group create -g <Your Resource Group Name> -f main-service-all-at-once.bicep
+az deployment group create -g <Your Resource Group Name> -f main/main-service-all-at-once.bicep
 ```
 
 or 
 
 ```command
 az deployment group create -g <Your Resource Group Name> \
- -f main-infra.bicep \
- --parameter main-service-infra.json
+ -f main/main-infra.bicep \
+ --parameter main/main-service-infra.json
 
 az deployment group create -g <Your Resource Group Name> \
- -f main-service-keyvault.bicep \
- --parameter main-service-keyvault.json
+ -f main/main-service-keyvault.bicep \
+ --parameter main/main-service-keyvault.json
 
 az deployment group create -g <Your Resource Group Name> \
- -f main-service-all-at-once.bicep \
- --parameter main-service-all-at-once.parameters.json
+ -f main/main-service-all-at-once.bicep \
+ --parameter main/main-service-all-at-once.parameters.json
 ```
 
 `--parameter <parameter filename>` is optional

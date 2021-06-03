@@ -70,7 +70,7 @@ var vUserAssignedIdentityName = '${vProjectName}uain001'
 //// Stages
 
 // VNet Creation 
-module stgVNET './modules/create-vnets-with-peering/azuredeploy.bicep' = {
+module stgVNET '../modules/create-vnets-with-peering/azuredeploy.bicep' = {
   name: 'create-vnets'
   params: {
     location: vLocation
@@ -92,7 +92,7 @@ module stgVNET './modules/create-vnets-with-peering/azuredeploy.bicep' = {
 }
 
 // NSG Creation
-module stgNSG './modules/create-nsg/azuredeploy.bicep' = {
+module stgNSG '../modules/create-nsg/azuredeploy.bicep' = {
   name: 'create-nsg'
   params: {
     location: vLocation
@@ -101,7 +101,7 @@ module stgNSG './modules/create-nsg/azuredeploy.bicep' = {
 }
 
 // Storage Account Creation, ADLS Gen2 with a Blob container
-module stgSA './modules/create-adls-gen2-with-blob/azuredeploy.bicep' = {
+module stgSA '../modules/create-adls-gen2-with-blob/azuredeploy.bicep' = {
   name: 'create-storage-account'
   params: {
     location: vLocation
@@ -117,7 +117,7 @@ resource userAssignedIdentityName_resource 'Microsoft.ManagedIdentity/userAssign
   location: vLocation
 }
 
-module stgUAI './modules/assign-userassignedidentity/azuredeploy.bicep' = {
+module stgUAI '../modules/assign-userassignedidentity/azuredeploy.bicep' = {
   name: 'assign-userassignedidentity-to-storage'
   params: {
      userAssignedIdentityName: vUserAssignedIdentityName
@@ -130,7 +130,7 @@ module stgUAI './modules/assign-userassignedidentity/azuredeploy.bicep' = {
 }
 
 // VM Creation for test at Blue, Mgmt each
-module stgVMMgmt './modules/create-vm-simple-linux/azuredeploy.bicep' = if (optVMCreation) {
+module stgVMMgmt '../modules/create-vm-simple-linux/azuredeploy.bicep' = if (optVMCreation) {
   name: 'create-vm-mgmt'
   params: {
     location: vLocation
@@ -149,7 +149,7 @@ module stgVMMgmt './modules/create-vm-simple-linux/azuredeploy.bicep' = if (optV
   ]
 }
 
-module stVMBlue './modules/create-vm-simple-linux/azuredeploy.bicep' = if (optVMCreation) {
+module stVMBlue '../modules/create-vm-simple-linux/azuredeploy.bicep' = if (optVMCreation) {
   name: 'create-vm-blue'
   params: {
     location: vLocation
@@ -169,7 +169,7 @@ module stVMBlue './modules/create-vm-simple-linux/azuredeploy.bicep' = if (optVM
 }
 
 // Private DNS Creation
-module stgDNS './modules/create-private-dns-zone/azuredeploy.bicep' = {
+module stgDNS '../modules/create-private-dns-zone/azuredeploy.bicep' = {
   name: 'create-private-dns'
   params: {
     location: vLocation
