@@ -1,0 +1,43 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "value": "koreacentral"
+    },
+    "projectName": {
+      "value": "hdmp001"
+    },
+    "vnetMgmtaddressSpacePrefix": {
+      "value": "192.168.12.0/23"
+
+    },
+    "vnetMgmtsubnet1Prefix": {
+      "value": "192.168.12.0/26"
+    },
+    "vnetBlueaddressSpacePrefix": {
+      "value": "192.168.14.0/23"
+    },
+    "vnetBluesubnet1Prefix": {
+      "value": "192.168.14.0/26"
+    },
+    "saType": {
+      "value": "Standard_LRS"
+    },
+    "optVMCreation": {
+      "value": "true"
+    },
+    "vmMgmtSize": {
+      "value": "Standard_B2s"
+    },
+    "vmBlueSize": {
+      "value": "Standard_B2s"
+    },
+    "vmUserName": {
+      "value": "azureuser"
+    },
+    "publicKey": {
+      "value": "...."
+    }
+  }
+}

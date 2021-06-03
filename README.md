@@ -10,6 +10,16 @@ This is for Hadoop-Migrations, https://github.com/Azure/Hadoop-Migrations
 This is for Hadoop-Migrations
 
 ## What will be deployed?
+
+By default, all the services which come under the reference architecture are enabled, and you must explicitly disable services that you don't want to be deployed from parameters which prompts in the ARM screen at portal or in the template files  `*.parameters.json` or directly in `*.bicep` 
+
+> Note: Before deploying the resources, we recommend to check registration status of the required resource providers in your subscription. For more information, see [Resource providers for Azure services.](https://docs.microsoft.com/azure/azure-resource-manager/management/resource-providers-and-types)
+
+
+[Reference Architecture : Modernization](images/end_State_architecture_Modernize.png)
+
+For the reference architecture, the following services are created
+
 - HDInsight 4.0 
 - [Synapse Workspace](https://docs.microsoft.com/azure/synapse-analytics/)
 - Azure Databrick
@@ -21,45 +31,66 @@ This is for Hadoop-Migrations
   * VM
   * Private DNS Zone
 
+For more details regarding the services that will be deployed, please read the Domains guide in the Hardoop Migration documentation.
+
 ## Before you start 
 
-## Options to run
-You have following options for deploying this reference architecture:
-1. Quickstart
-2. Github Action
-3. Azure DevOps Action
-4. CLI
+If you don't have an Azure subscription, [create your Azure free account today.](https://azure.microsoft.com/free/)
+
+Components to install
+
+1. Azure CLI
+2. Bicep
+
+Things you need to prepare 
+
+1. Service Principal of Managed App
+2. Public Key for SSH (Optional)
+
+### Supported Regions
+
+Most of regions where data & analytic components are available, please choose one of regions before you start
 
 ## 1. Quickstart Button
-portal doesn't support .bicep links in resource creation
+
+
+## Options to run
+
+Options for deploying this reference architecture
+
+1. Oneclick button to Quickstart
+2. CLI
+
+[//]: # (2. Github Action 3. Azure DevOps Action)
+
+## 1. Quickstart Button
+
 - Infrastructure
 
-[![Deploy To Azure](images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fnudbeach%2Fdata-platform-migration%2Fmain%2Fmain-infra.bicep) 
-[![Visualize](images/visualizebutton.svg?sanitize=true)](http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Fnudbeach%2Fdata-platform-migration%2Fmain%2Fmain-infra.bicep)
+[![Deploy To Azure](images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fnudbeach%2Fdata-platform-migration%2Fmain%2Fbuild%2Fmain-infra.json) 
+[![Visualize](images/visualizebutton.svg?sanitize=true)](http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Fnudbeach%2Fdata-platform-migration%2Fmain%2Fbuild%2Fmain-infra.json)
 
 - Key Vault
 
-[![Deploy To Azure](images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fnudbeach%2Fdata-platform-migration%2Fmain%2Fmain-keyvault.bicep) 
-[![Visualize](images/visualizebutton.svg?sanitize=true)](http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Fnudbeach%2Fdata-platform-migration%2Fmain%2Fmain-keyvault.bicep)
+[![Deploy To Azure](images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fnudbeach%2Fdata-platform-migration%2Fmain%2Fbuild%2Fmain-keyvault.json) 
+[![Visualize](images/visualizebutton.svg?sanitize=true)](http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Fnudbeach%2Fdata-platform-migration%2Fmain%2Fbuild%2Fmain-keyvault.json)
 
 - Services all-at-once
 
-[![Deploy To Azure](images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fnudbeach%2Fdata-platform-migration%2Fmain%2Fmain-service-all-at-once.bicep) 
-[![Visualize](images/visualizebutton.svg?sanitize=true)](http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Fnudbeach%2Fdata-platform-migration%2Fmain%2Fmain-service-all-at-once.bicep)
+[![Deploy To Azure](images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fnudbeach%2Fdata-platform-migration%2Fmain%2Fbuild%2Fmain-service-all-at-once.json) 
+[![Visualize](images/visualizebutton.svg?sanitize=true)](http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Fnudbeach%2Fdata-platform-migration%2Fmain%2Fbuild%2Fmain-service-all-at-once.json)
 
-## 2. Github Action
+[//]: # (## 2. Github Action, ## 3. Azure DevOps Action)
 
-## 3. Azure DevOps Action
+## 2. Deploying using CLI
 
-## 4. Deploying using CLI
-
-1. Doublecheck if you've logged in
+Doublecheck if you've logged in. 
 
 ```command
 az login
 ```
 
-You'll get prompts at your web brower, if authentication's successfully done, it will look like this 
+You'll get prompts at your web brower, if authentication's done successfully, you'll get something like this
 
 ```javascript
   {
@@ -78,37 +109,47 @@ You'll get prompts at your web brower, if authentication's successfully done, it
   },
 ```
 
-Get the `id` from login result.
+Get the subscription `id` from login result
 
-2. Clone this repo to your environment
+Clone this repo to your environment
 
 ```command
 git clone https://github.com/nudbeach/data-platform-migration.git
 ```
 
-3. Create a resource group with location using your subscription id from login result (Step 1)
+Create a resource group with location using your subscription id from previous step
 
 ```command
-az group create -l koreacentral -n <Your Resource Group Name> --subscription xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+az group create -l koreacentral -n <Your Resource Group Name> \
+ --subscription xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 ```
-
-4. Deploy infrastructure
+Deploy components by running these commands sequentially
 
 ```command
 az deployment group create -g <Your Resource Group Name> -f main-infra.bicep
-```
 
-5. Deploy key vault
-
-```command
 az deployment group create -g <Your Resource Group Name> -f main-keyvault.bicep
-```
 
-6. Deploy all service components
-
-```command
 az deployment group create -g <Your Resource Group Name> -f main-service-all-at-once.bicep
 ```
+
+or 
+
+```command
+az deployment group create -g <Your Resource Group Name> \
+ -f main-infra.bicep \
+ --parameter main-service-infra.json
+
+az deployment group create -g <Your Resource Group Name> \
+ -f main-service-keyvault.bicep \
+ --parameter main-service-keyvault.json
+
+az deployment group create -g <Your Resource Group Name> \
+ -f main-service-all-at-once.bicep \
+ --parameter main-service-all-at-once.parameters.json
+```
+
+`--parameter <parameter filename>` is optional
 
 ## Known issues
 
