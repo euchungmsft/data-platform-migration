@@ -102,7 +102,7 @@ jobs:
       - name: Build All
         # path to your checked-in .bicep file to deploy
         #run: bicep build ${{ github.workspace }}/main-infra.bicep              
-        run: ./build.sh
+        run: "${GITHUB_WORKSPACE}/build.sh"
 
       # Deploy Infra
       - name: Deploy Infrastructure for Data Platform
