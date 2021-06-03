@@ -328,7 +328,8 @@ Now you can see the running workflow
 
 ## 4. Deploying using Azure DevOps with automation
 
-GitHub Action and Azure DevOps looks similar in terms of the concepts but not 100% the same.Comparing with instructions in GitHub Action, you can reuse most of things that you've created at first step 'Role assignments to Service Principal' and step two 'Setting up AZURE_CREDENTIAL'. For 'Pipeline implementation' step, there's a few differences in workflow syntax, for example `on`, `env` are not supported in Azure DevOps, you can just remove them and externalize them to "Environment" and "Variables". So I would recommend  you to make a repo copy to Azure DevOps before you start
+Both GitHub Action and Azure DevOps looks similar in terms of structure and concepts but not 100% the same each other.Comparing with instructions in GitHub Action, you can reuse most of things that you've created at the intial steps 'Role assignments to Service Principal' and 'Setting up AZURE_CREDENTIAL'. For 'Pipeline implementation' step, there's a few differences in syntax of workflow, for example `on`, `env` are not supported in Azure DevOps, you can just remove them and externalize them to "Environment" and "Variables". 
+So I would recommend you to make a repo copy to Azure DevOps before you start
 
 1. Create Azure ARM connection
 2. Configure your Pipeline
@@ -366,11 +367,7 @@ Select "Azure Repo Git" if you've already made clone to your repo, or you can se
 
 ![Configure Your Pipeline](images/configure_your_pipeline.png)
 
-Select "Existing Azure Pipelines YAML file", then you'll see the Github Action workflow file under `.github/workflows`
-
-![New Aure Service Connection](images/new_azure_service_connection.png)
-
-Now you're ready to configure your pipeline and try to test it from the menu
+Select "Existing Azure Pipelines YAML file", then you'll see the Github Action workflow file under `.github/workflows`, in the next step, you can make some changes directly on the web UI so that you can configure your pipeline and try to test it 
 
 ## Known issues
 
