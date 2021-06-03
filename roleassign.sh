@@ -2,6 +2,7 @@
 
 if [ $# -lt 2 ]
   then
+  	echo "Assigns all required roles to the resource group for given Service Principal"
     echo "roleassign.sh {Service Principal Name} {Resource Group Name}"
     exit
 fi

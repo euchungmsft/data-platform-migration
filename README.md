@@ -236,7 +236,7 @@ data-platform-migration/modules/create-vm-simple-linux/azuredeploy.bicep(19,7) :
 ```
 
 **Solution:**
-Simply ignore these warnings. All those parameters are actually used. I guess this problem is temporary to be fixed soon, Bicep has been updating daily. It's `Bicep CLI version 0.3.255 (589f0375df)` for now. 
+Simply ignore these warnings. It's because of optional settings for VM, HDI, Synapse and so on. If you set these false, all corresponding parameters for these creations are not gonna get used. You can just ignore these when you try this with CLI or Quick Start Button but in Git Hub Action or Azure DevOps pipeline, you need to skip this warnings by adding `continue-on-error: true` to Jobs or Steps. That's because current version of deployment agent in Azure CLI detects it's an error than warning. It's `Bicep CLI version 0.3.255 (589f0375df)` for now. 
 
 The warning is to guide to reduce confusion in your template, delete any parameters that are defined but not used. This test finds any parameters that aren't used anywhere in the template. Eliminating unused parameters also makes it easier to deploy your template because you don't have to provide unnecessary values. You can find further details from [here](https://aka.ms/bicep/linter/no-unused-params)
 

@@ -4,7 +4,7 @@
 param location string = resourceGroup().location
 
 @description('Project name')
-param projectName string = 'hdmp002'
+param projectName string = 'hdmp001'
 
 @description('VNet address space prefix of Mgmt')
 param vnetMgmtaddressSpacePrefix string = '192.168.12.0/23'

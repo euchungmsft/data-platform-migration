@@ -4,7 +4,7 @@
 param location string = resourceGroup().location
 
 @description('Project name')
-param projectName string = 'hdmp002'
+param projectName string = 'hdmp001'
 
 // Parameters - Options to provision
 

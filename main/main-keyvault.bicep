@@ -4,7 +4,7 @@
 param location string = resourceGroup().location
 
 @description('Project name')
-param projectName string = 'hdmp002'
+param projectName string = 'hdmp001'
 
 @description('ObjectID of managed app')
 param objectId string = 'ec847c95-e7b1-4f60-89dc-0abe8c01949f'

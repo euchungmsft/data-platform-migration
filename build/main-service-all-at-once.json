@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.3.255.40792",
-      "templateHash": "8056464250032777285"
+      "templateHash": "10669157749545386924"
     }
   },
   "parameters": {
@@ -18,7 +18,7 @@
     },
     "projectName": {
       "type": "string",
-      "defaultValue": "hdmp002",
+      "defaultValue": "hdmp001",
       "metadata": {
         "description": "Project name"
       }
