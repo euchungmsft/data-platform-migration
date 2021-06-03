@@ -18,6 +18,7 @@ env:
   AZURE_RESOURCE_GROUP_NAME: 'TEST1'                            # Update to '{dataLandingZoneName}-rg'
   AZURE_LOCATION: 'koreacentral'                                # Update to '{regionName}'
   CREDENTIALS1: '{  \"clientId\": \"b344a205-131f-4a7f-a625-dd9b22b7cb81\",  \"clientSecret\": \"v01hGSBUH-~ScYqtBzl7O2YS~SWxxUDKu.\",  \"subscriptionId\": \"b6d4cd53-eeab-41d1-93a8-665daf75fce1\",  \"tenantId\": \"72f988bf-86f1-41af-91ab-2d7cd011db47\",  \"activeDirectoryEndpointUrl\": \"https://login.microsoftonline.com\",  \"resourceManagerEndpointUrl\": \"https://management.azure.com/\",  \"activeDirectoryGraphResourceId\": \"https://graph.windows.net/\",  \"sqlManagementEndpointUrl\": \"https://management.core.windows.net:8443/\",  \"galleryEndpointUrl\": \"https://gallery.azure.com/\",  \"managementEndpointUrl\": \"https://management.core.windows.net/\"}'
+  CREDENTIALS2: '{ "clientId": "b344a205-131f-4a7f-a625-dd9b22b7cb81", "clientSecret": "v01hGSBUH-~ScYqtBzl7O2YS~SWxxUDKu.", "subscriptionId": "b6d4cd53-eeab-41d1-93a8-665daf75fce1", "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47", "activeDirectoryEndpointUrl": "https://login.microsoftonline.com", "resourceManagerEndpointUrl": "https://management.azure.com/", "activeDirectoryGraphResourceId": "https://graph.windows.net/", "sqlManagementEndpointUrl": "https://management.core.windows.net:8443/", "galleryEndpointUrl": "https://gallery.azure.com/", "managementEndpointUrl": "https://management.core.windows.net/"}'
 #  ACTIONS_RUNNER_DEBUG: true
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -38,7 +39,7 @@ jobs:
 
       - name: Run a one-line script 2
         #run: echo Hello, world!
-        run: echo "CREDENTIAL 2 is ${{ env.CREDENTIALS1 }}"
+        run: echo "CREDENTIAL 2 is ${{ env.CREDENTIALS2 }}"
 
 #      - name: Debug stream
 #        uses: mxschmitt/action-tmate@v3
