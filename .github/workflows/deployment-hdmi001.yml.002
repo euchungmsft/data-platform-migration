@@ -83,39 +83,38 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
 
-    steps:    
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - name: Check Out Repository
-        id: checkout_repository
-        uses: actions/checkout@v2
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - name: Check Out Repository
+      id: checkout_repository
+      uses: actions/checkout@v2
 
-      # Login to Azure 
-      - name: Azure Login
-        id: azure_login
-        uses: azure/login@v1.1
-        env:
-          CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS1 }}
-        with:
-          creds: ${{ env.CREDENTIALS }}
+    # Login to Azure 
+    - name: Azure Login
+      id: azure_login
+      uses: azure/login@v1.1
+      env:
+        CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS1 }}
+      with:
+        creds: ${{ env.CREDENTIALS }}
 
-      # Bicep All
-      - name: Build All
-        # path to your checked-in .bicep file to deploy
-        #run: bicep build ${{ github.workspace }}/main-infra.bicep              
-        run: ./build.sh
+    # Bicep All
+    - name: Build All
+      # path to your checked-in .bicep file to deploy
+      #run: bicep build ${{ github.workspace }}/main-infra.bicep              
+      run: ./build.sh
 
-      # Deploy Infra
-      - name: Deploy Infrastructure for Data Platform
-        id: deploy_infra
-        uses: azure/arm-deploy@v1
-        with:
-          scope: resourcegroup
-          subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
-          resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
-          region: ${{ env.AZURE_LOCATION }}
-          template: ${{ github.workspace }}/build/main-infra.json
-          parameters: ${{ github.workspace }}/build/main-infra.parameters.json
-          deploymentMode: Incremental        
+    # Deploy Infra
+    - name: Deploy Infrastructure for Data Platform
+      id: deploy_infra
+      uses: azure/arm-deploy@v1
+      with:
+        scope: resourcegroup
+        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
+        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
+        region: ${{ env.AZURE_LOCATION }}
+        template: ${{ github.workspace }}/build/main-infra.json
+        parameters: ${{ github.workspace }}/build/main-infra.parameters.json
+        deploymentMode: Incremental        
 
 #    # Deploy Key Vault
 #    - name: Deploy Key Vault for Data Platform
@@ -143,11 +142,11 @@ jobs:
 #        parameters: ${{ github.workspace }}/build/main-service-all-at-once.parameters.json
 #        deploymentMode: Incremental                        
 
-      # Log out from Azure
-      - name: Log out from Azure
-        id: azure_logout
-        uses: azure/cli@v1
-        with:
-          azcliversion: latest
-          inlineScript: |
-            az logout      
+    # Log out from Azure
+    - name: Log out from Azure
+      id: azure_logout
+      uses: azure/cli@v1
+      with:
+        azcliversion: latest
+        inlineScript: |
+          az logout      
