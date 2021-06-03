@@ -6,8 +6,12 @@ This is for Hadoop-Migrations, https://github.com/Azure/Hadoop-Migrations
 [//]: # (**DO NOT COPY - UNDER DEVELOPMENT - MS INTERNAL ONLY - Please be aware that this template is in private preview without any SLA.**)
 **DO NOT COPY - UNDER DEVELOPMENT - Please be aware that this template is in private preview without any SLA.**
 
+**** to-be-updated ****
+
 ## Description
 This is for Hadoop-Migrations
+
+**** to-be-updated ****
 
 ## What will be deployed?
 
