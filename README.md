@@ -135,6 +135,7 @@ Options for deploying this reference architecture
 
 1. Oneclick button to Quickstart
 2. CLI
+3. Github Action 
 
 [//]: # (2. Github Action 3. Azure DevOps Action)
 
@@ -221,6 +222,92 @@ az deployment group create -g <Your Resource Group Name> \
  -f build/main-service-all-at-once.json \
  --parameter build/main-service-all-at-once.parameters.json
 ```
+
+## 3. Deploying using Github Action with automation
+
+This option consists of 3 steps
+
+1. Role assignments to Service Principal
+2. Setting up AZURE_CREDENTIAL
+3. Pipeline implementation
+
+### 1. Role assignments to Service Principal
+
+In the previous step, you've already got a Service Principal which's for Key Vault. But we're going to create another one for client authentication backed by Azure AD which's dedicated to GitHub Action and Azure DevOps Pipeline
+
+```commands
+az ad sp create-for-rbac --name <Your App Name -2> --role contributor \
+ --scopes <Your Resource Group Id> \
+ --role contributor --sdk-auth
+```
+
+`<Your App Name -2>` is different name to previous one. Then you'll get something like this
+
+```javascript
+{
+  "clientId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "clientSecret": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+  "subscriptionId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "tenantId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "activeDirectoryEndpointUrl": "https://login.microsoftonline.com",
+  "resourceManagerEndpointUrl": "https://management.azure.com/",
+  "activeDirectoryGraphResourceId": "https://graph.windows.net/",
+  "sqlManagementEndpointUrl": "https://management.core.windows.net:8443/",
+  "galleryEndpointUrl": "https://gallery.azure.com/",
+  "managementEndpointUrl": "https://management.core.windows.net/"
+}
+```
+
+Keep entire Jason document for next step. And it has to be assigned all required role to this brand new service principal
+
+- Contributor
+- Private DNS Zone Contributor
+- Network Contributor
+- User Access Administrator
+
+User Access Administrator is for role assignment for data platform services to storage account.
+
+```commands
+az role assignment create \
+ --assignee "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" \
+ --role "<Role Name>" \
+ --resource-group <Your Resource Group>
+```
+
+Run this commands for required roled listed above to your resource groups separately. Or run this command from your command line
+
+```commands
+./roleassign.sh <Your App Name -2> <Your Resource Group Name>
+```
+
+### 2. Setting up AZURE_CREDENTIAL
+
+Next step is now you need to let GitHub Action authenticate for all access to your resources. This is simple. Before you do this, I recommend you to fork the repo under your GitHub account so that you can easily update actions
+From Setting menu on the repo, goto secrets, and click on 'New Repository Secret'. And put the name as AZURE_CREDENTIAL, paste entire Jason document to value which you got from previous step. And 'Add Secrete' Button at below. From now on, all acces to your resources on Azure will be authenticated by using this token
+
+![Save AZURE_CREDENTIAL](images/save-token.png)
+
+### 3. Pipeline implementation
+
+Checkout your repo which forked from [data-platform-migration](https://github.com/nudbeach/data-platform-migration) and go to `.github/workflows`. Open the workflow file, 'deployment-hdmi001.yml' and simply update environment variables with yours
+
+- AZURE_SUBSCRIPTION_ID
+- AZURE_RESOURCE_GROUP_NAME
+- AZURE_LOCATION
+
+Run this from your command line to update to your repo
+
+```commands
+git add . ; git commit -m "my first commit" ; git push
+```
+
+Go to 'Actions' item on your repo, and click on 'Deployment for Project HDMI001'. And click on 'Run Workflow' on the right
+
+![Run Workflow](images/actions.png)
+
+Now you can see the running workflow
+
+![Running Workflow](images/workflow.png)
 
 ## Known issues
 
