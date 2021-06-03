@@ -132,7 +132,7 @@ jobs:
             az logout      
 
 deployment-data-platform:
-    needs: [ prerequisite ]
+    needs: [ deployment-infra ]
     runs-on: ubuntu-latest
     #if: github.event_name == 'push'
 
