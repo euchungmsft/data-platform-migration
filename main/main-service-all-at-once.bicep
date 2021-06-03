@@ -239,5 +239,3 @@ module stgADF '../modules/create-datafactory-with-private-endpoints/azuredeploy.
     keyVaultId: keyVaultName_resource.id
  }
 }
-
-output deployServices string = "Done"

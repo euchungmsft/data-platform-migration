@@ -75,5 +75,3 @@ module stgKV '../modules/create-key-vault-with-private-endpoints/azuredeploy.bic
     vnetBlueName_resource
   ]
 }
-
-output deployKeyVault string = "Done"

@@ -111,6 +111,7 @@ jobs:
       - name: Deploy Infrastructure for Data Platform
         id: deploy_infra
         uses: azure/arm-deploy@v1
+        continue-on-error: true
         with:
           scope: resourcegroup
           subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
@@ -118,7 +119,7 @@ jobs:
           region: ${{ env.AZURE_LOCATION }}
           template: ${{ github.workspace }}/main/main-infra.bicep
           parameters: ${{ github.workspace }}/main/main-infra.parameters.json
-          deploymentMode: Incremental        
+          deploymentMode: Incremental       
 
 #    # Deploy Key Vault
 #    - name: Deploy Key Vault for Data Platform
