@@ -12,9 +12,9 @@ on:
   workflow_dispatch:
 
 env:
-  AZURE_SUBSCRIPTION_ID: 'b6d4cd53-eeab-41d1-93a8-665daf75fce1' # Update to '{dataLandingZoneSubscriptionId}'
-  AZURE_RESOURCE_GROUP_NAME: 'TEST1'                            # Update to '{dataLandingZoneName}-rg'
-  AZURE_LOCATION: 'koreacentral'                                # Update to '{regionName}'
+  AZURE_SUBSCRIPTION_ID: '{YOUR SUBSCRIPTION ID HERE}'           # Update to '{dataLandingZoneSubscriptionId}'
+  AZURE_RESOURCE_GROUP_NAME: '{YOUR RESOURCE GROUP NAME HERE}'   # Update to '{dataLandingZoneName}-rg'
+  AZURE_LOCATION: '{REGION ID HERE}'                             # Update to '{regionName}'
 #  ACTIONS_RUNNER_DEBUG: true
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
