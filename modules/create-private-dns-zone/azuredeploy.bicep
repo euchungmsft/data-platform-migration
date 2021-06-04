@@ -7,12 +7,6 @@ param vmRegistration bool = true
 @description('VNet name')
 param vnetName string = 'VNet1'
 
-@description('Address prefix')
-param vnetAddressPrefix string = '10.0.0.0/24' // 16
-
-@description('Location for all resources.')
-param location string = resourceGroup().location
-
 resource vnetName_resource 'Microsoft.Network/virtualNetworks@2020-05-01' existing = {
   name: vnetName
 }

@@ -7,7 +7,7 @@ param location string = resourceGroup().location
 param projectName string = 'hdmp001'
 
 @description('ObjectID of managed app')
-param objectId string = 'ec847c95-e7b1-4f60-89dc-0abe8c01949f'
+param objectId string
 
 @description('TenantID of current subscription')
 param tenantId string = subscription().tenantId
@@ -24,8 +24,7 @@ param secretName string = 'sec01'
 
 @description('Specifies the value of the secret that you want to create.')
 @secure()
-param secretValue string = 'sec-value-string'
-//param secretValue string = newGuid()
+param secretValue string = newGuid()
 
 //// Variables
 
@@ -43,14 +42,6 @@ var vPrivateDnsZoneName = '${vProjectName}-pdns.com'
 
 //// Stages
 
-resource privateDnsZoneName_resource 'Microsoft.Network/privateDnsZones@2020-01-01' existing = {
-  name: vPrivateDnsZoneName
-}
-
-resource vnetBlueName_resource 'Microsoft.Network/virtualNetworks@2020-05-01' existing = {
-  name: vVNetBlueName
-}
-
 // Key Valut Creation 
 module stgKV '../modules/create-key-vault-with-private-endpoints/azuredeploy.bicep' = {
   name: 'create-key-vault'
@@ -67,11 +58,10 @@ module stgKV '../modules/create-key-vault-with-private-endpoints/azuredeploy.bic
     skuName: vSKUName
     secretName: vSecretName
     secretValue: vSecretValue
-    subnetId: vnetBlueName_resource.properties.subnets[0].id
-    privateDnsZoneId: privateDnsZoneName_resource.id    
+    vnetName: vVNetBlueName
+    subnetName: 'subnet1'
+    privateDnsZoneName: vPrivateDnsZoneName
   }
   dependsOn: [
-    privateDnsZoneName_resource
-    vnetBlueName_resource
   ]
 }

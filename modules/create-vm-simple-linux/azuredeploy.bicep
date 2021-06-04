@@ -1,8 +1,11 @@
+@description('Location for the resources')
+param location string = resourceGroup().location
+
 @description('The name of you Virtual Machine.')
 param vmName string = 'simpleLinuxVM1'
 
 @description('Username for the Virtual Machine.')
-param adminUsername string
+param adminUsername string = 'azureuser'
 
 @allowed([
   'sshPublicKey'
@@ -27,9 +30,6 @@ param dnsLabelPrefix string = toLower('simplelinuxvm-${uniqueString(resourceGrou
 @description('The Ubuntu version for the VM. This will pick a fully patched image of this given Ubuntu version.')
 param ubuntuOSVersion string = '18.04-LTS'
 
-@description('Location for all resources.')
-param location string = resourceGroup().location
-
 @description('The size of the VM')
 param vmSize string = 'Standard_B2s'
 
@@ -42,8 +42,8 @@ param subnetName string = 'Subnet'
 @description('Name of the Network Security Group')
 param networkSecurityGroupName string = 'SecGroupNet'
 
-var publicIpAddressName_var = '${vmName}PublicIP'
-var networkInterfaceName_var = '${vmName}NetInt'
+var publicIpAddressName_var = '${vmName}-pubip'
+var networkInterfaceName_var = '${vmName}-nic'
 var subnetRef = resourceId('Microsoft.Network/virtualNetworks/subnets', virtualNetworkName, subnetName)
 var osDiskType = 'Standard_LRS'
 
@@ -104,11 +104,9 @@ resource publicIpAddressName 'Microsoft.Network/publicIpAddresses@2020-06-01' = 
   properties: {
     publicIPAllocationMethod: 'Dynamic'
     publicIPAddressVersion: 'IPv4'
-    /**
     dnsSettings: {
       domainNameLabel: dnsLabelPrefix
     }
-    */
     idleTimeoutInMinutes: 4
   }
 }

@@ -39,14 +39,23 @@ param vmBlueSize string = 'Standard_B2s'
 @description('VM User Name')
 param vmUserName string = 'azureuser'
 
-@description('Public Key for all VM access')
-param publicKey string = '....'
+@allowed([
+  'sshPublicKey'
+  'password'
+])
+@description('Type of authentication to use on the Virtual Machine. SSH key is recommended.')
+param authenticationType string = 'password'
+
+@description('SSH Key or password for the Virtual Machine. SSH key is recommended.')
+@secure()
+param adminPasswordOrKey string
 
 //// Variables
 
 var vLocation = location
 var vProjectName = projectName
-var vPublicKey = publicKey
+var vAuthenticationType = authenticationType
+var vAdminPasswordOrKey = adminPasswordOrKey
 
 var vVNetMgmtName = 'vnetMgmt'
 var vVNetMgmtaddressSpacePrefix = vnetMgmtaddressSpacePrefix
@@ -140,8 +149,8 @@ module stgVMMgmt '../modules/create-vm-simple-linux/azuredeploy.bicep' = if (opt
     subnetName: vVNetMgmtsubnet1Name
     networkSecurityGroupName : vNSGName
     adminUsername: vVMUserName
-    authenticationType: 'sshPublicKey'
-    adminPasswordOrKey: vPublicKey
+    authenticationType: vAuthenticationType
+    adminPasswordOrKey: vAdminPasswordOrKey
   }
   dependsOn: [
     stgVNET
@@ -159,8 +168,8 @@ module stVMBlue '../modules/create-vm-simple-linux/azuredeploy.bicep' = if (optV
     subnetName: vVNetBluesubnet1Name
     networkSecurityGroupName : vNSGName
     adminUsername: vVMUserName
-    authenticationType: 'sshPublicKey'
-    adminPasswordOrKey: vPublicKey
+    authenticationType: vAuthenticationType
+    adminPasswordOrKey: vAdminPasswordOrKey
   }
   dependsOn: [
     stgVNET
@@ -172,7 +181,6 @@ module stVMBlue '../modules/create-vm-simple-linux/azuredeploy.bicep' = if (optV
 module stgDNS '../modules/create-private-dns-zone/azuredeploy.bicep' = {
   name: 'create-private-dns'
   params: {
-    location: vLocation
     privateDnsZoneName: vPrivateDnsZoneName
     vnetName: vVNetMgmtName
   }

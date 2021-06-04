@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.3.255.40792",
-      "templateHash": "16222552734225779794"
+      "templateHash": "16884852460994354042"
     }
   },
   "parameters": {
@@ -90,11 +90,21 @@
         "description": "VM User Name"
       }
     },
-    "publicKey": {
+    "authenticationType": {
       "type": "string",
-      "defaultValue": "....",
+      "defaultValue": "password",
       "metadata": {
-        "description": "Public Key for all VM access"
+        "description": "Type of authentication to use on the Virtual Machine. SSH key is recommended."
+      },
+      "allowedValues": [
+        "sshPublicKey",
+        "password"
+      ]
+    },
+    "adminPasswordOrKey": {
+      "type": "secureString",
+      "metadata": {
+        "description": "SSH Key or password for the Virtual Machine. SSH key is recommended."
       }
     }
   },
@@ -102,7 +112,8 @@
   "variables": {
     "vLocation": "[parameters('location')]",
     "vProjectName": "[parameters('projectName')]",
-    "vPublicKey": "[parameters('publicKey')]",
+    "vAuthenticationType": "[parameters('authenticationType')]",
+    "vAdminPasswordOrKey": "[parameters('adminPasswordOrKey')]",
     "vVNetMgmtName": "vnetMgmt",
     "vVNetMgmtaddressSpacePrefix": "[parameters('vnetMgmtaddressSpacePrefix')]",
     "vVNetMgmtsubnet1Name": "subnet1",
@@ -172,7 +183,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.3.255.40792",
-              "templateHash": "12623041327506852296"
+              "templateHash": "13029977443810535008"
             }
           },
           "parameters": {
@@ -202,7 +213,8 @@
               "defaultValue": {
                 "addressSpacePrefix": "10.0.0.0/16",
                 "subnetName": "subnet1",
-                "subnetPrefix": "10.0.0.0/24"
+                "subnetPrefix": "10.0.0.0/24",
+                "privateEndpointNetworkPolicies": "Disabled"
               },
               "metadata": {
                 "description": "Config  for vNet 1"
@@ -211,26 +223,13 @@
             "vNet2Config": {
               "type": "object",
               "defaultValue": {
-                "addressSpacePrefix": "192.168.0.0/16",
+                "addressSpacePrefix": "10.0.0.0/16",
                 "subnetName": "subnet1",
-                "subnetPrefix": "192.168.0.0/24"
+                "subnetPrefix": "10.0.0.0/24",
+                "privateEndpointNetworkPolicies": "Disabled"
               },
               "metadata": {
                 "description": "Config  for vNet 2"
-              }
-            },
-            "privateDnsZoneName": {
-              "type": "string",
-              "defaultValue": "contoso.com",
-              "metadata": {
-                "description": "Private DNS zone name"
-              }
-            },
-            "vmRegistration": {
-              "type": "bool",
-              "defaultValue": true,
-              "metadata": {
-                "description": "Enable automatic VM DNS registration in the zone"
               }
             }
           },
@@ -256,7 +255,7 @@
                     "name": "[parameters('vNet1Config').subnetName]",
                     "properties": {
                       "addressPrefix": "[parameters('vNet1Config').subnetPrefix]",
-                      "privateEndpointNetworkPolicies": "Disabled"
+                      "privateEndpointNetworkPolicies": "[parameters('vNet1Config').privateEndpointNetworkPolicies]"
                     }
                   }
                 ]
@@ -296,7 +295,7 @@
                     "name": "[parameters('vNet2Config').subnetName]",
                     "properties": {
                       "addressPrefix": "[parameters('vNet2Config').subnetPrefix]",
-                      "privateEndpointNetworkPolicies": "Disabled"
+                      "privateEndpointNetworkPolicies": "[parameters('vNet2Config').privateEndpointNetworkPolicies]"
                     }
                   }
                 ]
@@ -354,7 +353,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.3.255.40792",
-              "templateHash": "16294047440001398362"
+              "templateHash": "16747326829757680806"
             }
           },
           "parameters": {
@@ -367,7 +366,7 @@
             },
             "nsgName": {
               "type": "string",
-              "defaultValue": "project-nsg",
+              "defaultValue": "nsg01",
               "metadata": {
                 "description": "Network Security Group Name"
               }
@@ -432,10 +431,17 @@
             "_generator": {
               "name": "bicep",
               "version": "0.3.255.40792",
-              "templateHash": "4937360552553562663"
+              "templateHash": "10286632647303668254"
             }
           },
           "parameters": {
+            "location": {
+              "type": "string",
+              "defaultValue": "[resourceGroup().location]",
+              "metadata": {
+                "description": "Location for the resources"
+              }
+            },
             "storageAccountType": {
               "type": "string",
               "defaultValue": "Standard_LRS",
@@ -456,18 +462,32 @@
                 "description": "Storage Account name"
               }
             },
-            "location": {
-              "type": "string",
-              "defaultValue": "[resourceGroup().location]",
-              "metadata": {
-                "description": "Location for all resources."
-              }
-            },
             "containerName": {
               "type": "string",
-              "defaultValue": "logs",
+              "defaultValue": "blob01",
               "metadata": {
-                "description": "Specifies the name of the blob container."
+                "description": "Specifies the name of default blob container"
+              }
+            },
+            "fileServiceName": {
+              "type": "string",
+              "defaultValue": "file01",
+              "metadata": {
+                "description": "Specifies the name of default file service"
+              }
+            },
+            "queueServiceName": {
+              "type": "string",
+              "defaultValue": "queue01",
+              "metadata": {
+                "description": "Specifies the name of default queue service"
+              }
+            },
+            "tableServiceName": {
+              "type": "string",
+              "defaultValue": "table01",
+              "metadata": {
+                "description": "Specifies the name of default table service"
               }
             }
           },
@@ -491,6 +511,12 @@
                     },
                     "file": {
                       "enabled": true
+                    },
+                    "table": {
+                      "enabled": true
+                    },
+                    "queue": {
+                      "enabled": true
                     }
                   }
                 },
@@ -502,6 +528,30 @@
               "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
               "apiVersion": "2019-06-01",
               "name": "[format('{0}/default/{1}', parameters('storageAccountName'), parameters('containerName'))]",
+              "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
+              ]
+            },
+            {
+              "type": "Microsoft.Storage/storageAccounts/fileServices/shares",
+              "apiVersion": "2019-06-01",
+              "name": "[format('{0}/default/{1}', parameters('storageAccountName'), parameters('fileServiceName'))]",
+              "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
+              ]
+            },
+            {
+              "type": "Microsoft.Storage/storageAccounts/queueServices/queues",
+              "apiVersion": "2019-06-01",
+              "name": "[format('{0}/default/{1}', parameters('storageAccountName'), parameters('queueServiceName'))]",
+              "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
+              ]
+            },
+            {
+              "type": "Microsoft.Storage/storageAccounts/tableServices/tables",
+              "apiVersion": "2019-06-01",
+              "name": "[format('{0}/default/{1}', parameters('storageAccountName'), parameters('tableServiceName'))]",
               "dependsOn": [
                 "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
               ]
@@ -620,10 +670,10 @@
             "value": "[variables('vVMUserName')]"
           },
           "authenticationType": {
-            "value": "sshPublicKey"
+            "value": "[variables('vAuthenticationType')]"
           },
           "adminPasswordOrKey": {
-            "value": "[variables('vPublicKey')]"
+            "value": "[variables('vAdminPasswordOrKey')]"
           }
         },
         "template": {
@@ -633,10 +683,17 @@
             "_generator": {
               "name": "bicep",
               "version": "0.3.255.40792",
-              "templateHash": "16251797833248582095"
+              "templateHash": "16712511830177253962"
             }
           },
           "parameters": {
+            "location": {
+              "type": "string",
+              "defaultValue": "[resourceGroup().location]",
+              "metadata": {
+                "description": "Location for the resources"
+              }
+            },
             "vmName": {
               "type": "string",
               "defaultValue": "simpleLinuxVM1",
@@ -646,6 +703,7 @@
             },
             "adminUsername": {
               "type": "string",
+              "defaultValue": "azureuser",
               "metadata": {
                 "description": "Username for the Virtual Machine."
               }
@@ -687,13 +745,6 @@
                 "18.04-LTS"
               ]
             },
-            "location": {
-              "type": "string",
-              "defaultValue": "[resourceGroup().location]",
-              "metadata": {
-                "description": "Location for all resources."
-              }
-            },
             "vmSize": {
               "type": "string",
               "defaultValue": "Standard_B2s",
@@ -725,8 +776,8 @@
           },
           "functions": [],
           "variables": {
-            "publicIpAddressName_var": "[format('{0}PublicIP', parameters('vmName'))]",
-            "networkInterfaceName_var": "[format('{0}NetInt', parameters('vmName'))]",
+            "publicIpAddressName_var": "[format('{0}-pubip', parameters('vmName'))]",
+            "networkInterfaceName_var": "[format('{0}-nic', parameters('vmName'))]",
             "subnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('subnetName'))]",
             "osDiskType": "Standard_LRS",
             "linuxConfiguration": {
@@ -781,6 +832,9 @@
               "properties": {
                 "publicIPAllocationMethod": "Dynamic",
                 "publicIPAddressVersion": "IPv4",
+                "dnsSettings": {
+                  "domainNameLabel": "[parameters('dnsLabelPrefix')]"
+                },
                 "idleTimeoutInMinutes": 4
               }
             },
@@ -872,10 +926,10 @@
             "value": "[variables('vVMUserName')]"
           },
           "authenticationType": {
-            "value": "sshPublicKey"
+            "value": "[variables('vAuthenticationType')]"
           },
           "adminPasswordOrKey": {
-            "value": "[variables('vPublicKey')]"
+            "value": "[variables('vAdminPasswordOrKey')]"
           }
         },
         "template": {
@@ -885,10 +939,17 @@
             "_generator": {
               "name": "bicep",
               "version": "0.3.255.40792",
-              "templateHash": "16251797833248582095"
+              "templateHash": "16712511830177253962"
             }
           },
           "parameters": {
+            "location": {
+              "type": "string",
+              "defaultValue": "[resourceGroup().location]",
+              "metadata": {
+                "description": "Location for the resources"
+              }
+            },
             "vmName": {
               "type": "string",
               "defaultValue": "simpleLinuxVM1",
@@ -898,6 +959,7 @@
             },
             "adminUsername": {
               "type": "string",
+              "defaultValue": "azureuser",
               "metadata": {
                 "description": "Username for the Virtual Machine."
               }
@@ -939,13 +1001,6 @@
                 "18.04-LTS"
               ]
             },
-            "location": {
-              "type": "string",
-              "defaultValue": "[resourceGroup().location]",
-              "metadata": {
-                "description": "Location for all resources."
-              }
-            },
             "vmSize": {
               "type": "string",
               "defaultValue": "Standard_B2s",
@@ -977,8 +1032,8 @@
           },
           "functions": [],
           "variables": {
-            "publicIpAddressName_var": "[format('{0}PublicIP', parameters('vmName'))]",
-            "networkInterfaceName_var": "[format('{0}NetInt', parameters('vmName'))]",
+            "publicIpAddressName_var": "[format('{0}-pubip', parameters('vmName'))]",
+            "networkInterfaceName_var": "[format('{0}-nic', parameters('vmName'))]",
             "subnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('subnetName'))]",
             "osDiskType": "Standard_LRS",
             "linuxConfiguration": {
@@ -1033,6 +1088,9 @@
               "properties": {
                 "publicIPAllocationMethod": "Dynamic",
                 "publicIPAddressVersion": "IPv4",
+                "dnsSettings": {
+                  "domainNameLabel": "[parameters('dnsLabelPrefix')]"
+                },
                 "idleTimeoutInMinutes": 4
               }
             },
@@ -1101,9 +1159,6 @@
         },
         "mode": "Incremental",
         "parameters": {
-          "location": {
-            "value": "[variables('vLocation')]"
-          },
           "privateDnsZoneName": {
             "value": "[variables('vPrivateDnsZoneName')]"
           },
@@ -1118,7 +1173,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.3.255.40792",
-              "templateHash": "17673463847878317381"
+              "templateHash": "8794722108512767813"
             }
           },
           "parameters": {
@@ -1141,20 +1196,6 @@
               "defaultValue": "VNet1",
               "metadata": {
                 "description": "VNet name"
-              }
-            },
-            "vnetAddressPrefix": {
-              "type": "string",
-              "defaultValue": "10.0.0.0/24",
-              "metadata": {
-                "description": "Address prefix"
-              }
-            },
-            "location": {
-              "type": "string",
-              "defaultValue": "[resourceGroup().location]",
-              "metadata": {
-                "description": "Location for all resources."
               }
             }
           },

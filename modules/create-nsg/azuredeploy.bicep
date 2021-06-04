@@ -2,7 +2,7 @@
 param location string = resourceGroup().location
 
 @description('Network Security Group Name')
-param nsgName string = 'project-nsg'
+param nsgName string = 'nsg01'
 
 resource nsgName_resource 'Microsoft.Network/networkSecurityGroups@2020-06-01' = {
   name: nsgName

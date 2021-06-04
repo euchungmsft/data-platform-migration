@@ -36,8 +36,11 @@
     "vmUserName": {
       "value": "azureuser"
     },
-    "publicKey": {
-      "value": "...."
+    "authenticationType": {
+      "value": "password"
+    },
+    "adminPasswordOrKey": {
+      "value": "@kliuB$23"
     }
   }
 }

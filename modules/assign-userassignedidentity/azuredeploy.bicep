@@ -7,6 +7,8 @@ param userAssignedIdentityName string
 @description('Strong Account Name to assign Storage Blob Data Owner role')
 param clusterStorageAccountName string
 
+//  Storage Blob Data Owner : b7e6dc6d-f1e8-4753-8033-0f276bb0955b
+//  See https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles
 var roleStorageBlobDataOwner = '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/b7e6dc6d-f1e8-4753-8033-0f276bb0955b'
 
 resource userAssignedIdentityName_resource 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' existing = {

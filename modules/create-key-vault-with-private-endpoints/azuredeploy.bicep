@@ -1,8 +1,8 @@
+@description('Location of the resources')
+param location string = resourceGroup().location
+
 @description('Specifies the name of the key vault.')
 param keyVaultName string
-
-@description('Specifies the Azure location where the key vault should be created.')
-param location string = resourceGroup().location
 
 @allowed([
   true
@@ -33,12 +33,12 @@ param objectId string
 
 @description('Specifies the permissions to keys in the vault. Valid values are: all, encrypt, decrypt, wrapKey, unwrapKey, sign, verify, get, list, create, update, import, delete, backup, restore, recover, and purge.')
 param keysPermissions array = [
-  'all'
+  'list'
 ]
 
 @description('Specifies the permissions to secrets in the vault. Valid values are: all, get, list, set, delete, backup, restore, recover, and purge.')
 param secretsPermissions array = [
-  'all'
+  'list'
 ]
 
 @allowed([
@@ -55,13 +55,19 @@ param secretName string
 @secure()
 param secretValue string
 
-@description('Specifies the id of the subnet which the private endpoint uses.')
-param subnetId string
+@description('Private DNS Zone name')
+param privateDnsZoneName string = 'consoto.com'
 
-@description('Specifies the ID of the private dns zone.')
-param privateDnsZoneId string
+@description('VNet name')
+param vnetName string = 'vNet'
 
-var privateEndpointName_var = '${keyVaultName}-private-endpoint'
+@description('Subnet name of the VNet')
+param subnetName string = 'subnet'
+
+var subnetId = resourceId('Microsoft.Network/virtualNetworks/subnets', vnetName, subnetName)
+var privateDnsZoneId = resourceId('Microsoft.Network/privateDnsZones', privateDnsZoneName)
+
+var privateEndpointName_var = '${keyVaultName}-pe'
 
 resource keyVaultName_resource 'Microsoft.KeyVault/vaults@2019-09-01' = {
   name: keyVaultName
@@ -98,7 +104,6 @@ resource keyVaultName_resource 'Microsoft.KeyVault/vaults@2019-09-01' = {
 
 resource keyVaultName_secretName 'Microsoft.KeyVault/vaults/secrets@2019-09-01' = {
   name: '${keyVaultName_resource.name}/${secretName}'
-  //location: location
   properties: {
     value: secretValue
   }

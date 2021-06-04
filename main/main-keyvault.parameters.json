@@ -9,10 +9,7 @@
       "value": "hdmp001"
     },
     "objectId": {
-      "value": "ec847c95-e7b1-4f60-89dc-0abe8c01949f"
-    },
-    "tenantId": {
-      "value": "subscription().tenantId"
+      "value": "ec847c95-e7b1-4f60-89dc-0abe8c01949f" 
     },
     "skuName": {
       "value": "standard"
@@ -21,7 +18,7 @@
       "value": "sec01"
     },
     "secretValue": {
-      "value": "newGuid()"
+      "value": "secrete-value-here"
     }
   }
 }

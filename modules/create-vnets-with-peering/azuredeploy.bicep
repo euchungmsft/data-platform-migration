@@ -12,20 +12,24 @@ param vNet1Config object = {
   addressSpacePrefix: '10.0.0.0/16'
   subnetName: 'subnet1'
   subnetPrefix: '10.0.0.0/24'
+  privateEndpointNetworkPolicies: 'Disabled'
 }
 
 @description('Config  for vNet 2')
 param vNet2Config object = {
-  addressSpacePrefix: '192.168.0.0/16'
+  addressSpacePrefix: '10.0.0.0/16'
   subnetName: 'subnet1'
-  subnetPrefix: '192.168.0.0/24'
+  subnetPrefix: '10.0.0.0/24'
+  privateEndpointNetworkPolicies: 'Disabled'
 }
 
+/*
 @description('Private DNS zone name')
 param privateDnsZoneName string = 'contoso.com'
 
 @description('Enable automatic VM DNS registration in the zone')
 param vmRegistration bool = true
+*/
 
 var vNet1tovNet2PeeringName = '${vNet1Name}-${vNet2Name}'
 var vNet2tovNet1PeeringName = '${vNet2Name}-${vNet1Name}'
@@ -44,7 +48,7 @@ resource vNet1Name_resource 'Microsoft.Network/virtualNetworks@2020-05-01' = {
         name: vNet1Config.subnetName
         properties: {
           addressPrefix: vNet1Config.subnetPrefix
-          privateEndpointNetworkPolicies: 'Disabled'
+          privateEndpointNetworkPolicies: vNet1Config.privateEndpointNetworkPolicies
         }
       }
     ]
@@ -78,7 +82,7 @@ resource vNet2Name_resource 'Microsoft.Network/virtualNetworks@2020-05-01' = {
         name: vNet2Config.subnetName
         properties: {
           addressPrefix: vNet2Config.subnetPrefix
-          privateEndpointNetworkPolicies: 'Disabled'
+          privateEndpointNetworkPolicies: vNet2Config.privateEndpointNetworkPolicies
         }
       }
     ]

@@ -1,0 +1,156 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.3.255.40792",
+      "templateHash": "12468453076426766053"
+    }
+  },
+  "parameters": {
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "Specifies the location of all deployed resources."
+      }
+    },
+    "cosmosAccountName": {
+      "type": "string",
+      "metadata": {
+        "description": "Specifies the Cosmos DB account name (max length 44 characters)."
+      }
+    },
+    "keyVaultId": {
+      "type": "string",
+      "metadata": {
+        "description": "Specifies the resource id of the key vault to store the storage access key."
+      }
+    },
+    "subnetId": {
+      "type": "string",
+      "metadata": {
+        "description": "Specifies the id of the subnet which the private endpoint uses."
+      }
+    },
+    "privateDnsZoneId": {
+      "type": "string",
+      "metadata": {
+        "description": "Specifies the ID of the private dns zone."
+      }
+    }
+  },
+  "functions": [],
+  "variables": {
+    "location_var": "[parameters('location')]",
+    "cosmosAccountName_var": "[parameters('cosmosAccountName')]",
+    "keyVaultId_var": "[parameters('keyVaultId')]",
+    "keyVaultName": "[last(split(variables('keyVaultId_var'), '/'))]",
+    "subnetId_var": "[parameters('subnetId')]",
+    "privateDnsZoneId_var": "[parameters('privateDnsZoneId')]",
+    "privateEndpointName_var": "[format('{0}-private-endpoint', variables('cosmosAccountName_var'))]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.DocumentDB/databaseAccounts",
+      "apiVersion": "2020-06-01-preview",
+      "name": "[variables('cosmosAccountName_var')]",
+      "kind": "GlobalDocumentDB",
+      "location": "[variables('location_var')]",
+      "properties": {
+        "consistencyPolicy": {
+          "defaultConsistencyLevel": "BoundedStaleness",
+          "maxIntervalInSeconds": 10,
+          "maxStalenessPrefix": 200
+        },
+        "locations": [
+          {
+            "locationName": "[variables('location_var')]",
+            "failoverPriority": 0,
+            "isZoneRedundant": true
+          }
+        ],
+        "databaseAccountOfferType": "Standard",
+        "ipRules": [],
+        "isVirtualNetworkFilterEnabled": true,
+        "enableAutomaticFailover": true,
+        "virtualNetworkRules": [],
+        "enableMultipleWriteLocations": false,
+        "enableCassandraConnector": false,
+        "publicNetworkAccess": "Disabled",
+        "capabilities": [],
+        "disableKeyBasedMetadataWriteAccess": true,
+        "enableAnalyticalStorage": false,
+        "backupPolicy": {
+          "type": "Periodic",
+          "periodicModeProperties": {
+            "backupIntervalInMinutes": 240,
+            "backupRetentionIntervalInHours": 8
+          }
+        },
+        "cors": [],
+        "createMode": "Default"
+      }
+    },
+    {
+      "type": "Microsoft.Network/privateEndpoints",
+      "apiVersion": "2020-05-01",
+      "name": "[variables('privateEndpointName_var')]",
+      "location": "[variables('location_var')]",
+      "properties": {
+        "privateLinkServiceConnections": [
+          {
+            "name": "[variables('privateEndpointName_var')]",
+            "properties": {
+              "privateLinkServiceId": "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('cosmosAccountName_var'))]",
+              "groupIds": [
+                "sql"
+              ]
+            }
+          }
+        ],
+        "manualPrivateLinkServiceConnections": [],
+        "subnet": {
+          "id": "[variables('subnetId_var')]"
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('cosmosAccountName_var'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "apiVersion": "2019-09-01",
+      "name": "[format('{0}/cosmosConnectionString', variables('keyVaultName'))]",
+      "properties": {
+        "contentType": "text/plain",
+        "value": "[listConnectionStrings(resourceId('Microsoft.DocumentDB/databaseAccounts', variables('cosmosAccountName_var')), '2020-04-01').connectionStrings[0].connectionString]",
+        "attributes": {
+          "enabled": true
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('cosmosAccountName_var'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
+      "apiVersion": "2020-05-01",
+      "name": "[format('{0}/aRecord', variables('privateEndpointName_var'))]",
+      "properties": {
+        "privateDnsZoneConfigs": [
+          {
+            "name": "[format('{0}-aRecord', variables('privateEndpointName_var'))]",
+            "properties": {
+              "privateDnsZoneId": "[variables('privateDnsZoneId_var')]"
+            }
+          }
+        ]
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/privateEndpoints', variables('privateEndpointName_var'))]"
+      ]
+    }
+  ]
+}
