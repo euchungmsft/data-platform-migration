@@ -5,15 +5,15 @@
     "_generator": {
       "name": "bicep",
       "version": "0.3.255.40792",
-      "templateHash": "16174256692144841721"
+      "templateHash": "4613096638825485055"
     }
   },
   "parameters": {
     "location": {
       "type": "string",
-      "defaultValue": "koreacentral",
+      "defaultValue": "[resourceGroup().location]",
       "metadata": {
-        "description": "Location to create all resources"
+        "description": "Specifies the location of all deployed resources."
       }
     },
     "projectName": {
@@ -99,7 +99,7 @@
       }
     },
     "sqlAdministratorLoginPassword": {
-      "type": "string",
+      "type": "secureString",
       "metadata": {
         "description": "SQL user password"
       }
@@ -116,33 +116,42 @@
         "Large"
       ]
     },
-    "subnetId": {
+    "vnetName": {
       "type": "string",
       "metadata": {
-        "description": "Specifies the id of the subnet which the private endpoint uses."
+        "description": "Specifies the name of the subnet which the private endpoint uses."
       }
     },
-    "privateDnsZoneIdSql": {
+    "subnetName": {
       "type": "string",
       "metadata": {
-        "description": "Specifies the ID of the private dns zone for sql pools."
+        "description": "Specifies the name of the subnet which the private endpoint uses."
       }
     },
-    "privateDnsZoneIdDev": {
+    "privateDnsZoneNameSql": {
       "type": "string",
       "metadata": {
-        "description": "Specifies the ID of the private dns zone for dev."
+        "description": "Specifies the name of the private dns zone for sql pools."
+      }
+    },
+    "privateDnsZoneNameDev": {
+      "type": "string",
+      "metadata": {
+        "description": "Specifies the name of the private dns zone for dev."
       }
     }
   },
   "functions": [],
   "variables": {
-    "subnetId_var": "[parameters('subnetId')]",
-    "privateDnsZoneIdSql_var": "[parameters('privateDnsZoneIdSql')]",
-    "privateDnsZoneIdDev_var": "[parameters('privateDnsZoneIdDev')]",
-    "privateEndpointNameSql_var": "[format('{0}-sql-private-endpoint', parameters('workspaceName'))]",
-    "privateEndpointNameSqlOnDemand_var": "[format('{0}-sqlondemand-private-endpoint', parameters('workspaceName'))]",
-    "privateEndpointNameDev_var": "[format('{0}-dev-private-endpoint', parameters('workspaceName'))]"
+    "subnetId": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]",
+    "privateDnsZoneIdSql": "[resourceId('Microsoft.Network/privateDnsZones', parameters('privateDnsZoneNameSql'))]",
+    "privateDnsZoneIdDev": "[resourceId('Microsoft.Network/privateDnsZones', parameters('privateDnsZoneNameDev'))]",
+    "subnetId_var": "[variables('subnetId')]",
+    "privateDnsZoneIdSql_var": "[variables('privateDnsZoneIdSql')]",
+    "privateDnsZoneIdDev_var": "[variables('privateDnsZoneIdDev')]",
+    "privateEndpointNameSql_var": "[format('{0}-sql-pe', parameters('workspaceName'))]",
+    "privateEndpointNameSqlOnDemand_var": "[format('{0}-sqlondemand-pe', parameters('workspaceName'))]",
+    "privateEndpointNameDev_var": "[format('{0}-dev-pe', parameters('workspaceName'))]"
   },
   "resources": [
     {

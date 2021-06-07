@@ -119,6 +119,8 @@ var vHDISSHPassword = hdiSSHPassword
 var vHDIVMSizeHeads = hdiVMSizeHeads
 var vHDIVMSizeWorker = hdiVMSizeWorker
 var vHDIVMSizeZookeeper = hdiVMSizeZookeeper
+var vHDISubnetName = 'subnet-hdi'
+var vHDISubnetCidr = '192.168.13.192/26'
 
 var vSNPSWorkspaceName = '${vProjectName}snps001' // snpsWorkspaceName
 var vSNPSSparkPoolName = '${vProjectName}spp001' // snpsSparkPoolName
@@ -133,12 +135,13 @@ var vADFName = '${vProjectName}adf001'
 
 var vADBWorkspaceName = '${vProjectName}adb001'
 var vADBPricingTier = 'premium'
-var vADBVNetName = '${vADBWorkspaceName}vnet-adb'
-var vADBVNetCider = '192.168.16.0/23'
-var vADBVSubnetPubName = 'sub-pub'
-var vADBVSubnetPubCider = '192.168.16.0/26'
-var vADBVSubnetPvtName = 'sub-prv'
-var vADBVSubnetPvtCider = '192.168.16.64/26'
+//var vADBVNetName = '${vADBWorkspaceName}vnet-adb'
+var vADBVNetName = vVNetBlueName
+//var vADBVNetCider = '192.168.16.0/23'
+var vADBVSubnetPubName = 'subnet-adb-pub'
+var vADBVSubnetPubCider = '192.168.13.64/26'
+var vADBVSubnetPvtName = 'subnet-adb-prv'
+var vADBVSubnetPvtCider = '192.168.13.128/26'
 
 //// Stages
 
@@ -171,6 +174,9 @@ module stgHDI '../modules/create-hdinsight-datalake-store-azure-storage/azuredep
     vmSizeHeadNode: vHDIVMSizeHeads
     vmSizeWorkerNode: vHDIVMSizeWorker
     vmSizeZookeeperNode: vHDIVMSizeZookeeper
+    vnetHDIName: vVNetBlueName
+    hdiSubnetName: vHDISubnetName
+    hdiSubnetCidr: vHDISubnetCidr
  }
 }
 
@@ -180,23 +186,24 @@ module stgCSMS '../modules/create-cosmosdb-with-private-endpoints/azuredeploy.bi
   params: {
     location: vLocation
     cosmosAccountName: vCSMSAccountName
-    subnetId: vnetBlueName_resource.properties.subnets[0].id
-    privateDnsZoneId: privateDnsZoneName_resource.id
-    keyVaultId: keyVaultName_resource.id
+    keyVaultName: vKeyVaultName
+    vnetName: vVNetBlueName
+    subnetName: vnetBlueName_resource.properties.subnets[0].name
+    privateDnsZoneName: vPrivateDnsZoneName
   }
 }
 
 // ADB with Load Balancer
-module stgADB '../modules/create-databricks/azuredeploy.bicep' = if (optDataBrickCreation) {
+module stgADB '../modules/create-databricks-with-load-balancer/azuredeploy.bicep' = if (optDataBrickCreation) {
   name: 'create-databricks-with-loadbalancer'
   params: {
     location: vLocation
     workspaceName: vADBWorkspaceName
     pricingTier: vADBPricingTier
     nsgName: vNSGName
-    disablePublicIp: false 
+    disablePublicIp: true 
     vnetADBName: vADBVNetName
-    vnetADBCider: vADBVNetCider
+    //vnetADBCider: vADBVNetCider
     publicSubnetName: vADBVSubnetPubName
     publicSubnetCidr: vADBVSubnetPubCider
     privateSubnetName: vADBVSubnetPvtName
@@ -221,21 +228,23 @@ module stgSNPS '../modules/create-synapse-workspace-with-private-endpoints/azure
     dataLakeStorageFieshareName: vSNPSDataLakeStorageFieshareName
     sqlAdministratorLogin: vSNPSSQLAdmUserName
     sqlAdministratorLoginPassword: vSNPSSQLAdmPassword
-    subnetId: vnetBlueName_resource.properties.subnets[0].id
-    privateDnsZoneIdSql: privateDnsZoneName_resource.id
-    privateDnsZoneIdDev: privateDnsZoneName_resource.id
+    vnetName: vVNetBlueName
+    subnetName: vnetBlueName_resource.properties.subnets[0].name
+    privateDnsZoneNameSql: vPrivateDnsZoneName
+    privateDnsZoneNameDev: vPrivateDnsZoneName
  }
 }
 
 // Data Factory instance creation
 module stgADF '../modules/create-datafactory-with-private-endpoints/azuredeploy.bicep' = if (optDataFactoryCreation) {
-  name: 'create-datafactory'
+  name: 'create-datafactory-with-private-endpoints'
   params: {
     location: vLocation
     dataFactoryName: vADFName
-    subnetId: vnetBlueName_resource.properties.subnets[0].id
-    privateDnsZoneIdDataFactory: privateDnsZoneName_resource.id
-    privateDnsZoneIdPortal: privateDnsZoneName_resource.id
-    keyVaultId: keyVaultName_resource.id
+    keyVaultName: vKeyVaultName
+    vnetName: vVNetBlueName
+    subnetName: vnetBlueName_resource.properties.subnets[0].name
+    privateDnsZoneNameDataFactory: vPrivateDnsZoneName
+    privateDnsZoneNamePortal: vPrivateDnsZoneName    
  }
 }

@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.3.255.40792",
-      "templateHash": "13029977443810535008"
+      "templateHash": "7501831935072000562"
     }
   },
   "parameters": {
@@ -20,22 +20,22 @@
       "type": "string",
       "defaultValue": "vNet1",
       "metadata": {
-        "description": "Name for vNet 1"
+        "description": "Name for vNet1"
       }
     },
     "vNet2Name": {
       "type": "string",
       "defaultValue": "vNet2",
       "metadata": {
-        "description": "Name for vNet 2"
+        "description": "Name for vNet2"
       }
     },
     "vNet1Config": {
       "type": "object",
       "defaultValue": {
         "addressSpacePrefix": "10.0.0.0/16",
-        "subnetName": "subnet1",
-        "subnetPrefix": "10.0.0.0/24",
+        "subnet1Name": "subnet1",
+        "subnet1Prefix": "10.0.0.0/24",
         "privateEndpointNetworkPolicies": "Disabled"
       },
       "metadata": {
@@ -45,20 +45,28 @@
     "vNet2Config": {
       "type": "object",
       "defaultValue": {
-        "addressSpacePrefix": "10.0.0.0/16",
-        "subnetName": "subnet1",
-        "subnetPrefix": "10.0.0.0/24",
+        "addressSpacePrefix": "192.168.0.0/16",
+        "subnet1Name": "subnet1",
+        "subnet1Prefix": "192.168.0.0/24",
         "privateEndpointNetworkPolicies": "Disabled"
       },
       "metadata": {
         "description": "Config  for vNet 2"
+      }
+    },
+    "networkSecurityGroupName": {
+      "type": "string",
+      "defaultValue": "hdmp001nsg001",
+      "metadata": {
+        "description": "Network Security Group Name for all subnets"
       }
     }
   },
   "functions": [],
   "variables": {
     "vNet1tovNet2PeeringName": "[format('{0}-{1}', parameters('vNet1Name'), parameters('vNet2Name'))]",
-    "vNet2tovNet1PeeringName": "[format('{0}-{1}', parameters('vNet2Name'), parameters('vNet1Name'))]"
+    "vNet2tovNet1PeeringName": "[format('{0}-{1}', parameters('vNet2Name'), parameters('vNet1Name'))]",
+    "vNetworkSecurityGroupId": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroupName'))]"
   },
   "resources": [
     {
@@ -74,10 +82,13 @@
         },
         "subnets": [
           {
-            "name": "[parameters('vNet1Config').subnetName]",
+            "name": "[parameters('vNet1Config').subnet1Name]",
             "properties": {
-              "addressPrefix": "[parameters('vNet1Config').subnetPrefix]",
-              "privateEndpointNetworkPolicies": "[parameters('vNet1Config').privateEndpointNetworkPolicies]"
+              "addressPrefix": "[parameters('vNet1Config').subnet1Prefix]",
+              "privateEndpointNetworkPolicies": "[parameters('vNet1Config').privateEndpointNetworkPolicies]",
+              "networkSecurityGroup": {
+                "id": "[variables('vNetworkSecurityGroupId')]"
+              }
             }
           }
         ]
@@ -114,10 +125,13 @@
         },
         "subnets": [
           {
-            "name": "[parameters('vNet2Config').subnetName]",
+            "name": "[parameters('vNet2Config').subnet1Name]",
             "properties": {
-              "addressPrefix": "[parameters('vNet2Config').subnetPrefix]",
-              "privateEndpointNetworkPolicies": "[parameters('vNet2Config').privateEndpointNetworkPolicies]"
+              "addressPrefix": "[parameters('vNet2Config').subnet1Prefix]",
+              "privateEndpointNetworkPolicies": "[parameters('vNet2Config').privateEndpointNetworkPolicies]",
+              "networkSecurityGroup": {
+                "id": "[variables('vNetworkSecurityGroupId')]"
+              }
             }
           }
         ]

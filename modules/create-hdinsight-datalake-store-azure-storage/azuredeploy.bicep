@@ -52,6 +52,39 @@ param vmSizeWorkerNode string = 'Standard_D3'
 @description('VM Spec for ZooKeeper Node')
 param vmSizeZookeeperNode string = 'Standard_D3'
 
+@description('VNet name where HDI is deployed')
+param vnetHDIName string = 'vnetBlue'
+
+@description('Subnet name where HDI is deployed')
+param hdiSubnetName string = 'subnet-hdi'
+
+@description('Subnet Cidr where HDI is deployed')
+param hdiSubnetCidr string = '192.168.13.192/26'
+
+//@description('VM Spec for ZooKeeper Node')
+//param nsgName string = 'hdmp001nsg001'
+
+var vnetHDIId = resourceId('Microsoft.Network/virtualNetworks', vnetHDIName)
+//var vNetworkSecurityGroupId = resourceId('Microsoft.Network/networkSecurityGroups', nsgName)
+
+resource vnetADBName_hdiSubnetName 'Microsoft.Network/virtualNetworks/subnets@2020-05-01' = {
+  name: '${vnetHDIName}/${hdiSubnetName}'
+  properties: {
+    addressPrefix: hdiSubnetCidr
+    /*
+      https://docs.microsoft.com/en-us/azure/hdinsight/hadoop/hdinsight-troubleshoot-invalidnetworksecuritygroupsecurityrules-cluster-creation-fails
+      Go to the Azure portal and identify the NSG that is associated with the subnet where the cluster is being deployed. In the Inbound security rules section, make sure the rules allow inbound access to port 443 for the IP addresses mentioned here.
+    */
+    //networkSecurityGroup: {
+    //  id: vNetworkSecurityGroupId
+    //}
+  }
+}
+
+//resource vnetADBName_hdiSubnetName 'Microsoft.Network/virtualNetworks/subnets@2020-05-01' existing = {
+//  name: '${vnetHDIName}/${hdiSubnetName}'
+//}
+
 resource clusterStorageAccountName_resource 'Microsoft.Storage/storageAccounts@2019-06-01' = {
   name: clusterStorageAccountName
   location: location
@@ -141,6 +174,10 @@ resource clusterName_resource 'Microsoft.HDInsight/clusters@2018-06-01-preview' 
               password: sshPassword
             }
           }
+          virtualNetworkProfile: {
+            id: vnetHDIId
+            subnet: vnetADBName_hdiSubnetName.id
+          }
         }
         {
           name: 'workernode'
@@ -153,6 +190,10 @@ resource clusterName_resource 'Microsoft.HDInsight/clusters@2018-06-01-preview' 
               username: sshUserName
               password: sshPassword
             }
+          }
+          virtualNetworkProfile: {
+            id: vnetHDIId
+            subnet: vnetADBName_hdiSubnetName.id
           }
         }
         {
@@ -167,6 +208,10 @@ resource clusterName_resource 'Microsoft.HDInsight/clusters@2018-06-01-preview' 
               password: sshPassword
             }
           }
+          virtualNetworkProfile: {
+            id: vnetHDIId
+            subnet: vnetADBName_hdiSubnetName.id
+          }
         }        
       ]
     }
@@ -177,4 +222,7 @@ resource clusterName_resource 'Microsoft.HDInsight/clusters@2018-06-01-preview' 
       '${managedIdentityId}': {}
     }
   }    
+  dependsOn: [
+    vnetADBName_hdiSubnetName
+  ]
 }

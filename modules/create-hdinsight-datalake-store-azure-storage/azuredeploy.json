@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.3.255.40792",
-      "templateHash": "6708814003965984929"
+      "templateHash": "16046990396881061705"
     }
   },
   "parameters": {
@@ -112,13 +112,43 @@
       "metadata": {
         "description": "VM Spec for ZooKeeper Node"
       }
+    },
+    "vnetHDIName": {
+      "type": "string",
+      "defaultValue": "vnetBlue",
+      "metadata": {
+        "description": "VNet name where HDI is deployed"
+      }
+    },
+    "hdiSubnetName": {
+      "type": "string",
+      "defaultValue": "subnet-hdi",
+      "metadata": {
+        "description": "Subnet name where HDI is deployed"
+      }
+    },
+    "hdiSubnetCidr": {
+      "type": "string",
+      "defaultValue": "192.168.13.192/26",
+      "metadata": {
+        "description": "Subnet Cidr where HDI is deployed"
+      }
     }
   },
   "functions": [],
   "variables": {
+    "vnetHDIId": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetHDIName'))]",
     "managedIdentityId": "[format('/subscriptions/{0}/resourceGroups/{1}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{2}', subscription().subscriptionId, resourceGroup().name, parameters('userAssignedIdentityName'))]"
   },
   "resources": [
+    {
+      "type": "Microsoft.Network/virtualNetworks/subnets",
+      "apiVersion": "2020-05-01",
+      "name": "[format('{0}/{1}', parameters('vnetHDIName'), parameters('hdiSubnetName'))]",
+      "properties": {
+        "addressPrefix": "[parameters('hdiSubnetCidr')]"
+      }
+    },
     {
       "type": "Microsoft.Storage/storageAccounts",
       "apiVersion": "2019-06-01",
@@ -211,6 +241,10 @@
                   "username": "[parameters('sshUserName')]",
                   "password": "[parameters('sshPassword')]"
                 }
+              },
+              "virtualNetworkProfile": {
+                "id": "[variables('vnetHDIId')]",
+                "subnet": "[resourceId('Microsoft.Network/virtualNetworks/subnets', split(format('{0}/{1}', parameters('vnetHDIName'), parameters('hdiSubnetName')), '/')[0], split(format('{0}/{1}', parameters('vnetHDIName'), parameters('hdiSubnetName')), '/')[1])]"
               }
             },
             {
@@ -224,6 +258,10 @@
                   "username": "[parameters('sshUserName')]",
                   "password": "[parameters('sshPassword')]"
                 }
+              },
+              "virtualNetworkProfile": {
+                "id": "[variables('vnetHDIId')]",
+                "subnet": "[resourceId('Microsoft.Network/virtualNetworks/subnets', split(format('{0}/{1}', parameters('vnetHDIName'), parameters('hdiSubnetName')), '/')[0], split(format('{0}/{1}', parameters('vnetHDIName'), parameters('hdiSubnetName')), '/')[1])]"
               }
             },
             {
@@ -237,6 +275,10 @@
                   "username": "[parameters('sshUserName')]",
                   "password": "[parameters('sshPassword')]"
                 }
+              },
+              "virtualNetworkProfile": {
+                "id": "[variables('vnetHDIId')]",
+                "subnet": "[resourceId('Microsoft.Network/virtualNetworks/subnets', split(format('{0}/{1}', parameters('vnetHDIName'), parameters('hdiSubnetName')), '/')[0], split(format('{0}/{1}', parameters('vnetHDIName'), parameters('hdiSubnetName')), '/')[1])]"
               }
             }
           ]
@@ -249,7 +291,8 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts', parameters('clusterStorageAccountName'))]"
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('clusterStorageAccountName'))]",
+        "[resourceId('Microsoft.Network/virtualNetworks/subnets', split(format('{0}/{1}', parameters('vnetHDIName'), parameters('hdiSubnetName')), '/')[0], split(format('{0}/{1}', parameters('vnetHDIName'), parameters('hdiSubnetName')), '/')[1])]"
       ]
     }
   ]

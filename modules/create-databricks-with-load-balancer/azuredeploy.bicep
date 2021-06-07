@@ -1,35 +1,32 @@
-@description('Location to create all resources')
-param location string = 'koreacentral'
+@description('Location for the resources')
+param location string = resourceGroup().location
 
 @description('The name of the Azure Databricks workspace to create.')
-param workspaceName string
+param workspaceName string = 'hdmp001adb001'
 
 @description('The pricing tier of workspace.')
 param pricingTier string = 'premium'
 
 @description('Specifies whether to deploy Azure Databricks workspace with Secure Cluster Connectivity (No Public IP) enabled or not')
-param disablePublicIp bool = false 
+param disablePublicIp bool = true
 
 @description('The name of the network security group to create.')
-param nsgName string = 'databricks-nsg'
+param nsgName string = 'hdmp001nsg001'
 
 @description('The name of the virtual network to create.') 
-param vnetADBName string = 'vnet-krc-012-adb'
-
-@description('Cidr range for the vnet.')
-param vnetADBCider string = '192.168.16.0/23'
+param vnetADBName string = 'vnetBlue'
 
 @description('The name of the public subnet to create.')
-param publicSubnetName string = 'sub1-adb-pub'
+param publicSubnetName string = 'subnet-adb-pub'
 
 @description('Cidr range for the public subnet..')
-param publicSubnetCidr string = '192.168.16.0/26'
+param publicSubnetCidr string = '192.168.13.64/26'
 
 @description('The name of the private subnet to create.')
-param privateSubnetName string = 'sub2-adb-prv'
+param privateSubnetName string = 'subnet-adb-prv'
 
 @description('Cidr range for the private subnet.')
-param privateSubnetCidr string = '192.168.16.64/26'
+param privateSubnetCidr string = '192.168.13.128/26'
 
 @description('Name of the outbound Load Balancer public IP.')
 param loadBalancerPublicIpName string = 'ip-krc-001-adblb'
@@ -53,54 +50,51 @@ resource nsgName_resource 'Microsoft.Network/networkSecurityGroups@2020-06-01' e
   name: nsgName
 }
 
-resource vnetADBName_resource 'Microsoft.Network/virtualNetworks@2020-05-01' = {  
+resource vnetADBName_resource 'Microsoft.Network/virtualNetworks@2020-05-01' existing = {  
   name: vnetADBName
-  location: location
-  properties: {
-    addressSpace: {
-      addressPrefixes: [
-        vnetADBCider
-      ]
-    }  
-    subnets: [
-      {
-        name: publicSubnetName
-        properties: {
-          addressPrefix: publicSubnetCidr
-          networkSecurityGroup: {
-            id: nsgName_resource.id
-          }
-          delegations: [
-            {
-              name: 'databricks-del-public'
-              properties: {
-                serviceName: 'Microsoft.Databricks/workspaces'
-              }
-            }
-          ]
-        }
-      }
-      {
-        name: privateSubnetName
-        properties: {
-          addressPrefix: privateSubnetCidr
-          networkSecurityGroup: {
-            id: nsgName_resource.id
-          }
-          delegations: [
-            {
-              name: 'databricks-del-private'
-              properties: {
-                serviceName: 'Microsoft.Databricks/workspaces'
-              }
-            }
-          ]
-        }
-      }
-    ]  
-  }
-}  
+}
 
+resource vnetADBName_pubSubnetName 'Microsoft.Network/virtualNetworks/subnets@2020-05-01' = {
+  name: '${vnetADBName}/${publicSubnetName}'
+  properties: {
+    addressPrefix: publicSubnetCidr
+    networkSecurityGroup: {
+      id: nsgName_resource.id
+    }
+    delegations: [
+      {
+        name: 'databricks-del-public'
+        properties: {
+          serviceName: 'Microsoft.Databricks/workspaces'
+        }
+      }
+    ]    
+  }
+  dependsOn: [
+    vnetADBName_resource
+  ]  
+}
+
+resource vnetADBName_prvSubnetName 'Microsoft.Network/virtualNetworks/subnets@2020-05-01' = {
+  name: '${vnetADBName}/${privateSubnetName}'
+  properties: {
+    addressPrefix: privateSubnetCidr
+    networkSecurityGroup: {
+      id: nsgName_resource.id
+    }
+    delegations: [
+      {
+        name: 'databricks-del-private'
+        properties: {
+          serviceName: 'Microsoft.Databricks/workspaces'
+        }
+      }
+    ]    
+  }
+  dependsOn: [
+    vnetADBName_pubSubnetName
+  ]  
+}
 
 resource loadBalancerPublicIpName_resource 'Microsoft.Network/publicIPAddresses@2020-06-01' = {
   name: loadBalancerPublicIpName
@@ -192,6 +186,6 @@ resource workspaceName_resource 'Microsoft.Databricks/workspaces@2018-04-01' = {
     }
   }
   dependsOn: [
-    nsgName_resource
+    vnetADBName_prvSubnetName
   ]
 }

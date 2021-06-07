@@ -2,25 +2,27 @@
 param location string = resourceGroup().location
 
 @description('Specifies the Cosmos DB account name (max length 44 characters).')
-param cosmosAccountName string
+param cosmosAccountName string = 'hdmp001csms001'
 
 @description('Specifies the resource id of the key vault to store the storage access key.')
-param keyVaultId string
+param keyVaultName string = 'hdmp001kv001'
 
-@description('Specifies the id of the subnet which the private endpoint uses.')
-param subnetId string
+@description('Specifies the name of the VNet which the private endpoint uses.')
+param vnetName string = 'vnetBlue'
 
-@description('Specifies the ID of the private dns zone.')
-param privateDnsZoneId string
+@description('Specifies the name of the subnet which the private endpoint uses.')
+param subnetName string = 'subnet1'
+
+@description('Specifies the name of the private dns zone.')
+param privateDnsZoneName string = 'hdmp001-pdns.com'
+
+//var keyVaultId = resourceId('Microsoft.KeyVault/vaults', keyVaultName)
+var subnetId = resourceId('Microsoft.Network/virtualNetworks/subnets', vnetName, subnetName)
+var privateDnsZoneId = resourceId('Microsoft.Network/privateDnsZones', privateDnsZoneName)
 
 var location_var = location
 var cosmosAccountName_var = cosmosAccountName
-
-var keyVaultId_var = keyVaultId
-var keyVaultName = last(split(keyVaultId_var, '/'))
-var subnetId_var = subnetId
-var privateDnsZoneId_var = privateDnsZoneId
-var privateEndpointName_var = '${cosmosAccountName_var}-private-endpoint'
+var privateEndpointName_var = '${cosmosAccountName_var}-pe'
 
 resource cosmosAccountName_resource 'Microsoft.DocumentDB/databaseAccounts@2020-06-01-preview' = {
   name: cosmosAccountName_var
@@ -79,7 +81,7 @@ resource privateEndpointName 'Microsoft.Network/privateEndpoints@2020-05-01' = {
     ]
     manualPrivateLinkServiceConnections: []
     subnet: {
-      id: subnetId_var
+      id: subnetId
     }
   }
 }
@@ -102,7 +104,7 @@ resource privateEndpointName_aRecord 'Microsoft.Network/privateEndpoints/private
       {
         name: '${privateEndpointName_var}-aRecord'
         properties: {
-          privateDnsZoneId: privateDnsZoneId_var
+          privateDnsZoneId: privateDnsZoneId
         }
       }
     ]

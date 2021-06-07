@@ -3,34 +3,22 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "location": {
-            "value": {
-                "type": "String",
-                "value": "koreacentral"
-            }
+            "value": "koreacentral"
         },
         "cosmosAccountName": {
-            "value": {
-                "type": "String",
-                "value": "hdmp001csms001"
-            }
+            "value": "hdmp001csms001"
         },
-        "keyVaultId": {
-            "value": {
-                "type": "String",
-                "value": "/subscriptions/b6d4cd53-eeab-41d1-93a8-665daf75fce1/resourceGroups/TEST1/providers/Microsoft.KeyVault/vaults/hdmp001kv001"
-            }
+        "keyVaultName": {
+            "value": "hdmp001kv001"
         },
-        "subnetId": {
-            "value": {
-                "type": "String",
-                "value": "/subscriptions/b6d4cd53-eeab-41d1-93a8-665daf75fce1/resourceGroups/TEST1/providers/Microsoft.Network/virtualNetworks/vnetBlue/subnets/subnet1"
-            }
+        "vnetName": {
+            "value": "vnetBlue"
         },
-        "privateDnsZoneId": {
-            "value": {
-                "type": "String",
-                "value": "/subscriptions/b6d4cd53-eeab-41d1-93a8-665daf75fce1/resourceGroups/TEST1/providers/Microsoft.Network/privateDnsZones/hdmp001-pdns.com"
-            }
+        "subnetName": {
+            "value": "subnet1"
+        },
+        "privateDnsZoneName": {
+            "value": "hdmp001-pdns.com"
         }
     }
 }

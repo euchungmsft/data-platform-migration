@@ -2,30 +2,37 @@
 param location string = resourceGroup().location
 
 @description('Name of the instance')
-param dataFactoryName string = 'myv2datafactory'
+param dataFactoryName string = 'hdmp001adf001'
 
-@description('Specifies the resource id of the keyvault that should be linked to the data factory.')
-param keyVaultId string
+@description('Specifies the resource id of the key vault to store the storage access key.')
+param keyVaultName string = 'hdmp001kv001'
 
-@description('Specifies the id of the subnet which the private endpoint uses.')
-param subnetId string
+@description('Specifies the name of the VNet which the private endpoint uses.')
+param vnetName string = 'vnetBlue'
 
-@description('Specifies the ID of the private dns zone for data factory.')
-param privateDnsZoneIdDataFactory string
+@description('Specifies the name of the subnet which the private endpoint uses.')
+param subnetName string = 'subnet1'
 
-@description('Specifies the ID of the private dns zone for data factory portal.')
-param privateDnsZoneIdPortal string 
+@description('Specifies the name of the private dns zone, Data Factory')
+param privateDnsZoneNameDataFactory string = 'hdmp001-pdns.com'
+
+@description('Specifies the name of the private dns zone, Portal')
+param privateDnsZoneNamePortal string = 'hdmp001-pdns.com'
+
+var keyVaultId = resourceId('Microsoft.KeyVault/vaults', keyVaultName)
+var subnetId = resourceId('Microsoft.Network/virtualNetworks/subnets', vnetName, subnetName)
+var privateDnsZoneIdDataFactory = resourceId('Microsoft.Network/privateDnsZones', privateDnsZoneNameDataFactory)
+var privateDnsZoneIdPortal = resourceId('Microsoft.Network/privateDnsZones', privateDnsZoneNamePortal)
 
 var defaultManagedVnetIntegrationRuntimeName = 'AutoResolveIntegrationRuntime'
 
 var dataFactoryName_var = dataFactoryName
 var keyVaultId_var = keyVaultId
-var keyVaultName = last(split(keyVaultId_var, '/'))
 var subnetId_var = subnetId
 var privateDnsZoneIdDataFactory_var = privateDnsZoneIdDataFactory
 var privateDnsZoneIdPortal_var = privateDnsZoneIdPortal
-var privateEndpointNameDataFactory_var = '${dataFactoryName_var}-datafactory-private-endpoint'
-var privateEndpointNamePortal_var = '${dataFactoryName_var}-portal-private-endpoint'
+var privateEndpointNameDataFactory_var = '${dataFactoryName_var}-datafactory-pe'
+var privateEndpointNamePortal_var = '${dataFactoryName_var}-portal-pe'
 
 resource dataFactoryName_resource 'Microsoft.DataFactory/factories@2018-06-01' = {
   name: dataFactoryName

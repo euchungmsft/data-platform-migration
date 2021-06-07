@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.3.255.40792",
-      "templateHash": "10058450329601435326"
+      "templateHash": "8448041492227030101"
     }
   },
   "parameters": {
@@ -18,47 +18,61 @@
     },
     "dataFactoryName": {
       "type": "string",
-      "defaultValue": "myv2datafactory",
+      "defaultValue": "hdmp001adf001",
       "metadata": {
         "description": "Name of the instance"
       }
     },
-    "keyVaultId": {
+    "keyVaultName": {
       "type": "string",
+      "defaultValue": "hdmp001kv001",
       "metadata": {
-        "description": "Specifies the resource id of the keyvault that should be linked to the data factory."
+        "description": "Specifies the resource id of the key vault to store the storage access key."
       }
     },
-    "subnetId": {
+    "vnetName": {
       "type": "string",
+      "defaultValue": "vnetBlue",
       "metadata": {
-        "description": "Specifies the id of the subnet which the private endpoint uses."
+        "description": "Specifies the name of the VNet which the private endpoint uses."
       }
     },
-    "privateDnsZoneIdDataFactory": {
+    "subnetName": {
       "type": "string",
+      "defaultValue": "subnet1",
       "metadata": {
-        "description": "Specifies the ID of the private dns zone for data factory."
+        "description": "Specifies the name of the subnet which the private endpoint uses."
       }
     },
-    "privateDnsZoneIdPortal": {
+    "privateDnsZoneNameDataFactory": {
       "type": "string",
+      "defaultValue": "hdmp001-pdns.com",
       "metadata": {
-        "description": "Specifies the ID of the private dns zone for data factory portal."
+        "description": "Specifies the name of the private dns zone, Data Factory"
+      }
+    },
+    "privateDnsZoneNamePortal": {
+      "type": "string",
+      "defaultValue": "hdmp001-pdns.com",
+      "metadata": {
+        "description": "Specifies the name of the private dns zone, Portal"
       }
     }
   },
   "functions": [],
   "variables": {
+    "keyVaultId": "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]",
+    "subnetId": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]",
+    "privateDnsZoneIdDataFactory": "[resourceId('Microsoft.Network/privateDnsZones', parameters('privateDnsZoneNameDataFactory'))]",
+    "privateDnsZoneIdPortal": "[resourceId('Microsoft.Network/privateDnsZones', parameters('privateDnsZoneNamePortal'))]",
     "defaultManagedVnetIntegrationRuntimeName": "AutoResolveIntegrationRuntime",
     "dataFactoryName_var": "[parameters('dataFactoryName')]",
-    "keyVaultId_var": "[parameters('keyVaultId')]",
-    "keyVaultName": "[last(split(variables('keyVaultId_var'), '/'))]",
-    "subnetId_var": "[parameters('subnetId')]",
-    "privateDnsZoneIdDataFactory_var": "[parameters('privateDnsZoneIdDataFactory')]",
-    "privateDnsZoneIdPortal_var": "[parameters('privateDnsZoneIdPortal')]",
-    "privateEndpointNameDataFactory_var": "[format('{0}-datafactory-private-endpoint', variables('dataFactoryName_var'))]",
-    "privateEndpointNamePortal_var": "[format('{0}-portal-private-endpoint', variables('dataFactoryName_var'))]"
+    "keyVaultId_var": "[variables('keyVaultId')]",
+    "subnetId_var": "[variables('subnetId')]",
+    "privateDnsZoneIdDataFactory_var": "[variables('privateDnsZoneIdDataFactory')]",
+    "privateDnsZoneIdPortal_var": "[variables('privateDnsZoneIdPortal')]",
+    "privateEndpointNameDataFactory_var": "[format('{0}-datafactory-pe', variables('dataFactoryName_var'))]",
+    "privateEndpointNamePortal_var": "[format('{0}-portal-pe', variables('dataFactoryName_var'))]"
   },
   "resources": [
     {
@@ -108,7 +122,7 @@
       "condition": "[not(empty(variables('keyVaultId_var')))]",
       "type": "Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints",
       "apiVersion": "2018-06-01",
-      "name": "[format('{0}/{1}', format('{0}/default', parameters('dataFactoryName')), replace(variables('keyVaultName'), '-', ''))]",
+      "name": "[format('{0}/{1}', format('{0}/default', parameters('dataFactoryName')), replace(parameters('keyVaultName'), '-', ''))]",
       "properties": {
         "privateLinkResourceId": "[variables('keyVaultId_var')]",
         "groupId": "vault"
@@ -123,7 +137,7 @@
       "condition": "[not(empty(variables('keyVaultId_var')))]",
       "type": "Microsoft.DataFactory/factories/linkedservices",
       "apiVersion": "2018-06-01",
-      "name": "[format('{0}/{1}', parameters('dataFactoryName'), replace(variables('keyVaultName'), '-', ''))]",
+      "name": "[format('{0}/{1}', parameters('dataFactoryName'), replace(parameters('keyVaultName'), '-', ''))]",
       "properties": {
         "type": "AzureKeyVault",
         "annotations": [],
@@ -134,7 +148,7 @@
         "description": "Key Vault for data product",
         "parameters": {},
         "typeProperties": {
-          "baseUrl": "[format('https://{0}.vault.azure.net/', variables('keyVaultName'))]"
+          "baseUrl": "[format('https://{0}.vault.azure.net/', parameters('keyVaultName'))]"
         }
       },
       "dependsOn": [

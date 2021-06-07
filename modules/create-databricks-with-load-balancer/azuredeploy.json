@@ -5,19 +5,20 @@
     "_generator": {
       "name": "bicep",
       "version": "0.3.255.40792",
-      "templateHash": "4312408089947316774"
+      "templateHash": "11529131004587089374"
     }
   },
   "parameters": {
     "location": {
       "type": "string",
-      "defaultValue": "koreacentral",
+      "defaultValue": "[resourceGroup().location]",
       "metadata": {
-        "description": "Location to create all resources"
+        "description": "Location for the resources"
       }
     },
     "workspaceName": {
       "type": "string",
+      "defaultValue": "hdmp001adb001",
       "metadata": {
         "description": "The name of the Azure Databricks workspace to create."
       }
@@ -31,56 +32,49 @@
     },
     "disablePublicIp": {
       "type": "bool",
-      "defaultValue": false,
+      "defaultValue": true,
       "metadata": {
         "description": "Specifies whether to deploy Azure Databricks workspace with Secure Cluster Connectivity (No Public IP) enabled or not"
       }
     },
     "nsgName": {
       "type": "string",
-      "defaultValue": "databricks-nsg",
+      "defaultValue": "hdmp001nsg001",
       "metadata": {
         "description": "The name of the network security group to create."
       }
     },
     "vnetADBName": {
       "type": "string",
-      "defaultValue": "vnet-krc-012-adb",
+      "defaultValue": "vnetBlue",
       "metadata": {
         "description": "The name of the virtual network to create."
       }
     },
-    "vnetADBCider": {
-      "type": "string",
-      "defaultValue": "192.168.16.0/23",
-      "metadata": {
-        "description": "Cidr range for the vnet."
-      }
-    },
     "publicSubnetName": {
       "type": "string",
-      "defaultValue": "sub1-adb-pub",
+      "defaultValue": "subnet-adb-pub",
       "metadata": {
         "description": "The name of the public subnet to create."
       }
     },
     "publicSubnetCidr": {
       "type": "string",
-      "defaultValue": "192.168.16.0/26",
+      "defaultValue": "192.168.13.64/26",
       "metadata": {
         "description": "Cidr range for the public subnet.."
       }
     },
     "privateSubnetName": {
       "type": "string",
-      "defaultValue": "sub2-adb-prv",
+      "defaultValue": "subnet-adb-prv",
       "metadata": {
         "description": "The name of the private subnet to create."
       }
     },
     "privateSubnetCidr": {
       "type": "string",
-      "defaultValue": "192.168.16.64/26",
+      "defaultValue": "192.168.13.128/26",
       "metadata": {
         "description": "Cidr range for the private subnet."
       }
@@ -124,53 +118,45 @@
   },
   "resources": [
     {
-      "type": "Microsoft.Network/virtualNetworks",
+      "type": "Microsoft.Network/virtualNetworks/subnets",
       "apiVersion": "2020-05-01",
-      "name": "[parameters('vnetADBName')]",
-      "location": "[parameters('location')]",
+      "name": "[format('{0}/{1}', parameters('vnetADBName'), parameters('publicSubnetName'))]",
       "properties": {
-        "addressSpace": {
-          "addressPrefixes": [
-            "[parameters('vnetADBCider')]"
-          ]
+        "addressPrefix": "[parameters('publicSubnetCidr')]",
+        "networkSecurityGroup": {
+          "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('nsgName'))]"
         },
-        "subnets": [
+        "delegations": [
           {
-            "name": "[parameters('publicSubnetName')]",
+            "name": "databricks-del-public",
             "properties": {
-              "addressPrefix": "[parameters('publicSubnetCidr')]",
-              "networkSecurityGroup": {
-                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('nsgName'))]"
-              },
-              "delegations": [
-                {
-                  "name": "databricks-del-public",
-                  "properties": {
-                    "serviceName": "Microsoft.Databricks/workspaces"
-                  }
-                }
-              ]
-            }
-          },
-          {
-            "name": "[parameters('privateSubnetName')]",
-            "properties": {
-              "addressPrefix": "[parameters('privateSubnetCidr')]",
-              "networkSecurityGroup": {
-                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('nsgName'))]"
-              },
-              "delegations": [
-                {
-                  "name": "databricks-del-private",
-                  "properties": {
-                    "serviceName": "Microsoft.Databricks/workspaces"
-                  }
-                }
-              ]
+              "serviceName": "Microsoft.Databricks/workspaces"
             }
           }
         ]
       }
+    },
+    {
+      "type": "Microsoft.Network/virtualNetworks/subnets",
+      "apiVersion": "2020-05-01",
+      "name": "[format('{0}/{1}', parameters('vnetADBName'), parameters('privateSubnetName'))]",
+      "properties": {
+        "addressPrefix": "[parameters('privateSubnetCidr')]",
+        "networkSecurityGroup": {
+          "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('nsgName'))]"
+        },
+        "delegations": [
+          {
+            "name": "databricks-del-private",
+            "properties": {
+              "serviceName": "Microsoft.Databricks/workspaces"
+            }
+          }
+        ]
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/virtualNetworks/subnets', split(format('{0}/{1}', parameters('vnetADBName'), parameters('publicSubnetName')), '/')[0], split(format('{0}/{1}', parameters('vnetADBName'), parameters('publicSubnetName')), '/')[1])]"
+      ]
     },
     {
       "type": "Microsoft.Network/publicIPAddresses",
@@ -267,7 +253,7 @@
       },
       "dependsOn": [
         "[resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancerName'))]",
-        "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetADBName'))]"
+        "[resourceId('Microsoft.Network/virtualNetworks/subnets', split(format('{0}/{1}', parameters('vnetADBName'), parameters('privateSubnetName')), '/')[0], split(format('{0}/{1}', parameters('vnetADBName'), parameters('privateSubnetName')), '/')[1])]"
       ]
     }
   ]

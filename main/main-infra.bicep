@@ -7,16 +7,19 @@ param location string = resourceGroup().location
 param projectName string = 'hdmp001'
 
 @description('VNet address space prefix of Mgmt')
-param vnetMgmtaddressSpacePrefix string = '192.168.12.0/23'
+param vnetMgmtaddressSpacePrefix string = '192.168.12.0/24'
 
 @description('Subnet address prefix of Mgmt-subnet1')
 param vnetMgmtsubnet1Prefix string = '192.168.12.0/26'
 
 @description('VNet address space prefix of Blue')
-param vnetBlueaddressSpacePrefix string = '192.168.14.0/23'
+param vnetBlueaddressSpacePrefix string = '192.168.13.0/24'
 
 @description('Subnet address prefix of Blue-subnet1')
-param vnetBluesubnet1Prefix string = '192.168.14.0/26'
+param vnetBluesubnet1Prefix string = '192.168.13.0/26'
+
+//@description('Subnet address prefix of Blue-subnet2')
+//param vnetBluesubnet2Prefix string = '192.168.64.0/26'
 
 @description('Type of Storage Account')
 param saType string = 'Standard_LRS'
@@ -65,6 +68,8 @@ var vVNetBlueName = 'vnetBlue'
 var vVNetBlueaddressSpacePrefix = vnetBlueaddressSpacePrefix
 var vVNetBluesubnet1Name = 'subnet1'
 var vVNetBluesubnet1Prefix = vnetBluesubnet1Prefix
+//var vVNetBluesubnet2Name = 'subnet2'
+//var vVNetBluesubnet2Prefix = vnetBluesubnet2Prefix
 var vVMMgmtName = 'vmMgmt'
 var vVMMgmtSize = vmMgmtSize
 var vVMBlueName = 'vmBlue'
@@ -78,6 +83,15 @@ var vUserAssignedIdentityName = '${vProjectName}uain001'
 
 //// Stages
 
+// NSG Creation
+module stgNSG '../modules/create-nsg/azuredeploy.bicep' = {
+  name: 'create-nsg'
+  params: {
+    location: vLocation
+    nsgName: vNSGName
+  }
+}
+
 // VNet Creation 
 module stgVNET '../modules/create-vnets-with-peering/azuredeploy.bicep' = {
   name: 'create-vnets'
@@ -86,27 +100,24 @@ module stgVNET '../modules/create-vnets-with-peering/azuredeploy.bicep' = {
     vNet1Name: vVNetMgmtName
     vNet1Config: {
       addressSpacePrefix: vVNetMgmtaddressSpacePrefix
-      subnetName: vVNetMgmtsubnet1Name
-      subnetPrefix: vVNetMgmtsubnet1Prefix
+      subnet1Name: vVNetMgmtsubnet1Name
+      subnet1Prefix: vVNetMgmtsubnet1Prefix
       privateEndpointNetworkPolicies: 'Disabled'
     }
     vNet2Name: vVNetBlueName
     vNet2Config: {
       addressSpacePrefix: vVNetBlueaddressSpacePrefix
-      subnetName: vVNetBluesubnet1Name
-      subnetPrefix: vVNetBluesubnet1Prefix
+      subnet1Name: vVNetBluesubnet1Name
+      subnet1Prefix: vVNetBluesubnet1Prefix
+      //subnet2Name: vVNetBluesubnet2Name
+      //subnet2Prefix: vVNetBluesubnet2Prefix
       privateEndpointNetworkPolicies: 'Disabled'
     }
+    networkSecurityGroupName: vNSGName
   }
-}
-
-// NSG Creation
-module stgNSG '../modules/create-nsg/azuredeploy.bicep' = {
-  name: 'create-nsg'
-  params: {
-    location: vLocation
-    nsgName: vNSGName
-  }
+  dependsOn: [
+    stgNSG
+  ]  
 }
 
 // Storage Account Creation, ADLS Gen2 with a Blob container

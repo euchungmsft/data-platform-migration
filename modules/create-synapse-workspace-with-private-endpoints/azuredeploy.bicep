@@ -1,5 +1,5 @@
-@description('Location to create all resources')
-param location string = 'koreacentral'
+@description('Specifies the location of all deployed resources.')
+param location string = resourceGroup().location
 
 @description('Project name')
 param projectName string = 'hdmp001'
@@ -43,6 +43,7 @@ param dataLakeStorageFieshareName string
 param sqlAdministratorLogin string
 
 @description('SQL user password')
+@secure()
 param sqlAdministratorLoginPassword string
 
 @allowed([
@@ -59,21 +60,28 @@ param sparkNodeSize string = 'Medium'
 //@description('Specifies the Azure Active Directory objectID of the SQL admin group.')
 //param synapseSqlAdminGroupObjectID string
 
-@description('Specifies the id of the subnet which the private endpoint uses.')
-param subnetId string
+@description('Specifies the name of the subnet which the private endpoint uses.')
+param vnetName string
 
-@description('Specifies the ID of the private dns zone for sql pools.')
-param privateDnsZoneIdSql string
+@description('Specifies the name of the subnet which the private endpoint uses.')
+param subnetName string
 
-@description('Specifies the ID of the private dns zone for dev.')
-param privateDnsZoneIdDev string
+@description('Specifies the name of the private dns zone for sql pools.')
+param privateDnsZoneNameSql string
+
+@description('Specifies the name of the private dns zone for dev.')
+param privateDnsZoneNameDev string
+
+var subnetId = resourceId('Microsoft.Network/virtualNetworks/subnets', vnetName, subnetName)
+var privateDnsZoneIdSql = resourceId('Microsoft.Network/privateDnsZones', privateDnsZoneNameSql) 
+var privateDnsZoneIdDev = resourceId('Microsoft.Network/privateDnsZones', privateDnsZoneNameDev) 
 
 var subnetId_var = subnetId
 var privateDnsZoneIdSql_var = privateDnsZoneIdSql
 var privateDnsZoneIdDev_var = privateDnsZoneIdDev
-var privateEndpointNameSql_var = '${workspaceName}-sql-private-endpoint'
-var privateEndpointNameSqlOnDemand_var = '${workspaceName}-sqlondemand-private-endpoint'
-var privateEndpointNameDev_var = '${workspaceName}-dev-private-endpoint'
+var privateEndpointNameSql_var = '${workspaceName}-sql-pe'
+var privateEndpointNameSqlOnDemand_var = '${workspaceName}-sqlondemand-pe'
+var privateEndpointNameDev_var = '${workspaceName}-dev-pe'
 //var synapseSqlAdminGroupName_var = synapseSqlAdminGroupName
 //var synapseSqlAdminGroupObjectID_var = synapseSqlAdminGroupObjectID
 

@@ -3,106 +3,58 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "location": {
-            "value": {
-                "type": "String",
-                "value": "koreacentral"
-            }
+            "value": "koreacentral"
         },
         "projectName": {
-            "value": {
-                "type": "String",
-                "value": "hdmp001"
-            }
+            "value": "hdmp001"
         },
         "skuSQLPool": {
-            "value": {
-                "type": "String",
-                "value": "DW100c"
-            }
+            "value": "DW100c"
         },
         "metadataSync": {
-            "value": {
-                "type": "Bool",
-                "value": false
-            }
+            "value": false
         },
         "allowAllConnections": {
-            "value": {
-                "type": "String",
-                "value": "true"
-            }
+            "value": "true"
         },
         "sparkDeployment": {
-            "value": {
-                "type": "String",
-                "value": "true"
-            }
+            "value": "true"
         },
         "workspaceName": {
-            "value": {
-                "type": "String",
-                "value": "hdmp001snps001"
-            }
+            "value": "hdmp001snps001"
         },
         "sparkPoolName": {
-            "value": {
-                "type": "String",
-                "value": "hdmp001spp001"
-            }
+            "value": "hdmp001spp001"
         },
         "sqlPoolName": {
-            "value": {
-                "type": "String",
-                "value": "hdmp001sqp001"
-            }
+            "value": "hdmp001sqp001"
         },
         "dataLakeStorageAccountName": {
-            "value": {
-                "type": "String",
-                "value": "hdmp001sa001"
-            }
+            "value": "hdmp001sa001"
         },
         "dataLakeStorageFieshareName": {
-            "value": {
-                "type": "String",
-                "value": "file01"
-            }
+            "value": "file01"
         },
         "sqlAdministratorLogin": {
-            "value": {
-                "type": "String",
-                "value": "hdmpuser"
-            }
+            "value": "hdmpuser"
         },
         "sqlAdministratorLoginPassword": {
-            "value": {
-                "type": "String",
-                "value": "H$ngh9731@"
-            }
+            "value": "H$ngh9731@"
         },
         "sparkNodeSize": {
-            "value": {
-                "type": "String",
-                "value": "Medium"
-            }
+            "value": "Medium"
         },
-        "subnetId": {
-            "value": {
-                "type": "String",
-                "value": "/subscriptions/b6d4cd53-eeab-41d1-93a8-665daf75fce1/resourceGroups/TEST1/providers/Microsoft.Network/virtualNetworks/vnetBlue/subnets/subnet1"
-            }
+        "vnetName": {
+            "value": "vnetBlue"
         },
-        "privateDnsZoneIdSql": {
-            "value": {
-                "type": "String",
-                "value": "/subscriptions/b6d4cd53-eeab-41d1-93a8-665daf75fce1/resourceGroups/TEST1/providers/Microsoft.Network/privateDnsZones/hdmp001-pdns.com"
-            }
+        "subnetName": {
+            "value": "subnet1"
         },
-        "privateDnsZoneIdDev": {
-            "value": {
-                "type": "String",
-                "value": "/subscriptions/b6d4cd53-eeab-41d1-93a8-665daf75fce1/resourceGroups/TEST1/providers/Microsoft.Network/privateDnsZones/hdmp001-pdns.com"
-            }
+        "privateDnsZoneNameSql": {
+            "value": "hdmp001-pdns.com"
+        },
+        "privateDnsZoneNameDev": {
+            "value": "hdmp001-pdns.com"
         }
     }
 }
