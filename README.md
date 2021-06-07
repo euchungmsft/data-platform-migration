@@ -40,7 +40,7 @@ For the reference architecture, the following services are created
 
 For more details regarding the services that will be deployed, please read the Domains guide in the Hardoop Migration documentation.
 
-##before-you-start
+#before-you-start
 ## Before you start 
 
 If you don't have an Azure subscription, [create your Azure free account today.](https://azure.microsoft.com/free/)
