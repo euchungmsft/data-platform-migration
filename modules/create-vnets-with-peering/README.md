@@ -10,7 +10,7 @@ The template creates and configures the following Azure resources:
 - 2 VNets
 - Peering
 
-Find 'Before you start' from here for the prerequisites to run this from your command line
+Find 'Before you start' from [here](../../README.md#before-you-start) for the prerequisites to run this from your command line
 
 After you login by `az login` from command line,
 
