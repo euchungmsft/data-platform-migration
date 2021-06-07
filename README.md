@@ -40,6 +40,7 @@ For the reference architecture, the following services are created
 
 For more details regarding the services that will be deployed, please read the Domains guide in the Hardoop Migration documentation.
 
+##before-you-start
 ## Before you start 
 
 If you don't have an Azure subscription, [create your Azure free account today.](https://azure.microsoft.com/free/)
@@ -157,8 +158,6 @@ Options for deploying this reference architecture
 
 [![Deploy To Azure](images/deploytoazure.svg)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fnudbeach%2Fdata-platform-migration%2Fmain%2Fbuild%2Fmain-service-all-at-once.json) 
 [![Visualize](images/visualizebutton.svg)](http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Fnudbeach%2Fdata-platform-migration%2Fmain%2Fbuild%2Fmain-service-all-at-once.json)
-
-[//]: # (## 2. Github Action, ## 3. Azure DevOps Action)
 
 ## 2. Deploying using CLI
 
