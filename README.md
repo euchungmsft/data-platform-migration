@@ -19,8 +19,11 @@ By default, all the services which come under the reference architecture are ena
 
 > Note: Before deploying the resources, we recommend to check registration status of the required resource providers in your subscription. For more information, see [Resource providers for Azure services.](https://docs.microsoft.com/azure/azure-resource-manager/management/resource-providers-and-types)
 
+![Reference Architecture - Modernization, Concept](images/end_State_architecture_Modernize.png)
 
-![Reference Architecture : Modernization](images/end_State_architecture_Modernize.png)
+based on the architectural concept above, deployment architecture looks like this
+
+![Deployment Architecture](images/end-state-architecture.png)
 
 For the reference architecture, the following services are created
 
