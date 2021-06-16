@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.3.255.40792",
-      "templateHash": "18370304810338032293"
+      "templateHash": "1613025154447363405"
     }
   },
   "parameters": {
@@ -18,7 +18,7 @@
     },
     "vmName": {
       "type": "string",
-      "defaultValue": "simpleLinuxVM1",
+      "defaultValue": "vm001",
       "metadata": {
         "description": "The name of you Virtual Machine."
       }
@@ -49,7 +49,7 @@
     },
     "dnsLabelPrefix": {
       "type": "string",
-      "defaultValue": "[toLower(format('simplelinuxvm-{0}', uniqueString(resourceGroup().id)))]",
+      "defaultValue": "[toLower(format('{0}-{1}', parameters('vmName'), uniqueString(resourceGroup().id)))]",
       "metadata": {
         "description": "Unique DNS Name for the Public IP used to access the Virtual Machine."
       }
@@ -94,6 +94,12 @@
       "metadata": {
         "description": "Name of the Network Security Group"
       }
+    },
+    "dataDiskName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the Data Disk to attach"
+      }
     }
   },
   "functions": [],
@@ -102,6 +108,7 @@
     "networkInterfaceName_var": "[format('{0}-nic', parameters('vmName'))]",
     "subnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('subnetName'))]",
     "osDiskType": "Standard_LRS",
+    "dataDiskId": "[resourceId('Microsoft.Compute/disks', parameters('dataDiskName'))]",
     "linuxConfiguration": {
       "disablePasswordAuthentication": true,
       "ssh": {
@@ -176,6 +183,15 @@
               "storageAccountType": "[variables('osDiskType')]"
             }
           },
+          "dataDisks": [
+            {
+              "lun": 0,
+              "createOption": "Attach",
+              "managedDisk": {
+                "id": "[variables('dataDiskId')]"
+              }
+            }
+          ],
           "imageReference": {
             "publisher": "Canonical",
             "offer": "UbuntuServer",

@@ -2,7 +2,7 @@
 param location string = resourceGroup().location
 
 @description('The name of you Virtual Machine.')
-param vmName string = 'simpleLinuxVM1'
+param vmName string = 'vm001'
 
 @description('Username for the Virtual Machine.')
 param adminUsername string = 'azureuser'
@@ -19,7 +19,7 @@ param authenticationType string = 'password'
 param adminPasswordOrKey string
 
 @description('Unique DNS Name for the Public IP used to access the Virtual Machine.')
-param dnsLabelPrefix string = toLower('simplelinuxvm-${uniqueString(resourceGroup().id)}')
+param dnsLabelPrefix string = toLower('${vmName}-${uniqueString(resourceGroup().id)}')
 
 @allowed([
   '12.04.5-LTS'
@@ -42,10 +42,14 @@ param subnetName string = 'Subnet'
 @description('Name of the Network Security Group')
 param networkSecurityGroupName string = 'SecGroupNet'
 
+@description('Name of the Data Disk to attach')
+param dataDiskName string 
+
 var publicIpAddressName_var = '${vmName}-ip'
 var networkInterfaceName_var = '${vmName}-nic'
 var subnetRef = resourceId('Microsoft.Network/virtualNetworks/subnets', virtualNetworkName, subnetName)
 var osDiskType = 'Standard_LRS'
+var dataDiskId = resourceId('Microsoft.Compute/disks', dataDiskName)
 
 var linuxConfiguration = {
   disablePasswordAuthentication: true
@@ -125,6 +129,15 @@ resource vmName_resource 'Microsoft.Compute/virtualMachines@2020-06-01' = {
           storageAccountType: osDiskType
         }
       }
+      dataDisks: [
+        {
+          lun: 0
+          createOption: 'Attach'
+          managedDisk: {
+            id: dataDiskId
+          }
+        }
+      ]      
       imageReference: {
         publisher: 'Canonical'
         offer: 'UbuntuServer'
