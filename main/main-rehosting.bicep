@@ -13,7 +13,7 @@ var vProjectName = projectName
 
 var vVNetName = '${vProjectName}vnet001'
 var vNSGName = '${vProjectName}nsg001'
-/*
+
 // VNET Creation
 module stgVNET '../modules/create-vnet-with-nsg/azuredeploy.bicep' = {
   name: 'create-vnet-and-nsg'
@@ -30,7 +30,7 @@ module stgVNET '../modules/create-vnet-with-nsg/azuredeploy.bicep' = {
     networkSecurityGroupName: vNSGName
   }
 }
-*/
+
 resource sshKeyName_resource 'Microsoft.Compute/sshPublicKeys@2020-12-01' existing = {
   name: 'DEFAULT01'
 }
