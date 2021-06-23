@@ -1,17 +1,16 @@
-# Hadoop Migration - Data Platform Migration
-This is for Hadoop-Migrations, https://github.com/Azure/Hadoop-Migrations
+# Hadoop Migration on Azure PaaS 
+https://github.com/Azure/Hadoop-Migrations
 
 > **General disclaimer** Please be aware that this template is in private preview. Therefore, expect smaller bugs and issues when working with the solution. Please submit an Issue in GitHub if you come across any issues that you would like us to fix.
 
 [//]: # (**DO NOT COPY - UNDER DEVELOPMENT - MS INTERNAL ONLY - Please be aware that this template is in private preview without any SLA.**)
 **DO NOT COPY - UNDER DEVELOPMENT - Please be aware that this template is in private preview without any SLA.**
 
-**** to-be-updated ****
 
-## Description
-This is for Hadoop-Migrations
+## Enabling Hadoop Migrations to Azure
+One of the challenges while migrating workloads from on-premises Hadoop to Azure is having the right deployment done which is aligning with the desired end state architecture and the application. With this bicep project we are aiming to reduce a significant effort which goes behind deploying the PaaS services on Azure and having a production ready architecture up and running.
 
-**** to-be-updated ****
+We will be looking at the end state architecture for big data workloads with PaaS services on Azure (IaaS will be covered in later sections) listing all the components deployed as a part of bicep template deployment. With Bicep we also have an additional advantage of deploying only the modules(services) we prefer for a customised architecture. In the later sections we will cover the pre-requisites for the template and different ways of deploying the resources on Azure such as Oneclick, Azure CLI, Github Actions and DevOps Pipeline. 
 
 ## What will be deployed?
 
