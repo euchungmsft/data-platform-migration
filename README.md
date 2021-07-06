@@ -1,18 +1,12 @@
-# Hadoop Migration on Azure PaaS 
-https://github.com/Azure/Hadoop-Migrations
+### Hadoop Migration on Azure PaaS
 
-> **General disclaimer** Please be aware that this template is in private preview. Therefore, expect smaller bugs and issues when working with the solution. Please submit an Issue in GitHub if you come across any issues that you would like us to fix.
+> Note: This is part of Enabling Hadoop Migrations to Azure reference implementation. For more information check out the [readme file in the root.] (https://github.com/Azure/Hadoop-Migrations/blob/main/README.md)
 
-[//]: # (**DO NOT COPY - UNDER DEVELOPMENT - MS INTERNAL ONLY - Please be aware that this template is in private preview without any SLA.**)
-**DO NOT COPY - UNDER DEVELOPMENT - Please be aware that this template is in private preview without any SLA.**
-
-
-## Enabling Hadoop Migrations to Azure
 One of the challenges while migrating workloads from on-premises Hadoop to Azure is having the right deployment done which is aligning with the desired end state architecture and the application. With this bicep project we are aiming to reduce a significant effort which goes behind deploying the PaaS services on Azure and having a production ready architecture up and running.
 
-We will be looking at the end state architecture for big data workloads with PaaS services on Azure (IaaS will be covered in later sections) listing all the components deployed as a part of bicep template deployment. With Bicep we also have an additional advantage of deploying only the modules(services) we prefer for a customised architecture. In the later sections we will cover the pre-requisites for the template and different ways of deploying the resources on Azure such as Oneclick, Azure CLI, Github Actions and DevOps Pipeline. 
+We will be looking at the end state architecture for big data workloads on Azure PaaS listing all the components deployed as a part of bicep template deployment. With Bicep we also have an additional advantage of deploying only the modules we prefer for a customised architecture. In the later sections we will cover the pre-requisites for the template and different methods of deploying the resources on Azure such as Oneclick, Azure CLI, Github Actions and DevOps Pipeline. 
 
-## What will be deployed?
+## Reference Architecture Deployment
 
 By default, all the services which come under the reference architecture are enabled, and you must explicitly disable services that you don't want to be deployed from parameters which prompts in the ARM screen at portal or in the template files  `*.parameters.json` or directly in `*.bicep` 
 
@@ -20,35 +14,35 @@ By default, all the services which come under the reference architecture are ena
 
 ![Reference Architecture - Modernization, Concept](images/end_State_architecture_Modernize.png)
 
-based on the architectural concept above, deployment architecture looks like this
+Based on the detailed architecture above the end state deployment is simplified below for better understanding.
 
 ![Deployment Architecture](images/end-state-architecture.png)
 
 For the reference architecture, the following services are created
 
-- HDInsight
-- [Synapse Workspace](https://docs.microsoft.com/azure/synapse-analytics/)
-- Azure Databrick
-- [Data Factory](https://docs.microsoft.com/azure/data-factory/)
-- [Cosmos DB](https://docs.microsoft.com/azure/cosmos-db/introduction)
+- [Azure HDInsight](https://docs.microsoft.com/azure/hdinsight/)
+- [Azure Synapse Analytics](https://docs.microsoft.com/azure/synapse-analytics/)
+- [Azure Databricks](https://docs.microsoft.com/azure/databricks/)
+- [Azure Data Factory](https://docs.microsoft.com/azure/data-factory/)
+- [Azure Cosmos DB](https://docs.microsoft.com/azure/cosmos-db/)
 - Infrastructure
-  * [Key Vault](https://docs.microsoft.com/azure/key-vault/general)
+  * [Azure Key Vault](https://docs.microsoft.com/azure/key-vault/general)
   * VNet
   * VM
   * Private DNS Zone
 
-For more details regarding the services that will be deployed, please read the Domains guide in the Hardoop Migration documentation.
+For more details regarding the services that will be deployed, please read the Domains guide(link) in the Hardoop Migration documentation.
 
 ## Before you start 
 
 If you don't have an Azure subscription, [create your Azure free account today.](https://azure.microsoft.com/free/)
 
-Components to install
+### Prerequisites
 
 1. Azure CLI
 2. Bicep
 
-Things you need to prepare 
+In this quickstart, you will create:
 
 1. Resource Group
 2. Service Principal and access
@@ -56,13 +50,15 @@ Things you need to prepare
 
 ### 1. Resource Group
 
-You need to login first from CLI
+The Azure CLI's default authentication method uses a web browser and access token to sign in.
+
+Run the login command
 
 ```command
 az login
 ```
 
-You'll get prompts at your web brower, if authentication's done successfully, you'll get something like this
+Once the authentication is successful, you should see a similar output:
 
 ```javascript
   {
@@ -81,9 +77,9 @@ You'll get prompts at your web brower, if authentication's done successfully, yo
   },
 ```
 
-Get the subscription `id` from login result
+Copy the subscription `id` from output above, you will need it to create more resources.
 
-Create a resource group by running this
+Create a resource group using the below command
 
 ```commands
 az group create -l <Your Region> -n <Resource Group Name> --subscription <Your Subscription Id>
@@ -91,7 +87,7 @@ az group create -l <Your Region> -n <Resource Group Name> --subscription <Your S
 
 ### 2. Service Principal and access
 
-A service principal needs to be generated for authentication and authorization by Key Vault. Just go to the Azure Portal to find the ID of your subscription. Then start the Cloud Shell or Azure CLI, login to Azure, set the Azure context and execute the following commands to generate the required credentials:
+An Azure service principal is an identity created for use with applications, hosted services, and automated tools to access Azure resources programatically. It needs to be generated for authentication and authorization by Key Vault. Get the subscription id from the output saved earlier. Open Cloud shell or Azure CLI, set the Azure context and execute the following commands to generate the required credentials:
 
 > Note: The purpose of this new Service Principal is to assign least-privilege rights. Therefore, it requires the Contributor role at a resource group scope in order to deploy the resources inside the resource group dedicated to a specific data domain. The Network Contributor role assignment is required as well in this repository in order to assign the resources to the dedicated subnet.
 
@@ -101,7 +97,7 @@ A service principal needs to be generated for authentication and authorization b
 az ad sp create-for-rbac -n <Your App Name>
 ```
 
-Then you'll get something like this
+You should see the output similar to the following 
 
 ```javascript
 {
@@ -113,11 +109,12 @@ Then you'll get something like this
 }
 ```
 
-Keep your `appId` and `password` for the following steps
+Save the `appId` and `password` for the upcoming steps.
 
 ### 3. Public Key for SSH
 
-It's optional only when you want to deploy VMs at VNets for test
+This is an optional step, follow when you want to deploy VMs at VNets for testing purpose:
+This article shows you how to quickly generate and use an SSH public-private key file pair for Linux VMs
 
 [To create and use an SSH public-private key pair for Linux VMs in Azure](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/mac-create-ssh-keys)
 
@@ -125,15 +122,25 @@ It's optional only when you want to deploy VMs at VNets for test
 cat ~/.ssh/id_rsa.pub
 ```
 
-Keep your public key string for the following steps
+Save the output of the above command as the public key and store in a safe location, to be used in the upcoming commands.
 
 ### Supported Regions
 
-Most of regions where data & analytic components are available, please choose one of regions before you start
+Most of Azure regions have all majority data & analytics services available, some of them are given below:
+- Canada Central	
+- Canada East	
+- Central US	
+- East US	
+- East US 2	
+- North Central US	
+- South Central US	
+- West Central US	
+- West US	
+- West US 2
 
-## Options to run
+## Deployment methods
 
-Options for deploying this reference architecture
+There are 4 methods available for deploying this reference architecture, let's look at each one individually:
 
 1. Oneclick button to Quickstart
 2. CLI
