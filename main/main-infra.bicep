@@ -4,7 +4,7 @@
 param location string = resourceGroup().location
 
 @description('Project name')
-param projectName string = 'hdmp001'
+param projectName string = 'hdmp003'
 
 @description('VNet address space prefix of Mgmt')
 param vnetMgmtaddressSpacePrefix string = '192.168.12.0/24'
@@ -49,9 +49,10 @@ param vmUserName string = 'azureuser'
 @description('Type of authentication to use on the Virtual Machine. SSH key is recommended.')
 param authenticationType string = 'password'
 
+// ****************
 @description('SSH Key or password for the Virtual Machine. SSH key is recommended.')
-@secure()
-param adminPasswordOrKey string
+//@secure()
+param adminPasswordOrKey string = 'AAAAB3NzaC1yc2EAAAADAQABAAABAQCn6QHjt9axKetzxnjDkf65GxdbcZoTMCse66uQL1y0ZYSjY0OkR79AIUCUS3+YcAqMJa4tuI9A8RRH8hNqpy0U/AJlkd0w2rr+G7HoROi+GCC3MzUTNR3/k48CTc2099JxSuSoH8syjfdcNBfqVLxob2f97gtVHcyAQ7U2Uz09rr/EBe9UwXtGPEP1K3jWY0HpEXgOAgnM8bkmvGuVv/pqZXQLeUgvadYxNadsRtD9w7uCb6DxPgxNFTtaXbQHK5pbjAL6VKX7CrVWVZ3LWo98i1S07W5qdv/Emaxy0tqDXMHkM/lF9T/CcbJuhHAUuTGNP7wqemHFXBr45orwCP9d'
 
 //// Variables
 

@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.3.255.40792",
-      "templateHash": "9518166994834214731"
+      "templateHash": "16559256660553723536"
     }
   },
   "parameters": {
@@ -18,13 +18,14 @@
     },
     "projectName": {
       "type": "string",
-      "defaultValue": "hdmp001",
+      "defaultValue": "hdmp003",
       "metadata": {
         "description": "Project name"
       }
     },
     "objectId": {
       "type": "string",
+      "defaultValue": "77e4f477-8da6-4edb-8545-812ebce555af",
       "metadata": {
         "description": "ObjectID of managed app"
       }

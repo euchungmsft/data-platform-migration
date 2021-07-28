@@ -4,10 +4,11 @@
 param location string = resourceGroup().location
 
 @description('Project name')
-param projectName string = 'hdmp001'
+param projectName string = 'hdmp003'
 
+// ****************
 @description('ObjectID of managed app')
-param objectId string
+param objectId string = '77e4f477-8da6-4edb-8545-812ebce555af'
 
 @description('TenantID of current subscription')
 param tenantId string = subscription().tenantId

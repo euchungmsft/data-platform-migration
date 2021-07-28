@@ -6,10 +6,10 @@
             "value": "koreacentral"
         },
         "clusterType": {
-            "value": "hadoop"
+            "value": "kafka"
         },
         "clusterName": {
-            "value": "hdmp001hdi001"
+            "value": "hdmp003hdi001"
         },
         "clusterLoginUserName": {
             "value": "hdmpuser"
@@ -24,7 +24,7 @@
             "value": "hsafda#Sn$8"
         },
         "clusterStorageAccountName": {
-            "value": "hdmp001sa001"
+            "value": "hdmp003sa001"
         },
         "clusterWorkerNodeCount": {
             "value": 4
@@ -36,7 +36,7 @@
             "value": 3
         },
         "userAssignedIdentityName": {
-            "value": "hdmp001uain001"
+            "value": "hdmp003uain001"
         },
         "vmSizeHeadNode": {
             "value": "Standard_E8_v3"

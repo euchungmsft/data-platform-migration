@@ -4,7 +4,7 @@
 param location string = resourceGroup().location
 
 @description('Project name')
-param projectName string = 'hdmp001'
+param projectName string = 'hdmp003'
 
 // Parameters - Options to provision
 
@@ -50,6 +50,7 @@ param optDataFactoryCreation bool = true
   'hbase'
   'spark'
   'interactivehive'
+  'kafka'
 ]) 
 @description('Type of HDI Cluster. storm is not supported in 4.0')
 param hdiClusterType string = 'hadoop'
@@ -162,7 +163,7 @@ module stgHDI '../modules/create-hdinsight-datalake-store-azure-storage/azuredep
   name: 'create-hdinsight'
   params: {
     location: vLocation
-    // "'hadoop' | 'hbase' | 'spark' | 'interactivehive'" //'storm' is not supported in 4.0
+    // "'hadoop' | 'hbase' | 'spark' | 'interactivehive' | 'kafka" //'storm' is not supported in 4.0
     clusterType: vHDIClusterType
     clusterName: vHDIClusterName
     clusterLoginUserName: vHDILoginUserName

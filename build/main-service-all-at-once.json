@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.3.255.40792",
-      "templateHash": "247429433379931482"
+      "templateHash": "14713570103638268370"
     }
   },
   "parameters": {
@@ -18,7 +18,7 @@
     },
     "projectName": {
       "type": "string",
-      "defaultValue": "hdmp001",
+      "defaultValue": "hdmp003",
       "metadata": {
         "description": "Project name"
       }
@@ -88,7 +88,8 @@
         "hadoop",
         "hbase",
         "spark",
-        "interactivehive"
+        "interactivehive",
+        "kafka"
       ]
     },
     "hdiLoginUserName": {
@@ -258,7 +259,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.3.255.40792",
-              "templateHash": "16046990396881061705"
+              "templateHash": "10921269075574001275"
             }
           },
           "parameters": {
@@ -278,7 +279,8 @@
                 "hadoop",
                 "hbase",
                 "spark",
-                "interactivehive"
+                "interactivehive",
+                "kafka"
               ]
             },
             "clusterName": {
@@ -512,6 +514,11 @@
                           "password": "[parameters('sshPassword')]"
                         }
                       },
+                      "dataDisksGroups": [
+                        {
+                          "disksPerNode": 1
+                        }
+                      ],
                       "virtualNetworkProfile": {
                         "id": "[variables('vnetHDIId')]",
                         "subnet": "[resourceId('Microsoft.Network/virtualNetworks/subnets', split(format('{0}/{1}', parameters('vnetHDIName'), parameters('hdiSubnetName')), '/')[0], split(format('{0}/{1}', parameters('vnetHDIName'), parameters('hdiSubnetName')), '/')[1])]"

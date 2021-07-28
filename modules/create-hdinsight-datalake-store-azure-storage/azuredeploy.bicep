@@ -7,6 +7,7 @@ param location string = resourceGroup().location
   'hbase'
   'spark'
   'interactivehive'
+  'kafka'
 ])
 @description('The type of the HDInsight cluster to create.')
 param clusterType string
@@ -191,6 +192,11 @@ resource clusterName_resource 'Microsoft.HDInsight/clusters@2018-06-01-preview' 
               password: sshPassword
             }
           }
+          dataDisksGroups: [
+            {
+              disksPerNode: 1
+            }
+          ]          
           virtualNetworkProfile: {
             id: vnetHDIId
             subnet: vnetADBName_hdiSubnetName.id
