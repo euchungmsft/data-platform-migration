@@ -192,11 +192,13 @@ resource clusterName_resource 'Microsoft.HDInsight/clusters@2018-06-01-preview' 
               password: sshPassword
             }
           }
+          /** only for Kafka
           dataDisksGroups: [
             {
               disksPerNode: 1
             }
           ]          
+          */
           virtualNetworkProfile: {
             id: vnetHDIId
             subnet: vnetADBName_hdiSubnetName.id

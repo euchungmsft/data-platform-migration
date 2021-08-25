@@ -180,7 +180,7 @@ module stgHDI '../modules/create-hdinsight-datalake-store-azure-storage/azuredep
     hdiSubnetCidr: vHDISubnetCidr
  }
 }
-
+/*
 //Cosmos instance creation with privte endpoints
 module stgCSMS '../modules/create-cosmosdb-with-private-endpoints/azuredeploy.bicep' = if (optCosmosDBCreation) {
   name: 'create-cosmosdb-with-private-endpoints'
@@ -249,3 +249,4 @@ module stgADF '../modules/create-datafactory-with-private-endpoints/azuredeploy.
     privateDnsZoneNamePortal: vPrivateDnsZoneName    
  }
 }
+*/

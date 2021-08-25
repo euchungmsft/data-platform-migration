@@ -1,0 +1,15 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "flexibleServers_pgsql_krc_001_name": {
+            "value": null
+        },
+        "virtualNetworks_TEST2vnet253_externalid": {
+            "value": null
+        },
+        "privateDnsZones_pgsql_krc_001_private_postgres_database_azure_com_externalid": {
+            "value": null
+        }
+    }
+}

@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.3.255.40792",
-      "templateHash": "10921269075574001275"
+      "templateHash": "5773807477347458124"
     }
   },
   "parameters": {
@@ -260,11 +260,6 @@
                   "password": "[parameters('sshPassword')]"
                 }
               },
-              "dataDisksGroups": [
-                {
-                  "disksPerNode": 1
-                }
-              ],
               "virtualNetworkProfile": {
                 "id": "[variables('vnetHDIId')]",
                 "subnet": "[resourceId('Microsoft.Network/virtualNetworks/subnets', split(format('{0}/{1}', parameters('vnetHDIName'), parameters('hdiSubnetName')), '/')[0], split(format('{0}/{1}', parameters('vnetHDIName'), parameters('hdiSubnetName')), '/')[1])]"

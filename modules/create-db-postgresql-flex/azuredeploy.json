@@ -1,0 +1,2695 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.3.255.40792",
+      "templateHash": "15603209273586689700"
+    }
+  },
+  "parameters": {
+    "flexibleServers_pgsql_krc_001_name": {
+      "type": "string",
+      "defaultValue": "pgsql-krc-001"
+    },
+    "virtualNetworks_TEST2vnet253_externalid": {
+      "type": "string",
+      "defaultValue": "/subscriptions/b6d4cd53-eeab-41d1-93a8-665daf75fce1/resourceGroups/TEST2/providers/Microsoft.Network/virtualNetworks/TEST2vnet253"
+    },
+    "privateDnsZones_pgsql_krc_001_private_postgres_database_azure_com_externalid": {
+      "type": "string",
+      "defaultValue": "/subscriptions/b6d4cd53-eeab-41d1-93a8-665daf75fce1/resourceGroups/TEST2/providers/Microsoft.Network/privateDnsZones/pgsql-krc-001.private.postgres.database.azure.com"
+    }
+  },
+  "functions": [],
+  "resources": [
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers",
+      "apiVersion": "2021-06-01",
+      "name": "[parameters('flexibleServers_pgsql_krc_001_name')]",
+      "location": "Korea Central",
+      "sku": {
+        "name": "Standard_B1ms",
+        "tier": "Burstable"
+      },
+      "properties": {
+        "version": "13",
+        "administratorLogin": "adm",
+        "storage": {
+          "storageSizeGB": 32
+        },
+        "backup": {
+          "backupRetentionDays": 7,
+          "geoRedundantBackup": "Disabled"
+        },
+        "network": {
+          "delegatedSubnetResourceId": "[format('{0}/subnets/default', parameters('virtualNetworks_TEST2vnet253_externalid'))]",
+          "privateDnsZoneArmResourceId": "[parameters('privateDnsZones_pgsql_krc_001_private_postgres_database_azure_com_externalid')]"
+        },
+        "highAvailability": {
+          "mode": "Disabled"
+        },
+        "maintenanceWindow": {
+          "customWindow": "Disabled",
+          "dayOfWeek": 0,
+          "startHour": 0,
+          "startMinute": 0
+        }
+      }
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/application_name', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/array_nulls', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "on",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/autovacuum', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "on",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/autovacuum_analyze_scale_factor', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "0.1",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/autovacuum_analyze_threshold', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "50",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/autovacuum_freeze_max_age', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "200000000",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/autovacuum_max_workers', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "1",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/autovacuum_multixact_freeze_max_age', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "400000000",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/autovacuum_naptime', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "60",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/autovacuum_vacuum_cost_delay', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "2",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/autovacuum_vacuum_cost_limit', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "-1",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/autovacuum_vacuum_scale_factor', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "0.2",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/autovacuum_vacuum_threshold', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "50",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/autovacuum_work_mem', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "-1",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/azure.accepted_password_auth_method', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "md5",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/azure.enable_temp_tablespaces_on_local_ssd', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "on",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/backend_flush_after', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "256",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/backslash_quote', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "safe_encoding",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/bgwriter_delay', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "50",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/bgwriter_flush_after', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "64",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/bgwriter_lru_maxpages', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "100",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/bgwriter_lru_multiplier', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "2",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/bytea_output', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "hex",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/check_function_bodies', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "on",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/checkpoint_completion_target', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "0.9",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/checkpoint_timeout', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "300",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/checkpoint_warning', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "30",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/client_encoding', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "sql_ascii",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/client_min_messages', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "notice",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/commit_delay', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "0",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/commit_siblings', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "5",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/connection_throttle.bucket_limit', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "2000",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/connection_throttle.enable', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "off",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/connection_throttle.factor_bias', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "0.8",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/connection_throttle.hash_entries_max', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "500",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/connection_throttle.reset_time', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "120",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/connection_throttle.restore_factor', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "2",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/connection_throttle.update_time', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "20",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/constraint_exclusion', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "partition",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/cpu_index_tuple_cost', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "0.005",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/cpu_operator_cost', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "0.0025",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/cpu_tuple_cost', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "0.01",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/cron.database_name', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "postgres",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/cron.log_run', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "on",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/cron.log_statement', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "on",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/cron.max_running_jobs', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "32",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/cursor_tuple_fraction', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "0.1",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/DateStyle', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "ISO, MDY",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/deadlock_timeout', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "1000",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/debug_pretty_print', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "on",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/debug_print_parse', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "off",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/debug_print_plan', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "off",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/debug_print_rewritten', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "off",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/default_statistics_target', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "100",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/default_tablespace', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/default_text_search_config', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "pg_catalog.english",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/default_transaction_deferrable', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "off",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/default_transaction_isolation', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "read committed",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/default_transaction_read_only', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "off",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/default_with_oids', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "off",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/effective_cache_size', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "229376",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/effective_io_concurrency', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "1",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/enable_bitmapscan', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "on",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/enable_gathermerge', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "on",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/enable_hashagg', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "on",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/enable_hashjoin', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "on",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/enable_indexonlyscan', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "on",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/enable_indexscan', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "on",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/enable_material', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "on",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/enable_mergejoin', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "on",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/enable_nestloop', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "on",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/enable_partitionwise_aggregate', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "off",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/enable_partitionwise_join', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "off",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/enable_seqscan', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "on",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/enable_sort', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "on",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/enable_tidscan', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "on",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/escape_string_warning', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "on",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/exit_on_error', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "off",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/extra_float_digits', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "1",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/force_parallel_mode', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "off",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/from_collapse_limit', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "8",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/geqo', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "on",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/geqo_effort', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "5",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/geqo_generations', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "0",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/geqo_pool_size', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "0",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/geqo_seed', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "0",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/geqo_selection_bias', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "2",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/geqo_threshold', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "12",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/gin_fuzzy_search_limit', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "0",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/gin_pending_list_limit', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "4096",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/huge_pages', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "try",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/idle_in_transaction_session_timeout', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "0",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/IntervalStyle', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "postgres",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/jit', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "off",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/jit_above_cost', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "100000",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/jit_inline_above_cost', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "500000",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/jit_optimize_above_cost', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "500000",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/join_collapse_limit', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "8",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/lc_monetary', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "en_US.utf-8",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/lc_numeric', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "en_US.utf-8",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/lo_compat_privileges', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "off",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/lock_timeout', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "0",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/log_autovacuum_min_duration', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "-1",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/log_checkpoints', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "on",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/log_connections', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "off",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/log_destination', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "stderr",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/log_disconnections', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "off",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/log_duration', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "off",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/log_error_verbosity', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "default",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/log_executor_stats', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "off",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/log_lock_waits', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "off",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/log_min_duration_statement', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "-1",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/log_min_error_statement', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "error",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/log_min_messages', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "warning",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/log_statement', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "none",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/log_statement_stats', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "off",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/log_temp_files', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "-1",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/maintenance_work_mem', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "99328",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/max_connections', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "50",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/max_locks_per_transaction', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "64",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/max_parallel_maintenance_workers', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "64",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/max_parallel_workers', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "8",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/max_parallel_workers_per_gather', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "2",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/max_pred_locks_per_page', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "2",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/max_pred_locks_per_relation', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "-2",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/max_prepared_transactions', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "0",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/max_replication_slots', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "10",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/max_standby_archive_delay', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "30000",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/max_standby_streaming_delay', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "30000",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/max_sync_workers_per_subscription', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "2",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/max_wal_senders', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "10",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/max_wal_size', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "1024",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/max_worker_processes', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "8",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/min_parallel_index_scan_size', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "64",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/min_parallel_table_scan_size', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "1024",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/min_wal_size', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "80",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/operator_precedence_warning', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "off",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/parallel_setup_cost', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "1000",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/parallel_tuple_cost', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "0.1",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/password_encryption', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "md5",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/pg_partman_bgw.analyze', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "off",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/pg_partman_bgw.dbname', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/pg_partman_bgw.interval', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "3600",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/pg_partman_bgw.jobmon', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "on",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/pg_partman_bgw.role', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/pg_qs.index_generation_interval', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "15",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/pg_qs.interval_length_minutes', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "15",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/pg_qs.max_plan_size', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "7500",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/pg_qs.query_capture_mode', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "none",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/pg_qs.retention_period_in_days', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "7",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/pg_qs.store_query_plans', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "off",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/pg_qs.track_utility', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "on",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/pg_stat_statements.max', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "5000",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/pg_stat_statements.save', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "on",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/pg_stat_statements.track', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "top",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/pg_stat_statements.track_utility', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "on",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/pgaudit.log', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "none",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/pgaudit.log_catalog', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "on",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/pgaudit.log_client', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "off",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/pgaudit.log_level', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "log",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/pgaudit.log_parameter', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "off",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/pgaudit.log_relation', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "off",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/pgaudit.log_statement_once', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "off",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/pgaudit.role', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/pglogical.batch_inserts', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "on",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/pglogical.conflict_log_level', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "log",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/pglogical.conflict_resolution', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "apply_remote",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/pglogical.use_spi', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "off",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/pgms_wait_sampling.history_period', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "100",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/pgms_wait_sampling.query_capture_mode', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "none",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/postgis.gdal_enabled_drivers', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "DISABLE_ALL",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/quote_all_identifiers', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "off",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/random_page_cost', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "2",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/row_security', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "on",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/search_path', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "\"$user\", public",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/seq_page_cost', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "1",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/session_replication_role', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "origin",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/shared_buffers', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "32768",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/shared_preload_libraries', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "pg_cron,pg_stat_statements",
+        "source": "user-override"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/ssl_max_protocol_version', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/ssl_min_protocol_version', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "TLSv1.2",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/standard_conforming_strings', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "on",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/statement_timeout', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "0",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/synchronize_seqscans', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "on",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/synchronous_commit', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "on",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/tcp_keepalives_count', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "9",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/tcp_keepalives_idle', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "120",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/tcp_keepalives_interval', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "30",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/temp_buffers', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "1024",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/temp_tablespaces', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/TimeZone', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "UTC",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/track_activities', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "on",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/track_activity_query_size', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "1024",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/track_commit_timestamp', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "off",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/track_counts', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "on",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/track_functions', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "none",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/track_io_timing', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "off",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/transform_null_equals', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "off",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/vacuum_cost_delay', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "0",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/vacuum_cost_limit', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "200",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/vacuum_cost_page_dirty', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "20",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/vacuum_cost_page_hit', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "1",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/vacuum_cost_page_miss', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "10",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/vacuum_defer_cleanup_age', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "0",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/vacuum_freeze_min_age', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "50000000",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/vacuum_freeze_table_age', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "150000000",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/vacuum_multixact_freeze_min_age', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "5000000",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/vacuum_multixact_freeze_table_age', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "150000000",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/wal_buffers', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "2048",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/wal_compression', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "off",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/wal_level', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "replica",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/wal_receiver_status_interval', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "10",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/wal_writer_delay', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "200",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/wal_writer_flush_after', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "128",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/work_mem', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "4096",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/xmlbinary', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "base64",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/configurations",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/xmloption', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "value": "content",
+        "source": "system-default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/databases",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/azure_maintenance', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "charset": "UTF8",
+        "collation": "en_US.utf8"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/databases",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/azure_sys', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "charset": "UTF8",
+        "collation": "en_US.utf8"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/databases",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/postgres', parameters('flexibleServers_pgsql_krc_001_name'))]",
+      "properties": {
+        "charset": "UTF8",
+        "collation": "en_US.utf8"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('flexibleServers_pgsql_krc_001_name'))]"
+      ]
+    }
+  ]
+}
